@@ -103,7 +103,7 @@ class Map {
             ".........###".toCharArray(),
             ".........###".toCharArray(),
             ".........###".toCharArray(),
-            "---------###".toCharArray()
+            "|||||||||###".toCharArray()
 
     };
 
@@ -126,6 +126,10 @@ class Map {
                         graphics.enableModifiers(SGR.BOLD);
                         graphics.putString(new TerminalPosition(x, y), "H");
                         break;
+                    case '|': // Flag
+                         graphics.setForegroundColor(TextColor.Factory.fromString("#FFA500"));
+                         graphics.enableModifiers(SGR.BOLD);
+                         graphics.putString(new TerminalPosition(x, y), "|");
                     default: // Empty space
                         break;
                 }
