@@ -46,7 +46,7 @@ class Game{
             if (key.getKeyType() == KeyType.Character && key.getCharacter()== 'q') {
                 screen.stopScreen();
                 endTerminal = true;
-            }
+       
             map.processKey(key);
             draw();
         }
@@ -68,6 +68,9 @@ class Map {
         width_ = width;
         height_ = height;
         coins=createCoins();
+    Map(int width, int height) {
+        width_ = width;
+        height_ = height;
     }
 
     public int getHeight_() {
