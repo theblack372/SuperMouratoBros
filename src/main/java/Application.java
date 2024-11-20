@@ -60,7 +60,7 @@ class Game{
             KeyStroke key = screen.pollInput();
             if (key != null) {
                 if ((key.getKeyType() == KeyType.Character && key.getCharacter() == 'q')||(map.getMourato().getPosition().getY()>= map.height_-1)
-                ||(map.getKoopa()!=null &&map.getMourato().getPosition().equals(map.getKoopa().getPosition()))) {
+                ||(map.getKoopa()!=null &&map.getMourato().getPosition().equals(map.getKoopa().getPosition()))||(map.finishingLine(map.getMourato()))) {
                     screen.stopScreen();
                     endTerminal = true;
                 }
@@ -393,6 +393,13 @@ class Map {
                     return true;
                 }
             }
+        }
+        return false;
+    }
+    public boolean finishingLine(Mourato mourato) {
+        Position currentPosition = mourato.getPosition();
+        if(map[currentPosition.getX()][currentPosition.getY()] == '|'){
+            return true;
         }
         return false;
     }
