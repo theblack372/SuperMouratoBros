@@ -6,10 +6,12 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
+import com.googlecode.lanterna.terminal.swing.TerminalScrollController;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Application {
     public static void main(String[] args) throws IOException {
@@ -22,6 +24,10 @@ class Game{
     private boolean endTerminal=false;
     private Screen screen;
     private final Map map= new Map(32,12);
+    private Thread jumpThread;
+    private long lastKoopaMoveTime = System.currentTimeMillis(); // Controla o tempo de movimento do Koopa
+    private static final long KOOPA_MOVE_INTERVAL = 1000; // 1 segundo (1000 ms)
+
     public Game() {
         try {TerminalSize terminalSize = new TerminalSize(map.getWidth_(), map.getHeight_());
             DefaultTerminalFactory terminalFactory = new
@@ -41,20 +47,73 @@ class Game{
 
     void run() throws IOException {
         while (!endTerminal) {
-            draw();
-            KeyStroke key = screen.readInput();
-            if (key.getKeyType() == KeyType.Character && key.getCharacter()== 'q') {
-                screen.stopScreen();
-                endTerminal = true;
-       
-            map.processKey(key);
-            draw();
+            long startTime = System.currentTimeMillis();
+
+            // Verifica se já passou 1 segundo (1000 ms)
+            if (System.currentTimeMillis() - lastKoopaMoveTime >= KOOPA_MOVE_INTERVAL) {
+                map.KoopaMove(map.getKoopa()); // Mover Koopa
+                lastKoopaMoveTime = System.currentTimeMillis(); // Atualiza o tempo do último movimento
+            }
+
+            draw(); // Redesenha a tela
+
+            KeyStroke key = screen.pollInput();
+            if (key != null) {
+                if (key.getKeyType() == KeyType.Character && key.getCharacter() == 'q') {
+                    screen.stopScreen();
+                    endTerminal = true;
+                }
+                handleInput(key); // Lida com o input do jogador
+            }
+
+            long elapsedTime = System.currentTimeMillis() - startTime;
+            try {
+                Thread.sleep(Math.max(0, 100 - elapsedTime)); // Ajusta para que o loop tenha uma duração constante
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
+
+    private void handleInput(KeyStroke key) throws IOException {
+        Mourato mourato = map.getMourato();
+
+        if (key.getKeyType() == KeyType.ArrowUp && !mourato.isJump_()) {
+            startJumpThread(); // Inicia o salto
+        } else if (key.getKeyType() == KeyType.ArrowLeft || key.getKeyType() == KeyType.ArrowRight || key.getKeyType() == KeyType.ArrowDown) {
+            map.processKey(key);// Processa movimento lateral
+        }
+    }
+
+
+    private void startJumpThread() {
+        Mourato mourato = map.getMourato();
+        mourato.setJump_(true); // Inicia o salto
+
+        jumpThread = new Thread(() -> {
+            try {
+                while (mourato.isJump_()) {
+                    map.updateJump(mourato); // Apenas atualiza o salto
+                    draw(); // Atualiza a tela
+                    Thread.sleep(500); // Controla a velocidade do salto
+                }
+            } catch (InterruptedException | IOException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+
+        jumpThread.start();
+    }
+
+
+
+
+
 
     private void draw() throws IOException {
         screen.clear();
         map.draw(screen.newTextGraphics());
+        map.updateJump(map.getMourato());
         screen.refresh();
     }
 }
@@ -62,20 +121,22 @@ class Game{
 class Map {
     int height_;
     int width_;
-    private Mourato mourato=new Mourato(new Position(0,8));
+    private Mourato mourato = new Mourato(new Position(0, 8), false, 1, 4, 0);
     private List<Coin> coins;
+    private CopyOnWriteArrayList<Koopa> koopas;
+
+
     Map(int width, int height) {
         width_ = width;
         height_ = height;
-        coins=createCoins();
-    Map(int width, int height) {
-        width_ = width;
-        height_ = height;
+        coins = createCoins();
+        koopas =new CopyOnWriteArrayList<>(createKoopas());
     }
 
     public int getHeight_() {
         return height_;
     }
+  
     public int getWidth_() {
         return width_;
     }
@@ -115,17 +176,24 @@ class Map {
             "|||||||||###".toCharArray()
 
     };
+
     private List<Coin> createCoins() {
         List<Coin> coins = new ArrayList<>();
-        coins.add(new Coin(new Position(3,8)));
-        coins.add(new Coin(new Position(3,5)));
-        coins.add(new Coin(new Position(4,5)));
-        coins.add(new Coin(new Position(5,5)));
-        coins.add(new Coin(new Position(6,5)));
-        coins.add(new Coin(new Position(8,8)));
-        coins.add(new Coin(new Position(14,8)));
-        coins.add(new Coin(new Position(27,8)));
+        coins.add(new Coin(new Position(3, 8)));
+        coins.add(new Coin(new Position(3, 5)));
+        coins.add(new Coin(new Position(4, 5)));
+        coins.add(new Coin(new Position(5, 5)));
+        coins.add(new Coin(new Position(6, 5)));
+        coins.add(new Coin(new Position(8, 8)));
+        coins.add(new Coin(new Position(14, 8)));
+        coins.add(new Coin(new Position(27, 8)));
         return coins;
+    }
+
+    private List<Koopa> createKoopas() {
+        List<Koopa> koopas = new ArrayList<>();
+        koopas.add(new Koopa(new Position(19, 8), 1));
+        return koopas;
     }
 
 
@@ -154,46 +222,137 @@ class Map {
                     default: // Empty space
                         break;
                 }
+              
             }
         }
         mourato.draw(graphics);
+        synchronized (koopas) {
+            for (Koopa koopa : koopas) {
+                koopa.draw(graphics);
+            }
+        }
         for (Coin coin : coins) {
             coin.draw(graphics);
         }
     }
 
-    public void processKey(KeyStroke key)throws IOException {
+    public void processKey(KeyStroke key) throws IOException {
         if (key.getKeyType() == KeyType.ArrowUp) {
-            moveMourato(mourato.moveUp());
+            if (!mourato.isJump_()) {
+                mourato.setJump_(true);
+            }
         }
         if (key.getKeyType() == KeyType.ArrowDown) {
             moveMourato(mourato.moveDown());
         }
         if (key.getKeyType() == KeyType.ArrowLeft) {
             moveMourato(mourato.moveLeft());
+            checkAndFall(mourato);
         }
         if (key.getKeyType() == KeyType.ArrowRight) {
             moveMourato(mourato.moveRight());
+            checkAndFall(mourato);
         }
     }
 
-    public void retrieveCoins(Position position){
+
+    public void retrieveCoins(Position position) {
         coins.removeIf(coin -> coin.getPosition().equals(position));
     }
 
-    private boolean canMouratoMove(Position position){
-        boolean isWindowLimit =position.getX() > 0 && position.getY() > 0 && position.getX() < width_-1 && position.getY() < height_-1;
-        boolean isNotObject=true;
-        if(map[position.getX()][position.getY()]=='#'){
-            isNotObject=false;
+    private boolean canMouratoMove(Position position) {
+        // Verificar se a posição está dentro dos limites
+        if (position.getX() < 0 || position.getY() < 0 || position.getX() >= width_ || position.getY() >= height_) {
+            return false; // Fora dos limites
         }
-        return isWindowLimit && isNotObject;
+
+        // Verificar se a posição não colide com objetos
+        boolean isNotObject = map[position.getX()][position.getY()] != '#';
+        return isNotObject;
     }
-    private void moveMourato(Position position){
-        if (canMouratoMove(position))
+
+
+    private void moveMourato(Position position) {
+        if (canMouratoMove(position)) {
             mourato.getPosition().setPosition(position);
             retrieveCoins(position);
+        }
     }
+
+    private boolean canKoopaMove(Position position) {
+        if (map[position.getX()][position.getY()] == '#') {
+            return false;
+        }
+        return true;
+    }
+
+    public void KoopaMove(Koopa koopa) {
+        if(koopa == null) {return;}
+        synchronized (koopas) {
+            int nextX = koopa.getPosition().getX() + koopa.getVelocity_();
+            int nextY = koopa.getPosition().getY();
+            Position nextPosition = new Position(nextX, nextY);
+            if (canKoopaMove(nextPosition)) {
+                koopa.move();
+            } else {
+                koopa.setVelocity_(-koopa.getVelocity_());
+                koopa.move();
+            }
+        }
+    }
+
+    public Koopa getKoopa() {
+        if (koopas != null && !koopas.isEmpty()) {
+            return koopas.get(0); // Retorna o primeiro elemento da lista
+        }
+        return null; // Retorna null caso não haja Koopas
+    }
+
+
+    public Mourato getMourato() {
+        return mourato;
+    }
+
+    public void updateJump(Mourato mourato) {
+        if (!mourato.isJump_()) return;
+
+        int velocity = mourato.getJumpVelocity_();
+        int jumpHeight = mourato.getJumpHeight_();
+        int jumpProgress = mourato.getCountJump_();
+
+        // Atualiza a posição para subir ou descer
+        int newY = mourato.getPosition().getY() + (jumpProgress < jumpHeight ? -velocity : velocity);
+        Position newPosition = new Position(mourato.getPosition().getX(), newY);
+
+        if (canMouratoMove(newPosition)) {
+            mourato.getPosition().setPosition(newPosition);
+            retrieveCoins(newPosition); // Coleta moedas
+            mourato.setCountJump_(jumpProgress + 1);
+            if (jumpProgress >= jumpHeight) {
+                destroyKoopaIfHit(mourato);
+
+
+
+
+    private void destroyKoopaIfHit(Mourato mourato) {
+        Position mouratoPosition = mourato.getPosition();
+
+        synchronized (koopas) {
+            for (Koopa koopa : koopas) {
+                Position koopaPosition = koopa.getPosition();
+
+                // Verifica se Mourato está na mesma posição ou imediatamente acima do Koopa
+                if (mouratoPosition.getX() == koopaPosition.getX() &&
+                        mouratoPosition.getY() == koopaPosition.getY() - 1) {
+
+                    koopas.remove(koopa); // Remove o Koopa atingido
+                    break; // Sai após destruir o Koopa
+                }
+            }
+        }
+    }
+
+
 }
 
 class Position{
@@ -247,13 +406,39 @@ class Coin extends Element {
     }
 }
 class Mourato extends Element{
-
-    Mourato(Position position) {
+    private boolean jump_;
+    private int jumpVelocity_;
+    private int jumpHeight_;
+    private int countJump_;
+    Mourato(Position position, boolean jump, int jumpVelocity, int jumpHeight,int countJump) {
         super(position);
+        jump_ = jump;
+        jumpVelocity_ = jumpVelocity;
+        jumpHeight_ = jumpHeight;
+        countJump_ = countJump;
     }
-    public Position moveUp() {
-        return new Position(position_.getX(), position_.getY()-1);
+
+    public int getJumpVelocity_() {
+        return jumpVelocity_;
     }
+
+    public int getJumpHeight_() {
+        return jumpHeight_;
+    }
+
+    public int getCountJump_() {
+        return countJump_;
+    }
+
+    public void setCountJump_(int countJump) {
+        countJump_ = countJump;
+    }
+
+    public void setJumpVelocity_(int jumpVelocity) {
+        jumpVelocity_ = jumpVelocity;
+    }
+
+
     public Position moveDown(){
         return new Position(position_.getX(), position_.getY()+1);
     }
@@ -264,6 +449,15 @@ class Mourato extends Element{
         return new Position(position_.getX()+1, position_.getY());
     }
 
+
+    public boolean isJump_() {
+        return jump_;
+    }
+
+    public void setJump_(boolean jump) {
+        jump_ = jump;
+    }
+
     @Override
     public void draw(TextGraphics graphics) {
         graphics.setForegroundColor(TextColor.Factory.fromString("#FF0000"));
@@ -271,4 +465,34 @@ class Mourato extends Element{
         graphics.putString(new TerminalPosition(position_.getX(),
                 position_.getY()), "M");
     }
+
+
 }
+
+class Koopa extends Element {
+    private int velocity_;
+    public Koopa(Position position,int velocity) {
+        super(position);
+        velocity_=velocity;
+    }
+
+    @Override
+    public void draw(TextGraphics graphics) {
+        graphics.setForegroundColor(TextColor.Factory.fromString("#013220"));
+        graphics.enableModifiers(SGR.BOLD);
+        graphics.putString(new TerminalPosition(position_.getX(), position_.getY()), "K");
+    }
+    public void move() {
+        int newX = getPosition().getX() + velocity_;
+        position_=new Position(newX, getPosition().getY());
+    }
+
+    public int getVelocity_() {
+        return velocity_;
+    }
+
+    public void setVelocity_(int velocity) {
+        velocity_ = velocity;
+    }
+}
+
