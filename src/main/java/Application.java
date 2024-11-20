@@ -84,8 +84,6 @@ class Game{
             map.processKey(key);// Processa movimento lateral
         }
     }
-
-
     private void startJumpThread() {
         Mourato mourato = map.getMourato();
         mourato.setJump_(true); // Inicia o salto
@@ -130,13 +128,13 @@ class Map {
         width_ = width;
         height_ = height;
         coins = createCoins();
-        koopas =new CopyOnWriteArrayList<>(createKoopas());
+        koopas = new CopyOnWriteArrayList<>(createKoopas());
     }
 
     public int getHeight_() {
         return height_;
     }
-  
+
     public int getWidth_() {
         return width_;
     }
@@ -222,7 +220,6 @@ class Map {
                     default: // Empty space
                         break;
                 }
-              
             }
         }
         mourato.draw(graphics);
@@ -235,7 +232,6 @@ class Map {
             coin.draw(graphics);
         }
     }
-
     public void processKey(KeyStroke key) throws IOException {
         if (key.getKeyType() == KeyType.ArrowUp) {
             if (!mourato.isJump_()) {
@@ -313,46 +309,69 @@ class Map {
         return mourato;
     }
 
+
     public void updateJump(Mourato mourato) {
-        if (!mourato.isJump_()) return;
+            if (!mourato.isJump_()) return;
 
-        int velocity = mourato.getJumpVelocity_();
-        int jumpHeight = mourato.getJumpHeight_();
-        int jumpProgress = mourato.getCountJump_();
+            int velocity = mourato.getJumpVelocity_();
+            int jumpHeight = mourato.getJumpHeight_();
+            int jumpProgress = mourato.getCountJump_();
 
-        // Atualiza a posição para subir ou descer
-        int newY = mourato.getPosition().getY() + (jumpProgress < jumpHeight ? -velocity : velocity);
-        Position newPosition = new Position(mourato.getPosition().getX(), newY);
+            // Atualiza a posição para subir ou descer
+            int newY = mourato.getPosition().getY() + (jumpProgress < jumpHeight ? -velocity : velocity);
+            Position newPosition = new Position(mourato.getPosition().getX(), newY);
 
-        if (canMouratoMove(newPosition)) {
-            mourato.getPosition().setPosition(newPosition);
-            retrieveCoins(newPosition); // Coleta moedas
-            mourato.setCountJump_(jumpProgress + 1);
-            if (jumpProgress >= jumpHeight) {
+            if (canMouratoMove(newPosition)) {
+                mourato.getPosition().setPosition(newPosition);
+                retrieveCoins(newPosition); // Coleta moedas
+                mourato.setCountJump_(jumpProgress + 1);
+                if (jumpProgress >= jumpHeight) {
+                    destroyKoopaIfHit(mourato); // mata o koopa em caso de velocidade <0
+                }
+            } else {
+                mourato.setJump_(false); // Termina o salto em caso de colisão
+            }
+
+            // Verifica se atingiu o chão
+            if (!canMouratoMove(new Position(mourato.getPosition().getX(), mourato.getPosition().getY() + 1))) {
+                mourato.setJump_(false); // Termina o salto ao atingir o chão
+                mourato.setCountJump_(0); // Reseta o progresso
+            }
+        }
+
+        private void checkAndFall(Mourato mourato) {
+            if (mourato.isJump_()) {
+                return; // Se está no meio do salto, não aplica a lógica de queda
+            }
+
+            Position currentPosition = mourato.getPosition();
+            int x = currentPosition.getX();
+            int y = currentPosition.getY();
+
+            while (y + 1 < height_ && canMouratoMove(new Position(x, y + 1))) {
+                mourato.getPosition().setPosition(new Position(x, y + 1));
+                y++;
                 destroyKoopaIfHit(mourato);
+            }
+        }
 
+        private void destroyKoopaIfHit (Mourato mourato){
+            Position mouratoPosition = mourato.getPosition();
 
+            synchronized (koopas) {
+                for (Koopa koopa : koopas) {
+                    Position koopaPosition = koopa.getPosition();
 
+                    // Verifica se Mourato está na mesma posição ou imediatamente acima do Koopa
+                    if (mouratoPosition.getX() == koopaPosition.getX() &&
+                            mouratoPosition.getY() == koopaPosition.getY() - 1) {
 
-    private void destroyKoopaIfHit(Mourato mourato) {
-        Position mouratoPosition = mourato.getPosition();
-
-        synchronized (koopas) {
-            for (Koopa koopa : koopas) {
-                Position koopaPosition = koopa.getPosition();
-
-                // Verifica se Mourato está na mesma posição ou imediatamente acima do Koopa
-                if (mouratoPosition.getX() == koopaPosition.getX() &&
-                        mouratoPosition.getY() == koopaPosition.getY() - 1) {
-
-                    koopas.remove(koopa); // Remove o Koopa atingido
-                    break; // Sai após destruir o Koopa
+                        koopas.remove(koopa); // Remove o Koopa atingido
+                        break; // Sai após destruir o Koopa
+                    }
                 }
             }
         }
-    }
-
-
 }
 
 class Position{
@@ -377,15 +396,16 @@ class Position{
         return x_ == p.getX() && y_ == p.getY();
     }
     public void setPosition(Position position) {
-        x_=position.getX();
-        y_=position.getY();
+                    x_=position.getX();
+                    y_=position.getY();
     }
 }
 
 abstract class Element{
     protected Position position_;
+
     public Element(Position position) {
-        position_ = position;
+                    position_ = position;
     }
     Position getPosition() {
         return position_;
@@ -397,7 +417,6 @@ class Coin extends Element {
     public Coin(Position position) {
         super(position);
     }
-
     @Override
     public void draw(TextGraphics graphics) {
         graphics.setForegroundColor(TextColor.Factory.fromString("#FFD700"));
@@ -405,6 +424,7 @@ class Coin extends Element {
         graphics.putString(new TerminalPosition(position_.getX(), position_.getY()), "C");
     }
 }
+
 class Mourato extends Element{
     private boolean jump_;
     private int jumpVelocity_;
@@ -425,19 +445,15 @@ class Mourato extends Element{
     public int getJumpHeight_() {
         return jumpHeight_;
     }
-
     public int getCountJump_() {
         return countJump_;
     }
-
     public void setCountJump_(int countJump) {
         countJump_ = countJump;
     }
-
     public void setJumpVelocity_(int jumpVelocity) {
         jumpVelocity_ = jumpVelocity;
     }
-
 
     public Position moveDown(){
         return new Position(position_.getX(), position_.getY()+1);
@@ -448,8 +464,6 @@ class Mourato extends Element{
     public Position moveRight(){
         return new Position(position_.getX()+1, position_.getY());
     }
-
-
     public boolean isJump_() {
         return jump_;
     }
@@ -465,8 +479,6 @@ class Mourato extends Element{
         graphics.putString(new TerminalPosition(position_.getX(),
                 position_.getY()), "M");
     }
-
-
 }
 
 class Koopa extends Element {
@@ -490,9 +502,7 @@ class Koopa extends Element {
     public int getVelocity_() {
         return velocity_;
     }
-
     public void setVelocity_(int velocity) {
         velocity_ = velocity;
     }
 }
-
