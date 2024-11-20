@@ -136,7 +136,7 @@ class Map {
     public int getHeight_() {
         return height_;
     }
-
+  
     public int getWidth_() {
         return width_;
     }
@@ -196,6 +196,7 @@ class Map {
         return koopas;
     }
 
+
     public void draw(TextGraphics graphics) throws IOException {
         graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width_, height_), ' ');
@@ -221,6 +222,7 @@ class Map {
                     default: // Empty space
                         break;
                 }
+              
             }
         }
         mourato.draw(graphics);
@@ -328,33 +330,8 @@ class Map {
             mourato.setCountJump_(jumpProgress + 1);
             if (jumpProgress >= jumpHeight) {
                 destroyKoopaIfHit(mourato);
-            }
-        } else {
-            mourato.setJump_(false); // Termina o salto em caso de colisão
-        }
 
-        // Verifica se atingiu o chão
-        if (!canMouratoMove(new Position(mourato.getPosition().getX(), mourato.getPosition().getY() + 1))) {
-            mourato.setJump_(false); // Termina o salto ao atingir o chão
-            mourato.setCountJump_(0); // Reseta o progresso
-        }
-    }
 
-    private void checkAndFall(Mourato mourato) {
-        if (mourato.isJump_()) {
-            return; // Se está no meio do salto, não aplica a lógica de queda
-        }
-
-        Position currentPosition = mourato.getPosition();
-        int x = currentPosition.getX();
-        int y = currentPosition.getY();
-
-        while (y + 1 < height_ && canMouratoMove(new Position(x, y + 1))) {
-            mourato.getPosition().setPosition(new Position(x, y + 1));
-            y++;
-            destroyKoopaIfHit(mourato);
-        }
-    }
 
 
     private void destroyKoopaIfHit(Mourato mourato) {
@@ -461,6 +438,7 @@ class Mourato extends Element{
         jumpVelocity_ = jumpVelocity;
     }
 
+
     public Position moveDown(){
         return new Position(position_.getX(), position_.getY()+1);
     }
@@ -470,6 +448,7 @@ class Mourato extends Element{
     public Position moveRight(){
         return new Position(position_.getX()+1, position_.getY());
     }
+
 
     public boolean isJump_() {
         return jump_;
@@ -516,3 +495,4 @@ class Koopa extends Element {
         velocity_ = velocity;
     }
 }
+
