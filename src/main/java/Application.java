@@ -84,8 +84,6 @@ class Game{
             map.processKey(key);// Processa movimento lateral
         }
     }
-
-
     private void startJumpThread() {
         Mourato mourato = map.getMourato();
         mourato.setJump_(true); // Inicia o salto
@@ -222,7 +220,6 @@ class Map {
                     default: // Empty space
                         break;
                 }
-
             }
         }
         mourato.draw(graphics);
@@ -457,6 +454,7 @@ class Mourato extends Element{
     public void setJumpVelocity_(int jumpVelocity) {
         jumpVelocity_ = jumpVelocity;
     }
+
     public Position moveDown(){
         return new Position(position_.getX(), position_.getY()+1);
     }
@@ -466,7 +464,6 @@ class Mourato extends Element{
     public Position moveRight(){
         return new Position(position_.getX()+1, position_.getY());
     }
-
     public boolean isJump_() {
         return jump_;
     }
@@ -498,7 +495,6 @@ class Koopa extends Element {
         graphics.putString(new TerminalPosition(position_.getX(), position_.getY()), "K");
     }
     public void move() {
-
         int newX = getPosition().getX() + velocity_;
         position_=new Position(newX, getPosition().getY());
     }
