@@ -55,11 +55,7 @@ class TestNextAction {
 
         // nao houveram inputs
         when(mockScreen.pollInput()).thenReturn(null);
-
-        // Create the object with the mocked screen
         gui = new LanternaGui(mockScreen);
-
-        // Assert that the method returns null
         assertNull(gui.getNextAction());
     }
 
