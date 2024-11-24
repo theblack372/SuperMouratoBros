@@ -14,6 +14,10 @@ O sistema é desenvolvido em Java e organiza-se seguindo princípios de design d
 como MVC (Model-View-Controller). A interface gráfica é baseada em caracteres e construída
 para funcionar de forma fluida e responsiva em terminais.
 
+
+## UML do projeto
+![superMourato drawio (3)](https://github.com/user-attachments/assets/5fa1019c-7396-4247-a882-eef05b0e0a63)
+
 ## Featues Principais:
 ### 1. Mapa interativo:
 - Um mapa 2D representado por caracteres no terminal.
