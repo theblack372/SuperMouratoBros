@@ -18,7 +18,7 @@ dependencies {
 }
 
 application{
-    mainClass.set("Application")
+    mainClass.set("com/t05g04/game/Application")
 }
 
 test {
