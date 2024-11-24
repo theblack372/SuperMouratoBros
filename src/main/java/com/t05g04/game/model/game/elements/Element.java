@@ -1,5 +1,6 @@
 package com.t05g04.game.model.game.elements;
 import com.googlecode.lanterna.graphics.TextGraphics;
+import com.t05g04.game.model.game.Position;
 
 
 public abstract class Element{

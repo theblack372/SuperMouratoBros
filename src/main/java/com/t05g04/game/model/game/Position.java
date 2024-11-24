@@ -1,4 +1,4 @@
-package com.t05g04.game.model.game.elements;
+package com.t05g04.game.model.game;
 
 public class Position {
     private int x_;

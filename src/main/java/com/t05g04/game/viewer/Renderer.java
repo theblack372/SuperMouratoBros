@@ -9,7 +9,7 @@ import com.t05g04.game.model.game.arena.Map;
 import com.t05g04.game.model.game.elements.Coin;
 import com.t05g04.game.model.game.elements.Koopa;
 import com.t05g04.game.model.game.elements.Mourato;
-import com.t05g04.game.model.game.elements.Position;
+import com.t05g04.game.model.game.Position;
 
 public class Renderer {
     char[][] map_ = {

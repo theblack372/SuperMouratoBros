@@ -1,5 +1,4 @@
 package com.t05g04.game.gui;
-import com.t05g04.game.model.game.elements.Position;
 
 import java.io.IOException;
 

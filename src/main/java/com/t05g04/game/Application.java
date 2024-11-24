@@ -5,8 +5,14 @@ import java.io.IOException;
 
 
 public class Application {
+    static Game game;
+
     public static void main(String[] args) throws IOException {
-        Game game= new Game();
+        Application.start();
+    }
+
+    public static void start() throws IOException {
+        game = new Game();
         game.run();
     }
 }

@@ -3,7 +3,7 @@ import com.t05g04.game.gui.GUI;
 import com.t05g04.game.model.game.elements.Coin;
 import com.t05g04.game.model.game.elements.Koopa;
 import com.t05g04.game.model.game.elements.Mourato;
-import com.t05g04.game.model.game.elements.Position;
+import com.t05g04.game.model.game.Position;
 import com.t05g04.game.viewer.Renderer;
 
 import java.io.IOException;
