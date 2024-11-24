@@ -16,7 +16,7 @@ para funcionar de forma fluida e responsiva em terminais.
 
 
 ## UML do projeto
-![superMourato drawio (3)](https://github.com/user-attachments/assets/5fa1019c-7396-4247-a882-eef05b0e0a63)
+![superMourato drawio (4)](https://github.com/user-attachments/assets/d4cb1f88-5d93-4299-8b2c-7becb29ca40e)
 
 ## Featues Principais:
 ### 1. Mapa interativo:
