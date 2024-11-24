@@ -1,5 +1,4 @@
 package com.t05g04.game.gui;
-
 import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
@@ -10,7 +9,7 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
-import com.t05g04.game.model.game.elements.Position;
+
 
 import java.io.IOException;
 
@@ -80,22 +79,6 @@ public class LanternaGui implements GUI{
         }
         return null;
     }
-
-    @Override
-    public void drawMourato(Position position) {
-        drawCharacter(position.getX(), position.getY(), 'M', "#FF0000");
-    }
-
-    @Override
-    public void drawCoin(Position position) {
-        drawCharacter(position.getX(), position.getY(), 'C', "#FFD700");
-    }
-
-    @Override
-    public void drawKoopa(Position position) {
-        drawCharacter(position.getX(), position.getY(), 'K', "#013220");
-    }
-
     @Override
     public void clear() {
         screen.clear();

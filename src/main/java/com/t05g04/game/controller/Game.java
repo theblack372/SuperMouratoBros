@@ -1,14 +1,7 @@
 package com.t05g04.game.controller;
-import com.googlecode.lanterna.TextColor;
-import com.googlecode.lanterna.graphics.TextGraphics;
-import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.input.KeyType;
 import com.t05g04.game.gui.LanternaGui;
 import com.t05g04.game.model.game.arena.Map;
 import com.t05g04.game.gui.GUI;
-import com.t05g04.game.model.game.elements.Mourato;
-
-import javax.swing.*;
 import java.io.IOException;
 
 public class Game {

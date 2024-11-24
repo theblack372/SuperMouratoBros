@@ -1,17 +1,9 @@
 package com.t05g04.game.model.game.arena;
-import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.input.KeyType;
 import com.t05g04.game.gui.GUI;
 import com.t05g04.game.model.game.elements.Coin;
 import com.t05g04.game.model.game.elements.Koopa;
 import com.t05g04.game.model.game.elements.Mourato;
 import com.t05g04.game.model.game.elements.Position;
-
-import com.googlecode.lanterna.SGR;
-import com.googlecode.lanterna.TerminalPosition;
-import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.TextColor;
-import com.googlecode.lanterna.graphics.TextGraphics;
 import com.t05g04.game.viewer.Renderer;
 
 import java.io.IOException;
