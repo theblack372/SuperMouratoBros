@@ -7,8 +7,16 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 import com.t05g04.game.model.game.Position;
 
 public class Flower extends Element {
-    public Flower(Position position) {
+    private boolean appearing_;
+    public Flower(Position position,boolean appearing) {
         super(position);
+        appearing_ = appearing;
+    }
+    public boolean isAppearing() {
+        return appearing_;
+    }
+    public void setAppearing(boolean appearing) {
+        appearing_ = appearing;
     }
     @Override
     public void draw(TextGraphics graphics) {

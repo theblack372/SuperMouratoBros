@@ -68,7 +68,7 @@ public class Map {
     }
     private List<Flower> createFlowers() {
         List<Flower> flowers = new ArrayList<>();
-        flowers.add(new Flower(new Position(28,13)));
+        flowers.add(new Flower(new Position(28,13),true));
         return flowers;
     }
 
@@ -143,6 +143,12 @@ public class Map {
             return koopas.get(0); // Retorna o primeiro elemento da lista
         }
         return null; // Retorna null caso não haja Koopas
+    }
+    public Flower getFlower() {
+        if (flowers != null && !flowers.isEmpty()) {
+            return flowers.get(0);
+        }
+        return null;
     }
 
 
