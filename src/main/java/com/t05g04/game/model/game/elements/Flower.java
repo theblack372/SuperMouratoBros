@@ -20,7 +20,7 @@ public class Flower extends Element {
     }
     @Override
     public void draw(TextGraphics graphics) {
-        graphics.setForegroundColor(TextColor.Factory.fromString("#868B49"));
+        graphics.setForegroundColor(TextColor.ANSI.GREEN);
         graphics.enableModifiers(SGR.BOLD);
         graphics.putString(new TerminalPosition(position_.getX(), position_.getY()), "F");
     }

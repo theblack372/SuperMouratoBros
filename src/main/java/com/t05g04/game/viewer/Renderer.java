@@ -48,7 +48,7 @@ public class Renderer {
             "               ###".toCharArray(),
             "               ###".toCharArray(),
             "               ###".toCharArray(),
-            "               ###".toCharArray(),
+            "              ####".toCharArray(),
             "               ###".toCharArray(),
             "               ###".toCharArray(),
             "|||||||||||||||###".toCharArray()

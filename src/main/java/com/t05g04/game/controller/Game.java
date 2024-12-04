@@ -61,7 +61,7 @@ public class Game {
                 Thread.sleep(3000);
                 gui.close();
             }
-            gui.displayMessage(gui.getScreen(), messageCoin, 2,2);
+            gui.displayMessage(gui.getScreen(), messageCoin, 1,1);
             try {
                 if (sleepTime>0){Thread.sleep(sleepTime);} // Ajusta para que o loop tenha uma duração constante
             } catch (InterruptedException e) {
