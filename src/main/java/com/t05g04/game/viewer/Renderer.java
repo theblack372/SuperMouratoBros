@@ -89,7 +89,9 @@ public class Renderer {
            coin.draw(graphics);
         }
         for(Flower flower: map.getFlowers()){
-            flower.draw(graphics);
+            if(map.getFlower().isAppearing()) {
+                flower.draw(graphics);
+            }
         }
     }
 
