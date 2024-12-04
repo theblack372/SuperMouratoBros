@@ -7,6 +7,7 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.t05g04.game.model.game.arena.Map;
 import com.t05g04.game.model.game.elements.Coin;
+import com.t05g04.game.model.game.elements.Flower;
 import com.t05g04.game.model.game.elements.Koopa;
 import com.t05g04.game.model.game.elements.Mourato;
 import com.t05g04.game.model.game.Position;
@@ -91,6 +92,11 @@ public class Renderer {
         }
         for (Coin coin : map.getCoins()) {
            coin.draw(graphics);
+        }
+        for(Flower flower: map.getFlowers()){
+            if(map.getFlower().isAppearing()) {
+                flower.draw(graphics);
+            }
         }
     }
 
