@@ -38,11 +38,11 @@ public class Game {
                 endTerminal = true;
                 gui.close();
             }
-            draw();// redesenha a tela
             map.processKey(action);
             long elapsedTime = System.currentTimeMillis() - startTime;
             long sleepTime = frameTime - elapsedTime;
             int currentCoin = coinCounter - map.getCoins().size();
+            draw();// redesenha a tela
             String messageCoin = String.format("coins: %d", currentCoin);
             if (map.flagReach()){
                 String endMessage = String.format("you won with %d coins!",currentCoin);
