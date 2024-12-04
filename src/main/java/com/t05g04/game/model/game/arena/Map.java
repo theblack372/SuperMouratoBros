@@ -1,6 +1,7 @@
 package com.t05g04.game.model.game.arena;
 import com.t05g04.game.gui.GUI;
 import com.t05g04.game.model.game.elements.Coin;
+import com.t05g04.game.model.game.elements.Flower;
 import com.t05g04.game.model.game.elements.Koopa;
 import com.t05g04.game.model.game.elements.Mourato;
 import com.t05g04.game.model.game.Position;
@@ -17,6 +18,7 @@ public class Map {
     private Mourato mourato;
     private List<Coin> coins;
     private CopyOnWriteArrayList<Koopa> koopas;
+    private CopyOnWriteArrayList<Flower> flowers;
     Renderer renderer = new Renderer();
 
     public Map(int width, int height) {
@@ -24,6 +26,7 @@ public class Map {
         height_ = height;
         coins= createCoins();
         koopas = new CopyOnWriteArrayList<>(createKoopas());
+        flowers = new CopyOnWriteArrayList<>(createFlowers());
         mourato = new Mourato(new Position(1, 14), false, 1, 4, 0);
     }
 
@@ -40,6 +43,7 @@ public class Map {
     public CopyOnWriteArrayList<Koopa> getKoopas() {
         return koopas;
     }
+    public CopyOnWriteArrayList<Flower> getFlowers() {return flowers;}
     public Renderer getRenderer() {
         return renderer;
     }
@@ -53,7 +57,7 @@ public class Map {
         coins.add(new Coin(new Position(6, 11)));
         coins.add(new Coin(new Position(8, 14)));
         coins.add(new Coin(new Position(14, 14)));
-        coins.add(new Coin(new Position(27, 14)));
+        coins.add(new Coin(new Position(26, 14)));
         return coins;
     }
 
@@ -61,6 +65,11 @@ public class Map {
         List<Koopa> koopas = new ArrayList<>();
         koopas.add(new Koopa(new Position(19, 14), 1));
         return koopas;
+    }
+    private List<Flower> createFlowers() {
+        List<Flower> flowers = new ArrayList<>();
+        flowers.add(new Flower(new Position(28,13)));
+        return flowers;
     }
 
     public void processKey(GUI.ACTION action) throws IOException {
