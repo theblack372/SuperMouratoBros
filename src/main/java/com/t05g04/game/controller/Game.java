@@ -21,10 +21,10 @@ public class Game {
         gui = new LanternaGui(map.getWidth_(), map.getHeight_());
     }
 
-    public void run() throws IOException {
-        int fps = 15;
+    public void run() throws IOException, InterruptedException {
+        int fps = 18;
         int frameTime = 1000 / fps;
-
+        int coinCounter= map.getCoins().size();
         while (!endTerminal) {
             long startTime = System.currentTimeMillis();
             // Verifica se já passou 1 segundo (1000 ms)
@@ -33,17 +33,24 @@ public class Game {
                 lastKoopaMoveTime = System.currentTimeMillis(); // Atualiza o tempo do último movimento
             }
             GUI.ACTION action = gui.getNextAction();
-            if (action== GUI.ACTION.QUIT || map.flagReach() || (map.getMourato().getPosition().getY()>= map.getHeight_()-1)
+            if (action== GUI.ACTION.QUIT || (map.getMourato().getPosition().getY()>= map.getHeight_()-1)
                     ||(map.getKoopa()!=null &&map.getMourato().getPosition().equals(map.getKoopa().getPosition()))){
                 endTerminal = true;
                 gui.close();
             }
             draw();// redesenha a tela
-
             map.processKey(action);
-            gui.displayMessage(gui.getScreen(), test, 14,14 );
             long elapsedTime = System.currentTimeMillis() - startTime;
             long sleepTime = frameTime - elapsedTime;
+            int currentCoin = coinCounter - map.getCoins().size();
+            String messageCoin = String.format("coins: %d", currentCoin);
+            if (map.flagReach()){
+                String endMessage = String.format("you won with %d coins!",currentCoin);
+                gui.displayMessage(gui.getScreen(), endMessage, 6,7);
+                Thread.sleep(3000);
+                gui.close();
+            }
+            gui.displayMessage(gui.getScreen(), messageCoin, 2,2);
             try {
                 if (sleepTime>0){Thread.sleep(sleepTime);} // Ajusta para que o loop tenha uma duração constante
             } catch (InterruptedException e) {
@@ -54,7 +61,6 @@ public class Game {
 
 
     private void draw() throws IOException {
-        gui.clear();
         map.getRenderer().draw(gui.getScreen().newTextGraphics(),map);
         map.updateJump(map.getMourato());
         gui.refresh();

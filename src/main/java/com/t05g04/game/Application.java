@@ -9,11 +9,11 @@ import java.net.URISyntaxException;
 public class Application {
     static Game game;
 
-    public static void main(String[] args) throws IOException, URISyntaxException, FontFormatException {
+    public static void main(String[] args) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         Application.start();
     }
 
-    public static void start() throws IOException, URISyntaxException, FontFormatException {
+    public static void start() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         game = new Game();
         game.run();
     }

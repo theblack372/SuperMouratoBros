@@ -47,7 +47,6 @@ public class Map {
     private List<Coin> createCoins() {
         List<Coin> coins = new ArrayList<>();
         coins.add(new Coin(new Position(3, 11)));
-        coins.add(new Coin(new Position(3, 11)));
         coins.add(new Coin(new Position(4, 11)));
         coins.add(new Coin(new Position(5, 11)));
         coins.add(new Coin(new Position(6, 11)));
@@ -84,7 +83,8 @@ public class Map {
 
 
     public void retrieveCoins(Position position) {
-        coins.removeIf(coin -> coin.getPosition().equals(position));
+        coins.removeIf(coin->coin.getPosition().equals(position));
+
     }
 
     private boolean canMouratoMove(Position position) {
