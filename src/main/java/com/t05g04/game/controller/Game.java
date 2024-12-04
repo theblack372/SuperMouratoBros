@@ -9,7 +9,7 @@ public class Game {
     boolean endTerminal = false;
     LanternaGui gui;
     private long lastKoopaMoveTime = System.currentTimeMillis(); // Controla o tempo de movimento do Koopa
-    private final Map map = new Map(32, 12);
+    private final Map map = new Map(32, 18);
 
     public Game() throws IOException {
         gui = new LanternaGui(map.getWidth_(), map.getHeight_());

@@ -14,7 +14,7 @@ import com.googlecode.lanterna.terminal.Terminal;
 import java.io.IOException;
 
 public class LanternaGui implements GUI{
-    private Screen screen;
+    private final Screen screen;
 
     public LanternaGui(Screen screen) {
         this.screen = screen;
@@ -48,13 +48,6 @@ public class LanternaGui implements GUI{
         terminal = terminalFactory.createTerminal();
 
         return terminal;
-    }
-
-    private void drawCharacter(int x, int y, char character, String color) {
-        TextGraphics graphics = screen.newTextGraphics();
-        graphics.setForegroundColor(TextColor.Factory.fromString(color));
-        graphics.enableModifiers(SGR.BOLD);
-        graphics.putString(x,y,"" + character);
     }
 
     @Override

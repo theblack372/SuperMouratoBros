@@ -18,12 +18,13 @@ public class Map {
     private List<Coin> coins;
     private CopyOnWriteArrayList<Koopa> koopas;
     Renderer renderer = new Renderer();
+
     public Map(int width, int height) {
         width_ = width;
         height_ = height;
         coins= createCoins();
         koopas = new CopyOnWriteArrayList<>(createKoopas());
-        mourato = new Mourato(new Position(0, 8), false, 1, 4, 0);
+        mourato = new Mourato(new Position(1, 14), false, 1, 4, 0);
     }
 
     public int getHeight_() {
@@ -45,20 +46,20 @@ public class Map {
 
     private List<Coin> createCoins() {
         List<Coin> coins = new ArrayList<>();
-        coins.add(new Coin(new Position(3, 8)));
-        coins.add(new Coin(new Position(3, 5)));
-        coins.add(new Coin(new Position(4, 5)));
-        coins.add(new Coin(new Position(5, 5)));
-        coins.add(new Coin(new Position(6, 5)));
-        coins.add(new Coin(new Position(8, 8)));
-        coins.add(new Coin(new Position(14, 8)));
-        coins.add(new Coin(new Position(27, 8)));
+        coins.add(new Coin(new Position(3, 11)));
+        coins.add(new Coin(new Position(3, 11)));
+        coins.add(new Coin(new Position(4, 11)));
+        coins.add(new Coin(new Position(5, 11)));
+        coins.add(new Coin(new Position(6, 11)));
+        coins.add(new Coin(new Position(8, 14)));
+        coins.add(new Coin(new Position(14, 14)));
+        coins.add(new Coin(new Position(27, 14)));
         return coins;
     }
 
     private List<Koopa> createKoopas() {
         List<Koopa> koopas = new ArrayList<>();
-        koopas.add(new Koopa(new Position(19, 8), 1));
+        koopas.add(new Koopa(new Position(19, 14), 1));
         return koopas;
     }
 
@@ -192,6 +193,7 @@ public class Map {
         while (y + 1 < height_ && canMouratoMove(new Position(x, y + 1))) {
             mourato.getPosition().setPosition(new Position(x, y + 1));
             y++;
+            retrieveCoins(mourato.getPosition());
             destroyKoopaIfHit(mourato);
         }
     }
