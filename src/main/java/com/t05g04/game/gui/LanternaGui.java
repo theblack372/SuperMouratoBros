@@ -9,9 +9,14 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
+import com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
 
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 public class LanternaGui implements GUI{
     private final Screen screen;
@@ -24,7 +29,7 @@ public class LanternaGui implements GUI{
         return screen;
     }
 
-    public LanternaGui(int width, int height) throws IOException {
+    public LanternaGui(int width, int height) throws IOException, URISyntaxException, FontFormatException {
         Terminal terminal = createTerminal(width, height);
         this.screen = createScreen(terminal) ;
     }
@@ -39,13 +44,24 @@ public class LanternaGui implements GUI{
         return screen;
     }
 
-    public Terminal createTerminal(int width, int height) throws IOException {
-        TerminalSize terminalSize = new TerminalSize(width, height);
-        DefaultTerminalFactory terminalFactory = new
-                DefaultTerminalFactory()
-                .setInitialTerminalSize(terminalSize);
+    public Terminal createTerminal(int width, int height) throws IOException, FontFormatException, URISyntaxException {
+        URL resource = getClass().getClassLoader().getResource("fonts/square.ttf");
+        assert resource != null;
+        File fontFile = new File(resource.toURI());
+        Font font =  Font.createFont(Font.TRUETYPE_FONT, fontFile);
+
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        ge.registerFont(font);
+
+        DefaultTerminalFactory factory = new DefaultTerminalFactory().setInitialTerminalSize(new TerminalSize(width, height));
+
+        Font loadedFont = font.deriveFont(Font.PLAIN, 25);
+        AWTTerminalFontConfiguration fontConfig = AWTTerminalFontConfiguration.newInstance(loadedFont);
+        factory.setTerminalEmulatorFontConfiguration(fontConfig);
+        factory.setForceAWTOverSwing(true);
+
         Terminal terminal;
-        terminal = terminalFactory.createTerminal();
+        terminal = factory.createTerminal();
 
         return terminal;
     }
@@ -86,4 +102,20 @@ public class LanternaGui implements GUI{
     public void close() throws IOException {
         screen.close();
     }
+
+    public void displayMessage(Screen screen, String message, int x, int y) throws IOException {
+        // Get TextGraphics from the Screen
+        TextGraphics textGraphics = screen.newTextGraphics();
+
+        // Set colors if desired
+        textGraphics.setForegroundColor(TextColor.ANSI.WHITE);
+        textGraphics.setBackgroundColor(TextColor.ANSI.BLACK);
+
+        // Write the message at the specified position
+        textGraphics.putString(x, y, message);
+
+        // Refresh the screen to show changes
+        screen.refresh();
+    }
+
 }

@@ -11,41 +11,46 @@ import com.t05g04.game.model.game.elements.Koopa;
 import com.t05g04.game.model.game.elements.Mourato;
 import com.t05g04.game.model.game.Position;
 
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 public class Renderer {
     char[][] map_ = {
-            "...............###".toCharArray(),
-            "...............###".toCharArray(),
-            "...............###".toCharArray(),
-            "............H..###".toCharArray(),
-            ".........H..H..###".toCharArray(),
-            ".........H..H..###".toCharArray(),
-            "............H..###".toCharArray(),
-            "...............###".toCharArray(),
-            "...............###".toCharArray(),
-            "..................".toCharArray(),
-            "..................".toCharArray(),
-            "...............###".toCharArray(),
-            "...............###".toCharArray(),
-            "...............###".toCharArray(),
-            "...............###".toCharArray(),
-            "...............###".toCharArray(),
-            "...............###".toCharArray(),
-            "...............###".toCharArray(),
-            ".............#####".toCharArray(),
-            "...............###".toCharArray(),
-            "...............###".toCharArray(),
-            "...............###".toCharArray(),
-            "...............###".toCharArray(),
-            ".............#####".toCharArray(),
-            "...............###".toCharArray(),
-            "...............###".toCharArray(),
-            "...............###".toCharArray(),
-            "...............###".toCharArray(),
-            "...............###".toCharArray(),
-            "...............###".toCharArray(),
-            "...............###".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "            H  ###".toCharArray(),
+            "         H  H  ###".toCharArray(),
+            "         H  H  ###".toCharArray(),
+            "            H  ###".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "                  ".toCharArray(),
+            "                  ".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "             #####".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "             #####".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
             "|||||||||||||||###".toCharArray()
-
     };
 
     public char[][] getMap_() {
