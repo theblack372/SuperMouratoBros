@@ -40,6 +40,15 @@ public class Map {
     public List<Coin> getCoins() {
         return coins;
     }
+
+    public int flowerNo(){
+        return flowers.size();
+    }
+
+    public int koopasNo(){
+        return koopas.size();
+    }
+
     public CopyOnWriteArrayList<Koopa> getKoopas() {
         return koopas;
     }
@@ -138,15 +147,15 @@ public class Map {
         }
     }
 
-    public Koopa getKoopa() {
+    public Koopa getKoopa(int i) {
         if (koopas != null && !koopas.isEmpty()) {
-            return koopas.get(0); // Retorna o primeiro elemento da lista
+            return koopas.get(i); // Retorna o primeiro elemento da lista
         }
         return null; // Retorna null caso não haja Koopas
     }
-    public Flower getFlower() {
+    public Flower getFlower(int i) {
         if (flowers != null && !flowers.isEmpty()) {
-            return flowers.get(0);
+            return flowers.get(i);
         }
         return null;
     }
