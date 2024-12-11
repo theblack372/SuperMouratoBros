@@ -30,25 +30,41 @@ public class Game {
         while (!endTerminal) {
             long startTime = System.currentTimeMillis();
             if(System.currentTimeMillis() - lastFlowerAppearingTime >= Flower_APPEARING_INTERVAL) {
-                if(map.getFlower().isAppearing()){
-                    map.getFlower().setAppearing(false);
-                }else{
-                    map.getFlower().setAppearing(true);
+                for(int i=0;i<map.flowerNo();i++) {
+                    if (map.getFlower(i).isAppearing()) {
+                        map.getFlower(i).setAppearing(false);
+                    } else {
+                        map.getFlower(i).setAppearing(true);
+                    }
+                    lastFlowerAppearingTime = System.currentTimeMillis();
                 }
-                lastFlowerAppearingTime = System.currentTimeMillis();
             }
             // Verifica se já passou 1 segundo (1000 ms)
             if (System.currentTimeMillis() - lastKoopaMoveTime >= KOOPA_MOVE_INTERVAL) {
-                map.KoopaMove(map.getKoopa()); // Mover Koopa
-                lastKoopaMoveTime = System.currentTimeMillis(); // Atualiza o tempo do último movimento
+                for(int i=0;i<map.flowerNo();i++) {
+                    map.KoopaMove(map.getKoopa(i)); // Mover Koopa
+                    lastKoopaMoveTime = System.currentTimeMillis();
+                }// Atualiza o tempo do último movimento
             }
             GUI.ACTION action = gui.getNextAction();
 
-            if (action== GUI.ACTION.QUIT || (map.getMourato().getPosition().getY()>= map.getHeight_()-1)
-                    ||(map.getKoopa()!=null &&map.getMourato().getPosition().equals(map.getKoopa().getPosition()))){
+            if (action== GUI.ACTION.QUIT || (map.getMourato().getPosition().getY()>= map.getHeight_()-1)){
                 endTerminal = true;
                 gui.close();
             }
+            for(int i=0;i<map.koopasNo();i++) {
+                if((map.getKoopa(i)!=null &&map.getMourato().getPosition().equals(map.getKoopa(i).getPosition()))){
+                    endTerminal = true;
+                    gui.close();
+                }
+            }
+            for(int i=0;i<map.flowerNo();i++) {
+                if((map.getFlower(i).isAppearing() && map.getMourato().getPosition().equals(map.getFlower(i).getPosition()))){
+                    endTerminal = true;
+                    gui.close();
+                }
+            }
+
             map.processKey(action);
             long elapsedTime = System.currentTimeMillis() - startTime;
             long sleepTime = frameTime - elapsedTime;
