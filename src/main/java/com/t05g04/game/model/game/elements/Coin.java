@@ -12,9 +12,9 @@ public class Coin extends Element {
         super(position);
     }
     @Override
-    public void draw(TextGraphics graphics) {
+    public void draw(TextGraphics graphics, Position position, boolean moving) {
         graphics.setForegroundColor(TextColor.Factory.fromString("#FFD700"));
         graphics.enableModifiers(SGR.BOLD);
-        graphics.putString(new TerminalPosition(position_.getX(), position_.getY()), "O");
+        graphics.putString(new TerminalPosition(position.getX(), position.getY()), "O");
     }
 }

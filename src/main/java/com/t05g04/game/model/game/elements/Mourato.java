@@ -9,7 +9,7 @@ import com.t05g04.game.model.game.Position;
 public class Mourato extends Element{
     private boolean jump_;
     private int jumpVelocity_;
-    private int jumpHeight_;
+    private final int jumpHeight_;
     private int countJump_;
     public Mourato(Position position, boolean jump, int jumpVelocity, int jumpHeight, int countJump) {
         super(position);
@@ -54,10 +54,10 @@ public class Mourato extends Element{
     }
 
     @Override
-    public void draw(TextGraphics graphics) {
+    public void draw(TextGraphics graphics, Position position, boolean moving) {
         graphics.setForegroundColor(TextColor.Factory.fromString("#FF0000"));
         graphics.enableModifiers(SGR.BOLD);
-        graphics.putString(new TerminalPosition(position_.getX(),
+        graphics.putString(new TerminalPosition(position.getX(),
                 position_.getY()), "M");
     }
 }

@@ -15,10 +15,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Map {
     int height_;
     int width_;
-    private Mourato mourato;
-    private List<Coin> coins;
-    private CopyOnWriteArrayList<Koopa> koopas;
-    private CopyOnWriteArrayList<Flower> flowers;
+    int startX_=0;
+    private final Mourato mourato;
+    private final List<Coin> coins;
+    private final CopyOnWriteArrayList<Koopa> koopas;
+    private final CopyOnWriteArrayList<Flower> flowers;
     Renderer renderer = new Renderer();
 
     public Map(int width, int height) {
@@ -33,7 +34,7 @@ public class Map {
     public int getHeight_() {
         return height_;
     }
-
+    public int getStartX_() {return startX_;}
     public int getWidth_() {
         return width_;
     }
@@ -62,7 +63,7 @@ public class Map {
 
     private List<Koopa> createKoopas() {
         List<Koopa> koopas = new ArrayList<>();
-        koopas.add(new Koopa(new Position(19, 14), 1));
+        //koopas.add(new Koopa(new Position(19, 14), 1));
         return koopas;
     }
     private List<Flower> createFlowers() {
@@ -85,8 +86,12 @@ public class Map {
             checkAndFall(mourato);
         }
         if (action== GUI.ACTION.RIGHT) {
-            moveMourato(mourato.moveRight());
-            checkAndFall(mourato);
+
+            if (isMouratoMiddle() && canMouratoMove(mourato.moveRight()) && startX_<68) {
+                startX_++;
+            }
+            else{moveMourato(mourato.moveRight());
+            checkAndFall(mourato);}
         }
     }
 
@@ -103,7 +108,7 @@ public class Map {
         }
 
         // Verificar se a posição não colide com objetos
-        char tile = renderer.getMap_()[position.getX()][position.getY()];
+        char tile = renderer.getMap_()[position.getX()+renderer.getStart()][position.getY()];
         return tile!='#' && tile!='H';
     }
 
@@ -114,11 +119,12 @@ public class Map {
             retrieveCoins(position);
         }
     }
-
-
+    public boolean isMouratoMiddle(){
+        return mourato.getPosition().getX() == 16;
+    }
 
     private boolean canKoopaMove(Position position) {
-        return renderer.getMap_()[position.getX()][position.getY()] != '#';
+        return renderer.getMap_()[position.getX()+ renderer.getStart()][position.getY()] != '#';
     }
 
     public void KoopaMove(Koopa koopa) {
@@ -197,7 +203,7 @@ public class Map {
             mourato.setCountJump_(0); // Reseta o progresso
         }
     }
-    private void checkAndFall(Mourato mourato) {
+    public void checkAndFall(Mourato mourato) {
         if (mourato.isJump_()) {
             return; // Se está no meio do salto, não aplica a lógica de queda
         }
@@ -229,7 +235,7 @@ public class Map {
     }
     public boolean flagReach() {
         Position currentPosition = mourato.getPosition();
-        return renderer.getMap_()[currentPosition.getX()][currentPosition.getY()] == '|';
+        return renderer.getMap_()[currentPosition.getX()+startX_][currentPosition.getY()] == '|';
     }
 }
 

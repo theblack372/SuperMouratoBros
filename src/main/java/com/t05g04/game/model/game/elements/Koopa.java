@@ -6,6 +6,8 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.t05g04.game.model.game.Position;
 
+import java.io.PipedOutputStream;
+
 public class Koopa extends Element {
     private int velocity_;
     public Koopa(Position position, int velocity) {
@@ -14,10 +16,10 @@ public class Koopa extends Element {
     }
 
     @Override
-    public void draw(TextGraphics graphics) {
+    public void draw(TextGraphics graphics, Position position, boolean moving) {
         graphics.setForegroundColor(TextColor.Factory.fromString("#013220"));
         graphics.enableModifiers(SGR.BOLD);
-        graphics.putString(new TerminalPosition(position_.getX(), position_.getY()), "K");
+        graphics.putString(new TerminalPosition(position.getX(), position.getY()), "K");
     }
 
     public void move() {
