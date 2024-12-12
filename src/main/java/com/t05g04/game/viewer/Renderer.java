@@ -176,6 +176,7 @@ public class Renderer {
         for (Coin coin : map.getCoins()) {
             coin.draw(graphics, coin.getPosition(), moving);
         }
+
         for (Flower flower : map.getFlowers()) {
             if (map.getFlower().isAppearing()) {
                 flower.draw(graphics, flower.getPosition(), moving);
