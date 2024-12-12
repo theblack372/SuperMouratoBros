@@ -132,8 +132,6 @@ public class Renderer {
         start = map.getStartX_();
         terminalStart=start+32;
         moving= map.isMouratoMiddle();
-        if(start+32>map_.length){}
-        System.out.println(start+32);
         graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(map.getWidth_(), map.getHeight_()), ' ');
         for (int x = start; x < terminalStart; x++) {
@@ -178,7 +176,7 @@ public class Renderer {
         }
 
         for (Flower flower : map.getFlowers()) {
-            if (map.getFlower().isAppearing()) {
+            if (flower.isAppearing()) {
                 flower.draw(graphics, flower.getPosition(), moving);
             }
         }
