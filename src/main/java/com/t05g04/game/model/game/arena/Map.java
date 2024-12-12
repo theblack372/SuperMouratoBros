@@ -74,7 +74,7 @@ public class Map {
     }
     private List<Flower> createFlowers() {
         List<Flower> flowers = new ArrayList<>();
-        flowers.add(new Flower(new Position(28,13),true));
+        flowers.add(new Flower(new Position(29,12),true));
         return flowers;
     }
 
