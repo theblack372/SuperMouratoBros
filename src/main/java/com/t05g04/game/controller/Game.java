@@ -41,7 +41,7 @@ public class Game {
             }
             // Verifica se já passou 1 segundo (1000 ms)
             if (System.currentTimeMillis() - lastKoopaMoveTime >= KOOPA_MOVE_INTERVAL) {
-                for(int i=0;i<map.flowerNo();i++) {
+                for(int i=0;i<map.koopasNo();i++) {
                     map.KoopaMove(map.getKoopa(i)); // Mover Koopa
                     lastKoopaMoveTime = System.currentTimeMillis();
                 }// Atualiza o tempo do último movimento
