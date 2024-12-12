@@ -110,7 +110,6 @@ public class LanternaGui implements GUI{
         // Set colors if desired
         textGraphics.setForegroundColor(TextColor.ANSI.BLACK);
         textGraphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
-
         // Write the message at the specified position
         textGraphics.putString(x, y, message);
 

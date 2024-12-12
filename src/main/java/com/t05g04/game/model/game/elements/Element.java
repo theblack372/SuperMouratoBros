@@ -13,5 +13,6 @@ public abstract class Element{
         return position_;
     }
 
-    abstract void draw(TextGraphics graphics);
+    abstract void draw(TextGraphics graphics, Position position, boolean move);
+    abstract void moveTerminal();
 }
