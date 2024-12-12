@@ -70,11 +70,13 @@ public class Map {
     private List<Koopa> createKoopas() {
         List<Koopa> koopas = new ArrayList<>();
         koopas.add(new Koopa(new Position(33, 14), 1));
+        koopas.add(new Koopa(new Position(84, 14), 1));
         return koopas;
     }
     private List<Flower> createFlowers() {
         List<Flower> flowers = new ArrayList<>();
         flowers.add(new Flower(new Position(29,12),true));
+        flowers.add(new Flower(new Position(59,13),true));
         return flowers;
     }
 
