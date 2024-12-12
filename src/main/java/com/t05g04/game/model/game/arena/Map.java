@@ -1,9 +1,6 @@
 package com.t05g04.game.model.game.arena;
 import com.t05g04.game.gui.GUI;
-import com.t05g04.game.model.game.elements.Coin;
-import com.t05g04.game.model.game.elements.Flower;
-import com.t05g04.game.model.game.elements.Koopa;
-import com.t05g04.game.model.game.elements.Mourato;
+import com.t05g04.game.model.game.elements.*;
 import com.t05g04.game.model.game.Position;
 import com.t05g04.game.viewer.Renderer;
 
@@ -63,7 +60,7 @@ public class Map {
 
     private List<Koopa> createKoopas() {
         List<Koopa> koopas = new ArrayList<>();
-        //koopas.add(new Koopa(new Position(19, 14), 1));
+        koopas.add(new Koopa(new Position(33, 14), 1));
         return koopas;
     }
     private List<Flower> createFlowers() {
@@ -89,6 +86,15 @@ public class Map {
 
             if (isMouratoMiddle() && canMouratoMove(mourato.moveRight()) && startX_<68) {
                 startX_++;
+                for(Koopa koopa : koopas){
+                    koopa.moveTerminal();
+                }
+                for(Coin coin : coins) {
+                    coin.moveTerminal();
+                }
+                for(Flower flower : flowers) {
+                    flower.moveTerminal();
+                }
             }
             else{moveMourato(mourato.moveRight());
             checkAndFall(mourato);}

@@ -60,4 +60,8 @@ public class Mourato extends Element{
         graphics.putString(new TerminalPosition(position.getX(),
                 position_.getY()), "M");
     }
+
+    @Override
+    void moveTerminal() {
+    }
 }

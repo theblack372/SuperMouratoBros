@@ -22,6 +22,12 @@ public class Koopa extends Element {
         graphics.putString(new TerminalPosition(position.getX(), position.getY()), "K");
     }
 
+    @Override
+    public void moveTerminal() {
+        int newX = getPosition().getX() - 1;
+        position_ = new Position(newX, getPosition().getY());
+    }
+
     public void move() {
         int newX = getPosition().getX() + velocity_;
         position_ =new Position(newX, getPosition().getY());

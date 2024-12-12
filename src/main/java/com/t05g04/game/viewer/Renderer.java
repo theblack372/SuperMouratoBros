@@ -168,11 +168,11 @@ public class Renderer {
     private void drawElements(TextGraphics graphics, Map map) {
         map.getMourato().draw(graphics, map.getMourato().getPosition(), moving);
         map.checkAndFall(map.getMourato());
-        //synchronized (map.getKoopas()) {
-        //    for (Koopa koopa : map.getKoopas()) {
-        //        koopa.draw(graphics, koopa.getPosition(), moving);
-        //    }
-        //}
+        synchronized (map.getKoopas()) {
+            for (Koopa koopa : map.getKoopas()) {
+                koopa.draw(graphics, koopa.getPosition(), moving);
+            }
+        }
         for (Coin coin : map.getCoins()) {
             coin.draw(graphics, coin.getPosition(), moving);
         }
