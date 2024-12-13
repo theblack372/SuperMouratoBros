@@ -16,6 +16,7 @@ public class Renderer {
     int start;
     boolean moving= false;
     int terminalStart=32;
+    boolean objectsReceived = false;
 
     public int getStart() {
         return start;
@@ -34,19 +35,19 @@ public class Renderer {
             "               ###".toCharArray(),
             "               ###".toCharArray(),
             "            H  ###".toCharArray(),
-            "         H  H  ###".toCharArray(),
-            "         H  H  ###".toCharArray(),
+            "        CH  H  ###".toCharArray(),
+            "        CH  H  ###".toCharArray(),
             "            H  ###".toCharArray(),
             "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
+            "              C###".toCharArray(),
+            "              C###".toCharArray(),
+            "              C###".toCharArray(),
+            "              C###".toCharArray(),
             "                  ".toCharArray(),
-            "            H     ".toCharArray(),
-            "            H     ".toCharArray(),
-            "            H     ".toCharArray(),
-            "            H     ".toCharArray(),
+            "           CH     ".toCharArray(),
+            "           CH     ".toCharArray(),
+            "           CH     ".toCharArray(),
+            "           CH     ".toCharArray(),
             "                  ".toCharArray(),
             "               ###".toCharArray(),
             "               ###".toCharArray(),
@@ -54,7 +55,7 @@ public class Renderer {
             "             #####".toCharArray(),
             "               ###".toCharArray(),
             "               ###".toCharArray(),
-            "               ###".toCharArray(),    // koopa will be there
+            "              K###".toCharArray(),    // koopa will be there
             "               ###".toCharArray(),
             "               ###".toCharArray(),
             "             #####".toCharArray(),
@@ -62,48 +63,48 @@ public class Renderer {
             "               ###".toCharArray(),
             "               ###".toCharArray(),
             "               ###".toCharArray(),
+            "              C###".toCharArray(),
+            "              C###".toCharArray(),
+            "              C###".toCharArray(),
+            "              C###".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "           H   ###".toCharArray(),
+            "       CH  H   ###".toCharArray(),
+            "           H   ###".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "               ###".toCharArray(),
+            "              C###".toCharArray(),
+            "              C###".toCharArray(),
+            "              C###".toCharArray(),
+            "              C###".toCharArray(),
+            "               ###".toCharArray(),
+            "             F####".toCharArray(),   // flower will be on top of this
             "               ###".toCharArray(),
             "               ###".toCharArray(),
             "               ###".toCharArray(),
             "               ###".toCharArray(),
             "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "         ?     ###".toCharArray(),
-            "         ?     ###".toCharArray(),
-            "         ?     ###".toCharArray(),
-            "         ?     ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "              ####".toCharArray(),   // flower will be on top of this
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "              ####".toCharArray(),
-            "             #####".toCharArray(),
-            "            ######".toCharArray(),
-            "           #######".toCharArray(),
-            "          ########".toCharArray(),
+            "             C####".toCharArray(),
+            "            C#####".toCharArray(),
+            "           C######".toCharArray(),
+            "          C#######".toCharArray(),
+            "         C########".toCharArray(),
             "         #########".toCharArray(),
             "               ###".toCharArray(),
             "               ###".toCharArray(),
-            "               ###".toCharArray(),
+            "              K###".toCharArray(),
             "               ###".toCharArray(), // koopa
             "               ###".toCharArray(),
-            "            ######".toCharArray(),
+            "           F######".toCharArray(),
             "               ###".toCharArray(),
             "               ###".toCharArray(),
             "               ###".toCharArray(),
             "               ###".toCharArray(),
-            "               ###".toCharArray(),
+            "              K###".toCharArray(),
             "               ###".toCharArray(),
             "               ###".toCharArray(),
             "               ###".toCharArray(),
@@ -194,5 +195,26 @@ public class Renderer {
             }
         }
         return false;
+    }
+
+    public void renderObjects(Map map){
+        for (int x = 0; x < map_.length; x++) {
+            for (int y = 0; y < map_[x].length; y++) {
+                char tile = map_[x][y];
+                switch (tile) {
+                    case 'C': // Block
+                        map.createCoin(new Position(x, y));
+                        break;
+                    case 'K': // Question Block
+                        map.createKoopa(new Position(x, y));
+                        break;
+                    case 'F': // Flag
+                        map.createFlower(new Position(x, y));
+                    default: // Empty space
+                        break;
+                }
+            }
+        }
+        objectsReceived = true;
     }
 }
