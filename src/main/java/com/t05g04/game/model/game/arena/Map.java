@@ -75,6 +75,7 @@ public class Map {
         if (action== GUI.ACTION.LEFT) {
             moveMourato(mourato.moveLeft());
             checkAndFall(mourato);
+            retrieveCoins(mourato.getPosition());
         }
         if (action== GUI.ACTION.RIGHT) {
 
