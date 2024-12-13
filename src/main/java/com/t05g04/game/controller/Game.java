@@ -26,16 +26,13 @@ public class Game {
     public void run() throws IOException, InterruptedException {
         int fps = 18;
         int frameTime = 1000 / fps;
+        map.getRenderer().renderObjects(map);
         int coinCounter= map.getCoins().size();
         while (!endTerminal) {
             long startTime = System.currentTimeMillis();
             if(System.currentTimeMillis() - lastFlowerAppearingTime >= Flower_APPEARING_INTERVAL) {
                 for(int i=0;i<map.flowerNo();i++) {
-                    if (map.getFlower(i).isAppearing()) {
-                        map.getFlower(i).setAppearing(false);
-                    } else {
-                        map.getFlower(i).setAppearing(true);
-                    }
+                    map.getFlower(i).setAppearing(!map.getFlower(i).isAppearing());
                     lastFlowerAppearingTime = System.currentTimeMillis();
                 }
             }

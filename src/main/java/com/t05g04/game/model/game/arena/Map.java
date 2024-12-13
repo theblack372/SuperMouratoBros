@@ -14,17 +14,14 @@ public class Map {
     int width_;
     int startX_=0;
     private final Mourato mourato;
-    private final List<Coin> coins;
-    private final CopyOnWriteArrayList<Koopa> koopas;
-    private final CopyOnWriteArrayList<Flower> flowers;
+    private final List<Coin> coins = new ArrayList<>();
+    private final List<Koopa> koopas = new ArrayList<>();
+    private final List<Flower> flowers = new ArrayList<>();
     Renderer renderer = new Renderer();
 
     public Map(int width, int height) {
         width_ = width;
         height_ = height;
-        coins= createCoins();
-        koopas = new CopyOnWriteArrayList<>(createKoopas());
-        flowers = new CopyOnWriteArrayList<>(createFlowers());
         mourato = new Mourato(new Position(1, 14), false, 1, 4, 0);
     }
 
@@ -47,40 +44,26 @@ public class Map {
         return koopas.size();
     }
 
-    public CopyOnWriteArrayList<Koopa> getKoopas() {
+    public List<Koopa> getKoopas() {
         return koopas;
     }
-    public CopyOnWriteArrayList<Flower> getFlowers() {return flowers;}
+    public List<Flower> getFlowers() {return flowers;}
     public Renderer getRenderer() {
         return renderer;
     }
 
-    private List<Coin> createCoins() {
-        List<Coin> coins = new ArrayList<>();
-        coins.add(new Coin(new Position(3, 11)));
-        coins.add(new Coin(new Position(4, 11)));
-        coins.add(new Coin(new Position(5, 11)));
-        coins.add(new Coin(new Position(6, 11)));
-        coins.add(new Coin(new Position(8, 14)));
-        coins.add(new Coin(new Position(14, 14)));
-        coins.add(new Coin(new Position(26, 14)));
-        return coins;
+    public void createCoin(Position position) {
+        coins.add(new Coin(position));
     }
 
-    private List<Koopa> createKoopas() {
-        List<Koopa> koopas = new ArrayList<>();
-        koopas.add(new Koopa(new Position(33, 14), 1));
-        koopas.add(new Koopa(new Position(84, 14), 1));
-        return koopas;
+    public void createKoopa(Position position) {
+        koopas.add(new Koopa(position, -1));
     }
-    private List<Flower> createFlowers() {
-        List<Flower> flowers = new ArrayList<>();
-        flowers.add(new Flower(new Position(29,12),true));
-        flowers.add(new Flower(new Position(59,13),true));
-        return flowers;
+    public void createFlower(Position position) {
+        flowers.add(new Flower(position,true));
     }
 
-    public void processKey(GUI.ACTION action) throws IOException {
+    public void processKey(GUI.ACTION action){
         if (action== GUI.ACTION.UP) {
             if (!mourato.isJump_()) {
                 mourato.setJump_(true);
@@ -109,6 +92,8 @@ public class Map {
             }
             else{moveMourato(mourato.moveRight());
             checkAndFall(mourato);}
+
+            retrieveCoins(mourato.getPosition());
         }
     }
 
@@ -133,7 +118,6 @@ public class Map {
     private void moveMourato(Position position) {
         if (canMouratoMove(position)) {
             mourato.getPosition().setPosition(position);
-            retrieveCoins(position);
         }
     }
     public boolean isMouratoMiddle(){
@@ -162,13 +146,13 @@ public class Map {
     }
 
     public Koopa getKoopa(int i) {
-        if (koopas != null && !koopas.isEmpty()) {
+        if (!koopas.isEmpty()) {
             return koopas.get(i); // Retorna o primeiro elemento da lista
         }
         return null; // Retorna null caso não haja Koopas
     }
     public Flower getFlower(int i) {
-        if (flowers != null && !flowers.isEmpty()) {
+        if (!flowers.isEmpty()) {
             return flowers.get(i);
         }
         return null;
