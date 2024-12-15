@@ -49,6 +49,7 @@ public class MenuController extends Controller {
           break;
       }
     }
+    menu.close();
   }
 
   public void moveUp() {
