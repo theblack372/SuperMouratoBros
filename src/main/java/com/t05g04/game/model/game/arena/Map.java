@@ -2,7 +2,7 @@ package com.t05g04.game.model.game.arena;
 import com.t05g04.game.gui.GUI;
 import com.t05g04.game.model.game.elements.*;
 import com.t05g04.game.model.game.Position;
-import com.t05g04.game.viewer.Renderer;
+import com.t05g04.game.viewer.game.Renderer;
 
 import java.io.IOException;
 import java.util.ArrayList;

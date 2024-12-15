@@ -1,4 +1,4 @@
-package com.t05g04.game.viewer;
+package com.t05g04.game.viewer.game;
 
 import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TerminalPosition;

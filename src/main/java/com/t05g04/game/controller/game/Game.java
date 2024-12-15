@@ -1,14 +1,12 @@
-package com.t05g04.game.controller;
+package com.t05g04.game.controller.game;
 import com.t05g04.game.gui.LanternaGui;
 import com.t05g04.game.model.game.arena.Map;
 import com.t05g04.game.gui.GUI;
 
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 public class Game {
     private static final long KOOPA_MOVE_INTERVAL = 1000;
