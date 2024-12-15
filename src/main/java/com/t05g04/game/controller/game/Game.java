@@ -29,11 +29,7 @@ public class Game {
             long startTime = System.currentTimeMillis();
             if(System.currentTimeMillis() - lastFlowerAppearingTime >= Flower_APPEARING_INTERVAL) {
                 for(int i=0;i<map.flowerNo();i++) {
-                    if (map.getFlower(i).isAppearing()) {
-                        map.getFlower(i).setAppearing(false);
-                    } else {
-                        map.getFlower(i).setAppearing(true);
-                    }
+                    map.getFlower(i).setAppearing(!map.getFlower(i).isAppearing());
                     lastFlowerAppearingTime = System.currentTimeMillis();
                 }
             }
