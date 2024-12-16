@@ -88,7 +88,7 @@ public class Map {
         }
         if (action== GUI.ACTION.RIGHT) {
 
-            if (isMouratoMiddle() && canMouratoMove(mourato.moveRight()) && startX_<68) {
+            if (isMouratoMiddle() && canMouratoMove(mourato.moveRight()) && getRenderer().getMap_().length-32!=startX_) {
                 startX_++;
                 for(Koopa koopa : koopas){
                     koopa.moveTerminal();
@@ -129,7 +129,9 @@ public class Map {
         }
 
         // Verificar se a posição não colide com objetos
+        System.out.println(renderer.getMap_()[position.getX()+renderer.getStart()][position.getY()]);
         char tile = renderer.getMap_()[position.getX()+renderer.getStart()][position.getY()];
+
         return tile!='#' && tile!='H' && tile!='!';
     }
 

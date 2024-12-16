@@ -8,129 +8,29 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 import com.t05g04.game.model.game.arena.Map;
 import com.t05g04.game.model.game.elements.*;
 import com.t05g04.game.model.game.Position;
+import org.w3c.dom.ls.LSOutput;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
+
+import static com.t05g04.game.viewer.game.MapLoader.loadMap;
 
 public class Renderer {
     int start;
     boolean moving= false;
     int terminalStart=32;
     boolean objectsReceived = false;
-
+    char[][] map_ = loadMap("maps/map1.txt");
     public int getStart() {
         return start;
     }
-
-    char[][] map_ = {
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "            H  ###".toCharArray(),
-            "        CH  H  ###".toCharArray(),
-            "         !  H  ###".toCharArray(),
-            "            H  ###".toCharArray(),
-            "               ###".toCharArray(),
-            "              C###".toCharArray(),
-            "              C###".toCharArray(),
-            "              C###".toCharArray(),
-            "              C###".toCharArray(),
-            "                  ".toCharArray(),
-            "           CH     ".toCharArray(),
-            "           CH     ".toCharArray(),
-            "           CH     ".toCharArray(),
-            "           CH     ".toCharArray(),
-            "                  ".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "             #####".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "              K###".toCharArray(),    // koopa will be there
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "             #####".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "              C###".toCharArray(),
-            "              C###".toCharArray(),
-            "              C###".toCharArray(),
-            "              C###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "           H   ###".toCharArray(),
-            "       CH  !   ###".toCharArray(),
-            "           H   ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "              C###".toCharArray(),
-            "              C###".toCharArray(),
-            "              C###".toCharArray(),
-            "              C###".toCharArray(),
-            "               ###".toCharArray(),
-            "             F####".toCharArray(),   // flower will be on top of this
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "             C####".toCharArray(),
-            "            C#####".toCharArray(),
-            "           C######".toCharArray(),
-            "          C#######".toCharArray(),
-            "         C########".toCharArray(),
-            "         #########".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "              K###".toCharArray(),
-            "               ###".toCharArray(), // koopa
-            "               ###".toCharArray(),
-            "           F######".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "              K###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "              ####".toCharArray(),
-            "             #####".toCharArray(),
-            "            ######".toCharArray(),
-            "           #######".toCharArray(),
-            "          ########".toCharArray(),
-            "         #########".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "|||||||||||||||###".toCharArray()
-    };
-
     public char[][] getMap_() {
         return map_;
     }
 
     public void draw(TextGraphics graphics, Map map) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
+        System.out.println(map_.length);
         start = map.getStartX_();
         terminalStart=start+32;
         moving= map.isMouratoMiddle();
@@ -165,8 +65,6 @@ public class Renderer {
             }
         }
         drawElements(graphics, map);
-        //System.out.println(moving);
-
     }
 
 
