@@ -1,5 +1,4 @@
 package com.t05g04.game.gui;
-import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
@@ -85,6 +84,9 @@ public class LanternaGui implements GUI{
             if (keyStroke.getKeyType() == KeyType.ArrowRight) {
                 return ACTION.RIGHT;
             }
+            if (keyStroke.getKeyType() == KeyType.Enter) {
+                return ACTION.SELECT;
+            }
         }
         return null;
     }
@@ -116,5 +118,6 @@ public class LanternaGui implements GUI{
         // Refresh the screen to show changes
         screen.refresh();
     }
+
 
 }
