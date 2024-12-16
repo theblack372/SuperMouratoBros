@@ -1,10 +1,14 @@
 package com.t05g04.game.model.game.arena;
 import com.t05g04.game.gui.GUI;
+import com.t05g04.game.gui.LanternaGui;
 import com.t05g04.game.model.game.elements.*;
 import com.t05g04.game.model.game.Position;
+import com.t05g04.game.model.menu.DeathMenu;
 import com.t05g04.game.viewer.game.Renderer;
 
+import java.awt.*;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -67,7 +71,7 @@ public class Map {
     }
     public void createPowerup(Position position) {powerups.add(new Powerup(position));}
 
-    public void processKey(GUI.ACTION action){
+    public void processKey(GUI.ACTION action) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         if (action== GUI.ACTION.UP) {
             if (!mourato.isJump_()) {
                 mourato.setJump_(true);
@@ -220,7 +224,7 @@ public class Map {
             mourato.setCountJump_(0); // Reseta o progresso
         }
     }
-    public void checkAndFall(Mourato mourato) {
+    public void checkAndFall(Mourato mourato) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         if (mourato.isJump_()) {
             return; // Se está no meio do salto, não aplica a lógica de queda
         }
@@ -233,6 +237,10 @@ public class Map {
             retrieveCoins(mourato.getPosition());
             goSuperMourato(mourato.getPosition());
             destroyKoopaIfHit(mourato);
+        }
+        else if (y + 1 >= height_) {
+            DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, new LanternaGui(32, 18));
+            menu.run();
         }
     }
 
