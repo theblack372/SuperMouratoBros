@@ -36,7 +36,7 @@ public class Renderer {
             "               ###".toCharArray(),
             "            H  ###".toCharArray(),
             "        CH  H  ###".toCharArray(),
-            "        CH  H  ###".toCharArray(),
+            "        C!  H  ###".toCharArray(),
             "            H  ###".toCharArray(),
             "               ###".toCharArray(),
             "              C###".toCharArray(),
@@ -71,7 +71,7 @@ public class Renderer {
             "               ###".toCharArray(),
             "               ###".toCharArray(),
             "           H   ###".toCharArray(),
-            "       CH  H   ###".toCharArray(),
+            "       CH  !   ###".toCharArray(),
             "           H   ###".toCharArray(),
             "               ###".toCharArray(),
             "               ###".toCharArray(),
@@ -144,10 +144,15 @@ public class Renderer {
                         graphics.enableModifiers(SGR.BOLD);
                         graphics.putString(new TerminalPosition(x - start, y), "#");
                         break;
-                    case 'H': // Question Block
+                    case 'H': // breakable block
                         graphics.setForegroundColor(TextColor.Factory.fromString("#FFA500"));
                         graphics.enableModifiers(SGR.BOLD);
                         graphics.putString(new TerminalPosition(x - start, y), "H");
+                        break;
+                    case '!': //question block
+                        graphics.setForegroundColor(TextColor.Factory.fromString("#FFFFFFgit"));
+                        graphics.enableModifiers(SGR.BOLD);
+                        graphics.putString(new TerminalPosition(x - start, y), "!");
                         break;
                     case '|': // Flag
                         graphics.setForegroundColor(TextColor.Factory.fromString("#FFA500"));

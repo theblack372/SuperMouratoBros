@@ -213,9 +213,8 @@ public class Map {
         Position currentPosition = mourato.getPosition();
         int x = currentPosition.getX();
         int y = currentPosition.getY();
-        while (y + 1 < height_ && canMouratoMove(new Position(x, y + 1))) {
+        if (y + 1 < height_ && canMouratoMove(new Position(x, y + 1))) {
             mourato.getPosition().setPosition(new Position(x, y + 1));
-            y++;
             retrieveCoins(mourato.getPosition());
             destroyKoopaIfHit(mourato);
         }
