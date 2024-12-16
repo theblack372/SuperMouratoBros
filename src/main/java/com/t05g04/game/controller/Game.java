@@ -29,6 +29,7 @@ public class Game {
         map.getRenderer().renderObjects(map);
         int coinCounter= map.getCoins().size();
         while (!endTerminal) {
+            map.getRenderer().makePowerup(map.getMourato(),map);
             long startTime = System.currentTimeMillis();
             if(System.currentTimeMillis() - lastFlowerAppearingTime >= Flower_APPEARING_INTERVAL) {
                 for(int i=0;i<map.flowerNo();i++) {

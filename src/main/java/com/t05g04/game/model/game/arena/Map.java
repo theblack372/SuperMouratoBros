@@ -17,6 +17,7 @@ public class Map {
     private final List<Coin> coins = new ArrayList<>();
     private final List<Koopa> koopas = new ArrayList<>();
     private final List<Flower> flowers = new ArrayList<>();
+    private final List<Powerup> powerups = new ArrayList<>();
     Renderer renderer = new Renderer();
 
     public Map(int width, int height) {
@@ -35,6 +36,8 @@ public class Map {
     public List<Coin> getCoins() {
         return coins;
     }
+
+    public List<Powerup> getPowerups() {return powerups;}
 
     public int flowerNo(){
         return flowers.size();
@@ -62,6 +65,7 @@ public class Map {
     public void createFlower(Position position) {
         flowers.add(new Flower(position,true));
     }
+    public void createPowerup(Position position) {powerups.add(new Powerup(position));}
 
     public void processKey(GUI.ACTION action){
         if (action== GUI.ACTION.UP) {
@@ -112,7 +116,7 @@ public class Map {
 
         // Verificar se a posição não colide com objetos
         char tile = renderer.getMap_()[position.getX()+renderer.getStart()][position.getY()];
-        return tile!='#' && tile!='H';
+        return tile!='#' && tile!='H' && tile!='!';
     }
 
 
@@ -234,6 +238,7 @@ public class Map {
             }
         }
     }
+
     public boolean flagReach() {
         Position currentPosition = mourato.getPosition();
         return renderer.getMap_()[currentPosition.getX()+startX_][currentPosition.getY()] == '|';

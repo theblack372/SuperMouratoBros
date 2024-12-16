@@ -6,10 +6,7 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.t05g04.game.model.game.arena.Map;
-import com.t05g04.game.model.game.elements.Coin;
-import com.t05g04.game.model.game.elements.Flower;
-import com.t05g04.game.model.game.elements.Koopa;
-import com.t05g04.game.model.game.elements.Mourato;
+import com.t05g04.game.model.game.elements.*;
 import com.t05g04.game.model.game.Position;
 
 public class Renderer {
@@ -36,7 +33,7 @@ public class Renderer {
             "               ###".toCharArray(),
             "            H  ###".toCharArray(),
             "        CH  H  ###".toCharArray(),
-            "        C!  H  ###".toCharArray(),
+            "         !  H  ###".toCharArray(),
             "            H  ###".toCharArray(),
             "               ###".toCharArray(),
             "              C###".toCharArray(),
@@ -150,7 +147,7 @@ public class Renderer {
                         graphics.putString(new TerminalPosition(x - start, y), "H");
                         break;
                     case '!': //question block
-                        graphics.setForegroundColor(TextColor.Factory.fromString("#FFFFFFgit"));
+                        graphics.setForegroundColor(TextColor.Factory.fromString("#FFFFFF"));
                         graphics.enableModifiers(SGR.BOLD);
                         graphics.putString(new TerminalPosition(x - start, y), "!");
                         break;
@@ -186,6 +183,9 @@ public class Renderer {
                 flower.draw(graphics, flower.getPosition(), moving);
             }
         }
+        for(Powerup powerup : map.getPowerups()) {
+            powerup.draw(graphics,powerup.getPosition(), moving);
+        }
     }
 
     public boolean breakBlock(Mourato mourato) {
@@ -195,6 +195,19 @@ public class Renderer {
                 if (map_[positionBlock.getX()][positionBlock.getY()] == 'H') {
                     map_[positionBlock.getX()][positionBlock.getY()] = '.';//parte o bloco
                     mourato.setCountJump_(mourato.getJumpHeight_()); //mete o contador de salto no maximo para provocar momento descendente
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public boolean makePowerup(Mourato mourato,Map map) {
+        if (mourato.isJump_()) {
+            if (mourato.getJumpVelocity_() >= 0) {
+                Position positionBlock = new Position(mourato.getPosition().getX() + start, mourato.getPosition().getY() - 1);
+                if(map_[positionBlock.getX()][positionBlock.getY()] == '!') {
+                    map.createPowerup(new Position(positionBlock.getX(), positionBlock.getY()-1));
+                    mourato.setCountJump_(mourato.getJumpHeight_());
                     return true;
                 }
             }
@@ -215,6 +228,7 @@ public class Renderer {
                         break;
                     case 'F': // Flag
                         map.createFlower(new Position(x, y));
+                        break;
                     default: // Empty space
                         break;
                 }
