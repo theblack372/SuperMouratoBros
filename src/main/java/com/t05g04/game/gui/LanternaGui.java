@@ -103,7 +103,6 @@ public class LanternaGui implements GUI{
     @Override
     public void close() throws IOException {
         screen.close();
-        System.out.println("screen closed");
     }
 
     public void displayMessage(Screen screen, String message, int x, int y) throws IOException {
