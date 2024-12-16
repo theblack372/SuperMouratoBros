@@ -22,6 +22,7 @@ public class Map {
     private final List<Koopa> koopas = new ArrayList<>();
     private final List<Flower> flowers = new ArrayList<>();
     private final List<Powerup> powerups = new ArrayList<>();
+    private final List<Hazard> hazards = new ArrayList<>();
     Renderer renderer = new Renderer();
 
     public Map(int width, int height) {
@@ -43,12 +44,19 @@ public class Map {
 
     public List<Powerup> getPowerups() {return powerups;}
 
+    public List<Hazard> getHazards() {
+        return hazards;
+    }
+
     public int flowerNo(){
         return flowers.size();
     }
 
     public int koopasNo(){
         return koopas.size();
+    }
+    public int HazardNo(){
+        return hazards.size();
     }
 
     public List<Koopa> getKoopas() {
@@ -69,8 +77,8 @@ public class Map {
     public void createFlower(Position position) {
         flowers.add(new Flower(position,true));
     }
-    public void createPowerup(Position position) {powerups.add(new Powerup(position));}
-
+    public void createPowerup(Position position) {powerups.add(new Powerup(position,false));}
+    public void createHazard(Position position) {hazards.add(new Hazard(position));}
     public void processKey(GUI.ACTION action) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         if (action== GUI.ACTION.UP) {
             if (!mourato.isJump_()) {
@@ -102,6 +110,9 @@ public class Map {
                 for(Powerup powerup : powerups){
                     powerup.moveTerminal();
                 }
+                for(Hazard hazard :hazards){
+                    hazard.moveTerminal();
+                }
             }
             else{moveMourato(mourato.moveRight());
             checkAndFall(mourato);}
@@ -118,8 +129,9 @@ public class Map {
     }
 
     public void goSuperMourato(Position position) {
-        powerups.removeIf(powerup->powerup.getPosition().equals(position));
-        mourato.setSuperMourato_(true);
+        if(powerups.removeIf(powerup->powerup.getPosition().equals(position))) {
+            mourato.setSuperMourato_(true);
+        }
     }
 
     private boolean canMouratoMove(Position position) {
@@ -254,6 +266,18 @@ public class Map {
                 if (mouratoPosition.getX() == koopaPosition.getX() && mouratoPosition.getY() == koopaPosition.getY() - 1) {
                     koopas.remove(koopa); // Remove o Koopa atingido
                     break; // Sai após destruir o Koopa
+                }
+            }
+        }
+    }
+    public void makePowerup(Mourato mourato) {
+        if (mourato.isJump_()) {
+            if (mourato.getJumpVelocity_() >= 0) {
+                for(int i=0;i<HazardNo();i++) {
+                    Position positionBlock = new Position(mourato.getPosition().getX(), mourato.getPosition().getY() - 1);
+                    if (hazards.get(i).getPosition().equals(positionBlock)) {
+                        powerups.get(i).setAppearing(true);
+                    }
                 }
             }
         }

@@ -37,7 +37,7 @@ public class Renderer {
             "               ###".toCharArray(),
             "            H  ###".toCharArray(),
             "        CH  H  ###".toCharArray(),
-            "         !  H  ###".toCharArray(),
+            "        P!  H  ###".toCharArray(),
             "            H  ###".toCharArray(),
             "               ###".toCharArray(),
             "              C###".toCharArray(),
@@ -150,11 +150,6 @@ public class Renderer {
                         graphics.enableModifiers(SGR.BOLD);
                         graphics.putString(new TerminalPosition(x - start, y), "H");
                         break;
-                    case '!': //question block
-                        graphics.setForegroundColor(TextColor.Factory.fromString("#FFFFFF"));
-                        graphics.enableModifiers(SGR.BOLD);
-                        graphics.putString(new TerminalPosition(x - start, y), "!");
-                        break;
                     case '|': // Flag
                         graphics.setForegroundColor(TextColor.Factory.fromString("#FFA500"));
                         graphics.enableModifiers(SGR.BOLD);
@@ -188,7 +183,12 @@ public class Renderer {
             }
         }
         for(Powerup powerup : map.getPowerups()) {
-            powerup.draw(graphics,powerup.getPosition(), moving);
+            if(powerup.isAppearing()) {
+                powerup.draw(graphics, powerup.getPosition(), moving);
+            }
+        }
+        for(Hazard hazard: map.getHazards()) {
+            hazard.draw(graphics, hazard.getPosition(), moving);
         }
     }
 
@@ -199,19 +199,6 @@ public class Renderer {
                 if (map_[positionBlock.getX()][positionBlock.getY()] == 'H') {
                     map_[positionBlock.getX()][positionBlock.getY()] = '.';//parte o bloco
                     mourato.setCountJump_(mourato.getJumpHeight_()); //mete o contador de salto no maximo para provocar momento descendente
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    public boolean makePowerup(Mourato mourato,Map map) {
-        if (mourato.isJump_()) {
-            if (mourato.getJumpVelocity_() >= 0) {
-                Position positionBlock = new Position(mourato.getPosition().getX() + start, mourato.getPosition().getY() - 1);
-                if(map_[positionBlock.getX()][positionBlock.getY()] == '!') {
-                    map.createPowerup(new Position(positionBlock.getX(), positionBlock.getY()-1));
-                    mourato.setCountJump_(mourato.getJumpHeight_());
                     return true;
                 }
             }
@@ -232,6 +219,12 @@ public class Renderer {
                         break;
                     case 'F': // Flag
                         map.createFlower(new Position(x, y));
+                        break;
+                    case 'P':
+                        map.createPowerup(new Position(x, y));
+                        break;
+                    case '!':
+                        map.createHazard(new Position(x,y));
                         break;
                     default: // Empty space
                         break;
