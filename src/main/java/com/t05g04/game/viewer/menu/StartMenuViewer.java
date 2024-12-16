@@ -18,12 +18,7 @@ public class StartMenuViewer extends MenuViewer {
     int option = startMenu.getSelectedOption();
     String[] options = startMenu.getOptions();
     screen.clear();
-    for (int i = 0; i < options.length; i++) {
-      if (i == option) {
-        textGraphics.putString(10, 10 + i, options[i], com.googlecode.lanterna.SGR.REVERSE);
-      } else {
-        textGraphics.putString(10, 10 + i, options[i]);
-      }
-    }
+    textGraphics.putString(5, 5, "SUPER MOURATO BROS", com.googlecode.lanterna.SGR.BOLD, com.googlecode.lanterna.SGR.UNDERLINE);
+    drawOptions(textGraphics, option, options);
   }
 }
