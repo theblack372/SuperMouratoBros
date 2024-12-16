@@ -19,8 +19,7 @@ public class DeathMenuViewer extends MenuViewer {
     int option = deathMenu.getSelectedOption();
     String[] options = deathMenu.getOptions();
     screen.clear();
-    textGraphics.putString(
-        5, 5, "YOU DIED!", com.googlecode.lanterna.SGR.BOLD, com.googlecode.lanterna.SGR.UNDERLINE);
+    textGraphics.putString(9, 2, "YOU DIED!", com.googlecode.lanterna.SGR.BOLD, com.googlecode.lanterna.SGR.UNDERLINE);
     textGraphics.putString(5, 5, "Do you want to try again?");
     drawOptions(textGraphics, option, options);
   }
