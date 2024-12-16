@@ -9,6 +9,10 @@ import com.t05g04.game.model.game.arena.Map;
 import com.t05g04.game.model.game.elements.*;
 import com.t05g04.game.model.game.Position;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 public class Renderer {
     int start;
     boolean moving= false;
@@ -126,7 +130,7 @@ public class Renderer {
         return map_;
     }
 
-    public void draw(TextGraphics graphics, Map map) {
+    public void draw(TextGraphics graphics, Map map) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         start = map.getStartX_();
         terminalStart=start+32;
         moving= map.isMouratoMiddle();
@@ -166,7 +170,7 @@ public class Renderer {
     }
 
 
-    private void drawElements(TextGraphics graphics, Map map) {
+    private void drawElements(TextGraphics graphics, Map map) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         map.getMourato().draw(graphics, map.getMourato().getPosition(), moving);
         map.checkAndFall(map.getMourato());
         synchronized (map.getKoopas()) {

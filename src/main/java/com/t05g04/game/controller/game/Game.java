@@ -2,6 +2,7 @@ package com.t05g04.game.controller.game;
 import com.t05g04.game.gui.LanternaGui;
 import com.t05g04.game.model.game.arena.Map;
 import com.t05g04.game.gui.GUI;
+import com.t05g04.game.model.menu.DeathMenu;
 
 
 import java.awt.*;
@@ -21,7 +22,7 @@ public class Game {
         gui = new LanternaGui(map.getWidth_(), map.getHeight_());
     }
 
-    public void run() throws IOException, InterruptedException {
+    public void run() throws IOException, InterruptedException, URISyntaxException, FontFormatException {
         int fps = 18;
         int frameTime = 1000 / fps;
         map.getRenderer().renderObjects(map);
@@ -52,12 +53,17 @@ public class Game {
                 if((map.getKoopa(i)!=null &&map.getMourato().getPosition().equals(map.getKoopa(i).getPosition()))){
                     endTerminal = true;
                     gui.close();
-                }
+
+                    DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, new LanternaGui(32, 18));
+                    menu.run();
+        }
             }
             for(int i=0;i<map.flowerNo();i++) {
                 if((map.getFlower(i).isAppearing() && map.getMourato().getPosition().equals(map.getFlower(i).getPosition()))){
                     endTerminal = true;
                     gui.close();
+                    DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, new LanternaGui(32, 18));
+                    menu.run();
                 }
             }
 
@@ -83,7 +89,7 @@ public class Game {
     }
 
 
-    private void draw() throws IOException {
+    private void draw() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         map.getRenderer().draw(gui.getScreen().newTextGraphics(),map);
         map.updateJump(map.getMourato());
         gui.refresh();
