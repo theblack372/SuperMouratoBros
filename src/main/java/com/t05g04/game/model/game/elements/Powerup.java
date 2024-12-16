@@ -9,7 +9,6 @@ public class Powerup extends Element {
     public Powerup(Position position) {
         super(position);
     }
-
     @Override
     public void draw(TextGraphics graphics, Position position, boolean moving) {
         graphics.setForegroundColor(TextColor.Factory.fromString("#000000"));
