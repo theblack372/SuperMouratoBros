@@ -8,12 +8,14 @@ import com.t05g04.game.model.game.Position;
 
 public class Mourato extends Element{
     private boolean jump_;
+    private boolean superMourato_;
     private int jumpVelocity_;
     private final int jumpHeight_;
     private int countJump_;
-    public Mourato(Position position, boolean jump, int jumpVelocity, int jumpHeight, int countJump) {
+        public Mourato(Position position, boolean jump,boolean superMourato, int jumpVelocity, int jumpHeight, int countJump) {
         super(position);
         jump_ = jump;
+        superMourato_ = superMourato;
         jumpVelocity_ = jumpVelocity;
         jumpHeight_ = jumpHeight;
         countJump_ = countJump;
@@ -48,11 +50,10 @@ public class Mourato extends Element{
     public boolean isJump_() {
         return jump_;
     }
-
+    public void setSuperMourato_(boolean superMourato) {superMourato_ = superMourato;}
     public void setJump_(boolean jump) {
         jump_ = jump;
     }
-
     @Override
     public void draw(TextGraphics graphics, Position position, boolean moving) {
         graphics.setForegroundColor(TextColor.Factory.fromString("#FF0000"));

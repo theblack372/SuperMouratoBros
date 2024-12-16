@@ -23,7 +23,7 @@ public class Map {
     public Map(int width, int height) {
         width_ = width;
         height_ = height;
-        mourato = new Mourato(new Position(1, 14), false, 1, 4, 0);
+        mourato = new Mourato(new Position(1, 14),false, false, 1, 4, 0);
     }
 
     public int getHeight_() {
@@ -80,6 +80,7 @@ public class Map {
             moveMourato(mourato.moveLeft());
             checkAndFall(mourato);
             retrieveCoins(mourato.getPosition());
+            goSuperMourato(mourato.getPosition());
         }
         if (action== GUI.ACTION.RIGHT) {
 
@@ -94,11 +95,15 @@ public class Map {
                 for(Flower flower : flowers) {
                     flower.moveTerminal();
                 }
+                for(Powerup powerup : powerups){
+                    powerup.moveTerminal();
+                }
             }
             else{moveMourato(mourato.moveRight());
             checkAndFall(mourato);}
 
             retrieveCoins(mourato.getPosition());
+            goSuperMourato(mourato.getPosition());
         }
     }
 
@@ -106,6 +111,11 @@ public class Map {
     public void retrieveCoins(Position position) {
         coins.removeIf(coin->coin.getPosition().equals(position));
 
+    }
+
+    public void goSuperMourato(Position position) {
+        powerups.removeIf(powerup->powerup.getPosition().equals(position));
+        mourato.setSuperMourato_(true);
     }
 
     private boolean canMouratoMove(Position position) {
@@ -194,7 +204,8 @@ public class Map {
 
         if (canMouratoMove(newPosition)) {
             mourato.getPosition().setPosition(newPosition);
-            retrieveCoins(newPosition); // Coleta moedas
+            retrieveCoins(newPosition);
+            goSuperMourato(newPosition);// Coleta moedas
             mourato.setCountJump_(jumpProgress + 1);
             if (jumpProgress >= jumpHeight) {
                 destroyKoopaIfHit(mourato); // mata o koopa em caso de velocidade <0
@@ -220,6 +231,7 @@ public class Map {
         if (y + 1 < height_ && canMouratoMove(new Position(x, y + 1))) {
             mourato.getPosition().setPosition(new Position(x, y + 1));
             retrieveCoins(mourato.getPosition());
+            goSuperMourato(mourato.getPosition());
             destroyKoopaIfHit(mourato);
         }
     }
