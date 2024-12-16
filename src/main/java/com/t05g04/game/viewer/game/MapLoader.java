@@ -14,7 +14,6 @@ public class MapLoader {
             String line;
             while ((line = reader.readLine()) != null) {
                 mapList.add(line.toCharArray());
-                System.out.println(line);
             }
         } catch (Exception e) {
             e.printStackTrace();

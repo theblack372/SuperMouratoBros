@@ -21,7 +21,7 @@ public class Renderer {
     boolean moving= false;
     int terminalStart=32;
     boolean objectsReceived = false;
-    char[][] map_ = loadMap("maps/map1.txt");
+    char[][] map_ = loadMap("maps/map2.txt");
     public int getStart() {
         return start;
     }
@@ -30,7 +30,6 @@ public class Renderer {
     }
 
     public void draw(TextGraphics graphics, Map map) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
-        System.out.println(map_.length);
         start = map.getStartX_();
         terminalStart=start+32;
         moving= map.isMouratoMiddle();
