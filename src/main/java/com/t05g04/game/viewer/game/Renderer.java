@@ -72,7 +72,7 @@ public class Renderer {
             "               ###".toCharArray(),
             "               ###".toCharArray(),
             "           H   ###".toCharArray(),
-            "       CH  !   ###".toCharArray(),
+            "       CH P!   ###".toCharArray(),
             "           H   ###".toCharArray(),
             "               ###".toCharArray(),
             "               ###".toCharArray(),
