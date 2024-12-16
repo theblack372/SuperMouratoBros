@@ -4,25 +4,17 @@ import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.t05g04.game.model.game.Position;
-
-public class Powerup extends Element {
-    private boolean appearing_;
-    public Powerup(Position position,boolean appearing) {
-        super(position);appearing_=appearing;
+public class Hazard extends Element {
+    public Hazard(Position position) {
+    super(position);
     }
-    public boolean isAppearing() {
-        return appearing_;
-    }
-    public void setAppearing(boolean appearing) {
-        appearing_ = appearing;
-    }
-
     @Override
     public void draw(TextGraphics graphics, Position position, boolean moving) {
-        graphics.setForegroundColor(TextColor.Factory.fromString("#000000"));
+        graphics.setForegroundColor(TextColor.Factory.fromString("#FFFFFF"));
         graphics.enableModifiers(SGR.BOLD);
-        graphics.putString(new TerminalPosition(position.getX(), position.getY()), "P");
+        graphics.putString(new TerminalPosition(position.getX(), position.getY()), "!");
     }
+
     @Override
     public void moveTerminal() {
         int newX = getPosition().getX() - 1;
