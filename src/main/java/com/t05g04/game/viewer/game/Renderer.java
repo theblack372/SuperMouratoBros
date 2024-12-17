@@ -29,7 +29,7 @@ public class Renderer {
     public int getStart() {
         return start;
     }
-  
+
     public char[][] getMap_() {
         return map_;
     }
@@ -49,13 +49,17 @@ public class Renderer {
                 switch (tile) {
                     case '#': // Block
                         graphics.setForegroundColor(TextColor.Factory.fromString("#FFA500"));
+                        graphics.setBackgroundColor(TextColor.Factory.fromString("#9c4a00"));
                         graphics.enableModifiers(SGR.BOLD);
                         graphics.putString(new TerminalPosition(x - start, y), "#");
+                        graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
                         break;
                     case 'H': // breakable block
                         graphics.setForegroundColor(TextColor.Factory.fromString("#FFA500"));
+                        graphics.setBackgroundColor(TextColor.Factory.fromString("#9c4a00"));
                         graphics.enableModifiers(SGR.BOLD);
                         graphics.putString(new TerminalPosition(x - start, y), "H");
+                        graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
                         break;
                     case '|': // Flag
                         graphics.setForegroundColor(TextColor.Factory.fromString("#FFA500"));
