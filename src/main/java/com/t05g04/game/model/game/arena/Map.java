@@ -84,8 +84,8 @@ public class Map {
     public void createFlower(Position position) {
         flowers.add(new Flower(position,true));
     }
-    public void createPowerup(Position position) {powerups.add(new Powerup(position,false));}
-    public void createpowerupBlock(Position position) {powerupBlocks.add(new PowerUpBlock(position,false));}
+    public void createPowerup(Position position) {powerups.add(new Powerup(position,false,powerups.size()));}
+    public void createpowerupBlock(Position position) {powerupBlocks.add(new PowerUpBlock(position,false,powerupBlocks.size()));}
     public void createBullet(Position position) {bullets.add(new Bullet(position,0,true));}
     public void processKey(GUI.ACTION action) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         if (action== GUI.ACTION.UP) {
@@ -336,11 +336,15 @@ public class Map {
     public void makePowerup(Mourato mourato) {
         if (mourato.isJump_()) {
             if (mourato.getJumpVelocity_() >= 0) {
-                for(int i=0;i<powerupBlocksNo();i++) {
+                for(PowerUpBlock powerUpBlock:powerupBlocks) {
                     Position positionBlock = new Position(mourato.getPosition().getX(), mourato.getPosition().getY() - 1);
-                    if (powerupBlocks.get(i).getPosition().equals(positionBlock)&& !powerupBlocks.get(i).isChecked()) {
-                        powerups.get(i).setAppearing(true);
-                        powerupBlocks.get(i).setChecked(true);
+                    if (powerUpBlock.getPosition().equals(positionBlock)&& !powerUpBlock.isChecked()) {
+                        for(Powerup powerup:powerups) {
+                            if(powerup.getIndex()==powerUpBlock.getIndex()) {
+                                powerup.setAppearing(true);
+                                powerUpBlock.setChecked(true);
+                            }
+                        }
                     }
                 }
             }

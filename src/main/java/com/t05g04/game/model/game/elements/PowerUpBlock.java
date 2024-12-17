@@ -6,15 +6,20 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 import com.t05g04.game.model.game.Position;
 public class PowerUpBlock extends Element {
     private boolean checked_;
-    public PowerUpBlock(Position position,boolean checked) {
+    private  int index_;
+    public PowerUpBlock(Position position,boolean checked,int index) {
     super(position);
     checked_ = checked;
+    index_ = index;
     }
     public boolean isChecked() {
         return checked_;
     }
     public void setChecked(boolean checked) {
         checked_ = checked;
+    }
+    public int getIndex() {
+        return index_;
     }
     @Override
     public void draw(TextGraphics graphics, Position position, boolean moving) {
