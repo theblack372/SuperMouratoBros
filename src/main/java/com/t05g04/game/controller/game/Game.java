@@ -3,6 +3,7 @@ import com.t05g04.game.gui.LanternaGui;
 import com.t05g04.game.model.game.arena.Map;
 import com.t05g04.game.gui.GUI;
 import com.t05g04.game.model.menu.DeathMenu;
+import com.t05g04.game.model.menu.EndLevelMenu;
 
 
 import java.awt.*;
@@ -87,8 +88,11 @@ public class Game {
             if (map.flagReach()){
                 String endMessage = String.format("you won with %d coins!",currentCoin);
                 gui.displayMessage(gui.getScreen(), endMessage, 6,7);
-                Thread.sleep(3000);
+                Thread.sleep(2000);
                 gui.close();
+                EndLevelMenu menu = new EndLevelMenu(new String[]{"Continue", "Retry", "Exit"}, new LanternaGui(32,18) , mapPath);
+                menu.run();
+                break;
             }
             gui.displayMessage(gui.getScreen(), messageCoin, 1,1);
             try {
