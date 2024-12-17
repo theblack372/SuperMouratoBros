@@ -29,6 +29,7 @@ public class Renderer {
     public int getStart() {
         return start;
     }
+  
     public char[][] getMap_() {
         return map_;
     }
@@ -55,11 +56,6 @@ public class Renderer {
                         graphics.setForegroundColor(TextColor.Factory.fromString("#FFA500"));
                         graphics.enableModifiers(SGR.BOLD);
                         graphics.putString(new TerminalPosition(x - start, y), "H");
-                        break;
-                    case '!': //question block
-                        graphics.setForegroundColor(TextColor.Factory.fromString("#FFFFFF"));
-                        graphics.enableModifiers(SGR.BOLD);
-                        graphics.putString(new TerminalPosition(x - start, y), "!");
                         break;
                     case '|': // Flag
                         graphics.setForegroundColor(TextColor.Factory.fromString("#FFA500"));
@@ -92,7 +88,12 @@ public class Renderer {
             }
         }
         for(Powerup powerup : map.getPowerups()) {
-            powerup.draw(graphics,powerup.getPosition(), moving);
+            if(powerup.isAppearing()) {
+                powerup.draw(graphics, powerup.getPosition(), moving);
+            }
+        }
+        for(PowerUpBlock powerupblock: map.getPowerupBlocks()) {
+            powerupblock.draw(graphics, powerupblock.getPosition(), moving);
         }
     }
 
@@ -103,19 +104,6 @@ public class Renderer {
                 if (map_[positionBlock.getX()][positionBlock.getY()] == 'H') {
                     map_[positionBlock.getX()][positionBlock.getY()] = '.';//parte o bloco
                     mourato.setCountJump_(mourato.getJumpHeight_()); //mete o contador de salto no maximo para provocar momento descendente
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    public boolean makePowerup(Mourato mourato,Map map) {
-        if (mourato.isJump_()) {
-            if (mourato.getJumpVelocity_() >= 0) {
-                Position positionBlock = new Position(mourato.getPosition().getX() + start, mourato.getPosition().getY() - 1);
-                if(map_[positionBlock.getX()][positionBlock.getY()] == '!') {
-                    map.createPowerup(new Position(positionBlock.getX(), positionBlock.getY()-1));
-                    mourato.setCountJump_(mourato.getJumpHeight_());
                     return true;
                 }
             }
@@ -136,6 +124,12 @@ public class Renderer {
                         break;
                     case 'F': // Flag
                         map.createFlower(new Position(x, y));
+                        break;
+                    case 'P':
+                        map.createPowerup(new Position(x, y));
+                        break;
+                    case '!':
+                        map.createpowerupBlock(new Position(x,y));
                         break;
                     default: // Empty space
                         break;
