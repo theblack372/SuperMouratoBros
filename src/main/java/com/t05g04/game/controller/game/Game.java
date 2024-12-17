@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class Game {
-    private static final long BULLET_DELAY = 500;
+    private static final long BULLET_DELAY = 100;
     private static final long KOOPA_MOVE_INTERVAL = 1000;
     private static final long Flower_APPEARING_INTERVAL = 3000;
     boolean endTerminal = false;
