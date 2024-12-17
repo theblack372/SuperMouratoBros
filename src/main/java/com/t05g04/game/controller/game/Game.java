@@ -17,11 +17,13 @@ public class Game {
     LanternaGui gui;
     private long lastFlowerAppearingTime = System.currentTimeMillis();
     private long lastKoopaMoveTime = System.currentTimeMillis(); // Controla o tempo de movimento do Koopa
-    private long lastbulletAppearingTime = System.currentTimeMillis();
-    private final Map map = new Map(32, 18);
+    private long lastbulletAppearingTime = System.currentTimeMillis();    private Map map;
+    private String mapPath;
 
-    public Game() throws IOException, URISyntaxException, FontFormatException {
+    public Game(String mapPath) throws IOException, URISyntaxException, FontFormatException {
+        map = new Map(32, 18, mapPath);
         gui = new LanternaGui(map.getWidth_(), map.getHeight_());
+        this.mapPath = mapPath;
     }
 
     public void run() throws IOException, InterruptedException, URISyntaxException, FontFormatException {
@@ -63,7 +65,7 @@ public class Game {
                     endTerminal = true;
                     gui.close();
 
-                    DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, new LanternaGui(32, 18));
+                    DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, new LanternaGui(32, 18), mapPath);
                     menu.run();
         }
             }
@@ -71,7 +73,7 @@ public class Game {
                 if((map.getFlower(i).isAppearing() && map.getMourato().getPosition().equals(map.getFlower(i).getPosition()))){
                     endTerminal = true;
                     gui.close();
-                    DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, new LanternaGui(32, 18));
+                    DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, new LanternaGui(32, 18), mapPath);
                     menu.run();
                 }
             }

@@ -25,12 +25,13 @@ public class Map {
     private final List<Flower> flowers = new ArrayList<>();
     private List<Powerup> powerups = new CopyOnWriteArrayList<>();
     private final List<PowerUpBlock> powerupBlocks = new ArrayList<>();
+    Renderer renderer;
     private final List<Bullet> bullets = new CopyOnWriteArrayList<>();
-    Renderer renderer = new Renderer("maps/map4.txt");
 
-    public Map(int width, int height) {
+    public Map(int width, int height, String path) {
         width_ = width;
         height_ = height;
+        renderer = new Renderer(path);
         mourato = new Mourato(new Position(1, 14),false, false, 1, 4, 0,0);
     }
 
@@ -313,7 +314,7 @@ public class Map {
             return true;
         }
         else if (y + 1 >= height_) {
-            DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, new LanternaGui(32, 18));
+            DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, new LanternaGui(32, 18) , renderer.getPath());
             menu.run();
         }
         return false;
