@@ -187,8 +187,8 @@ public class Renderer {
                 powerup.draw(graphics, powerup.getPosition(), moving);
             }
         }
-        for(Hazard hazard: map.getHazards()) {
-            hazard.draw(graphics, hazard.getPosition(), moving);
+        for(PowerUpBlock powerupblock: map.getPowerupBlocks()) {
+            powerupblock.draw(graphics, powerupblock.getPosition(), moving);
         }
     }
 
@@ -224,7 +224,7 @@ public class Renderer {
                         map.createPowerup(new Position(x, y));
                         break;
                     case '!':
-                        map.createHazard(new Position(x,y));
+                        map.createpowerupBlock(new Position(x,y));
                         break;
                     default: // Empty space
                         break;

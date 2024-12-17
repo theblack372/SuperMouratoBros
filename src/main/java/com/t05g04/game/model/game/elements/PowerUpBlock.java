@@ -4,8 +4,8 @@ import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.t05g04.game.model.game.Position;
-public class Hazard extends Element {
-    public Hazard(Position position) {
+public class PowerUpBlock extends Element {
+    public PowerUpBlock(Position position) {
     super(position);
     }
     @Override

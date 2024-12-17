@@ -22,7 +22,7 @@ public class Map {
     private final List<Koopa> koopas = new ArrayList<>();
     private final List<Flower> flowers = new ArrayList<>();
     private final List<Powerup> powerups = new ArrayList<>();
-    private final List<Hazard> hazards = new ArrayList<>();
+    private final List<PowerUpBlock> powerupBlocks = new ArrayList<>();
     Renderer renderer = new Renderer();
 
     public Map(int width, int height) {
@@ -44,8 +44,8 @@ public class Map {
 
     public List<Powerup> getPowerups() {return powerups;}
 
-    public List<Hazard> getHazards() {
-        return hazards;
+    public List<PowerUpBlock> getPowerupBlocks() {
+        return powerupBlocks;
     }
 
     public int flowerNo(){
@@ -55,8 +55,8 @@ public class Map {
     public int koopasNo(){
         return koopas.size();
     }
-    public int HazardNo(){
-        return hazards.size();
+    public int powerupBlocksNo(){
+        return powerupBlocks.size();
     }
 
     public List<Koopa> getKoopas() {
@@ -78,7 +78,7 @@ public class Map {
         flowers.add(new Flower(position,true));
     }
     public void createPowerup(Position position) {powerups.add(new Powerup(position,false));}
-    public void createHazard(Position position) {hazards.add(new Hazard(position));}
+    public void createpowerupBlock(Position position) {powerupBlocks.add(new PowerUpBlock(position));}
     public void processKey(GUI.ACTION action) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         if (action== GUI.ACTION.UP) {
             if (!mourato.isJump_()) {
@@ -110,8 +110,8 @@ public class Map {
                 for(Powerup powerup : powerups){
                     powerup.moveTerminal();
                 }
-                for(Hazard hazard :hazards){
-                    hazard.moveTerminal();
+                for(PowerUpBlock powerupblock :powerupBlocks){
+                    powerupblock.moveTerminal();
                 }
             }
             else{moveMourato(mourato.moveRight());
@@ -273,9 +273,9 @@ public class Map {
     public void makePowerup(Mourato mourato) {
         if (mourato.isJump_()) {
             if (mourato.getJumpVelocity_() >= 0) {
-                for(int i=0;i<HazardNo();i++) {
+                for(int i=0;i<powerupBlocksNo();i++) {
                     Position positionBlock = new Position(mourato.getPosition().getX(), mourato.getPosition().getY() - 1);
-                    if (hazards.get(i).getPosition().equals(positionBlock)) {
+                    if (powerupBlocks.get(i).getPosition().equals(positionBlock)) {
                         powerups.get(i).setAppearing(true);
                     }
                 }
