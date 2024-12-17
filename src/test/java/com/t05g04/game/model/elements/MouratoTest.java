@@ -16,7 +16,7 @@ public class MouratoTest {
     @BeforeEach
     void setUp() {
         position = new Position(5, 5);
-        map= new Map(10,10);
+        map= new Map(10,10,"ABC");
         mourato = new Mourato(position, false, false,5, 10, 2,0);
     }
 
