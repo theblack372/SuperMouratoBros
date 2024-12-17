@@ -23,7 +23,7 @@ public class Map {
     private final List<Flower> flowers = new ArrayList<>();
     private final List<Powerup> powerups = new ArrayList<>();
     private final List<PowerUpBlock> powerupBlocks = new ArrayList<>();
-    Renderer renderer = new Renderer("maps/map3.txt");
+    Renderer renderer = new Renderer("maps/map1.txt");
 
     public Map(int width, int height) {
         width_ = width;
