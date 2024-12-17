@@ -11,10 +11,12 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class DeathMenu extends Menu{
+    String  currentMap;
 
-   public DeathMenu(String[] strings, LanternaGui gui) throws IOException, URISyntaxException, FontFormatException {
+   public DeathMenu(String[] strings, LanternaGui gui, String currentMap) throws IOException, URISyntaxException, FontFormatException {
         super(strings, gui);
         menuViewer = new DeathMenuViewer(gui.getScreen(), this);
+        this.currentMap = currentMap;
     }
 
     @Override
@@ -28,7 +30,7 @@ public class DeathMenu extends Menu{
         switch (selectedOption) {
             case 0:
                 gui.close();
-                Game game = new Game();
+                Game game = new Game(currentMap);
                 game.run();
             case 1:
                 menuController.action = GUI.ACTION.QUIT;

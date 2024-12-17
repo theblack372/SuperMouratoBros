@@ -21,9 +21,11 @@ public class Renderer {
     int terminalStart=32;
     boolean objectsReceived = false;
     char[][] map_;
+    String path;
 
     public Renderer(String path){
         setMap_(loadMap(path));
+        this.path = path;
     }
 
     public int getStart() {
@@ -141,5 +143,9 @@ public class Renderer {
             }
         }
         objectsReceived = true;
+    }
+
+    public String getPath() {
+        return path;
     }
 }

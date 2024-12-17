@@ -26,7 +26,6 @@ public class MenuController extends Controller {
 
   public void run(MenuViewer menuViewer)
       throws IOException, URISyntaxException, FontFormatException, InterruptedException {
-
     while (action != GUI.ACTION.QUIT) {
 
       gui.refresh();

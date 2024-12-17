@@ -3,6 +3,7 @@ package com.t05g04.game.model.menu;
 import com.t05g04.game.controller.game.Game;
 import com.t05g04.game.gui.GUI;
 import com.t05g04.game.gui.LanternaGui;
+import com.t05g04.game.model.game.arena.Map;
 import com.t05g04.game.viewer.menu.StartMenuViewer;
 
 import java.awt.*;
@@ -22,8 +23,9 @@ public class StartMenu extends Menu {
     switch (selectedOption) {
       case 0:
         gui.close();
-        Game game = new Game();
-        game.run();
+        MapSelectionMenu mapSelectionMenu = new MapSelectionMenu(
+            new String[]{"Map 1", "Map 2", "Map 3", "Map 4", "Exit"}, new LanternaGui(32, 18));
+        mapSelectionMenu.run();
       case 1:
         menuController.action = GUI.ACTION.QUIT;
         break;
