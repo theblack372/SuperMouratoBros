@@ -12,6 +12,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class Map {
@@ -22,7 +23,7 @@ public class Map {
     private final List<Coin> coins = new ArrayList<>();
     private final List<Koopa> koopas = new ArrayList<>();
     private final List<Flower> flowers = new ArrayList<>();
-    private final List<Powerup> powerups = new ArrayList<>();
+    private List<Powerup> powerups = new CopyOnWriteArrayList<>();
     private final List<PowerUpBlock> powerupBlocks = new ArrayList<>();
     Renderer renderer = new Renderer("maps/map1.txt");
 
