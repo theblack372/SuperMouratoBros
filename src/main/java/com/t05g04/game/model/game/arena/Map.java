@@ -79,7 +79,7 @@ public class Map {
         flowers.add(new Flower(position,true));
     }
     public void createPowerup(Position position) {powerups.add(new Powerup(position,false));}
-    public void createpowerupBlock(Position position) {powerupBlocks.add(new PowerUpBlock(position));}
+    public void createpowerupBlock(Position position) {powerupBlocks.add(new PowerUpBlock(position,false));}
     public void processKey(GUI.ACTION action) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         if (action== GUI.ACTION.UP) {
             if(!checkAndFall(mourato)) {
