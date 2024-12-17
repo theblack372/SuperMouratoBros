@@ -5,8 +5,16 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.t05g04.game.model.game.Position;
 public class PowerUpBlock extends Element {
-    public PowerUpBlock(Position position) {
+    private boolean checked_;
+    public PowerUpBlock(Position position,boolean checked) {
     super(position);
+    checked_ = checked;
+    }
+    public boolean isChecked() {
+        return checked_;
+    }
+    public void setChecked(boolean checked) {
+        checked_ = checked;
     }
     @Override
     public void draw(TextGraphics graphics, Position position, boolean moving) {
