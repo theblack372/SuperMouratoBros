@@ -81,8 +81,10 @@ public class Map {
     public void createpowerupBlock(Position position) {powerupBlocks.add(new PowerUpBlock(position));}
     public void processKey(GUI.ACTION action) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         if (action== GUI.ACTION.UP) {
-            if (!mourato.isJump_()) {
-                mourato.setJump_(true);
+            if(!checkAndFall(mourato)) {
+                if (!mourato.isJump_()) {
+                    mourato.setJump_(true);
+                }
             }
         }
         if (action== GUI.ACTION.DOWN) {
@@ -129,8 +131,11 @@ public class Map {
     }
 
     public void goSuperMourato(Position position) {
-        if(powerups.removeIf(powerup->powerup.getPosition().equals(position))) {
-            mourato.setSuperMourato_(true);
+        for(Powerup powerup:powerups) {
+            if (powerup.getPosition().equals(position)&&powerup.isAppearing()) {
+                mourato.setSuperMourato_(true);
+                powerups.remove(powerup);
+            }
         }
     }
 
@@ -237,9 +242,9 @@ public class Map {
             mourato.setCountJump_(0); // Reseta o progresso
         }
     }
-    public void checkAndFall(Mourato mourato) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
+    public boolean checkAndFall(Mourato mourato) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         if (mourato.isJump_()) {
-            return; // Se está no meio do salto, não aplica a lógica de queda
+            return false; // Se está no meio do salto, não aplica a lógica de queda
         }
 
         Position currentPosition = mourato.getPosition();
@@ -250,11 +255,13 @@ public class Map {
             retrieveCoins(mourato.getPosition());
             goSuperMourato(mourato.getPosition());
             destroyKoopaIfHit(mourato);
+            return true;
         }
         else if (y + 1 >= height_) {
             DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, new LanternaGui(32, 18));
             menu.run();
         }
+        return false;
     }
 
     private void destroyKoopaIfHit (Mourato mourato){
