@@ -41,6 +41,7 @@ public class Renderer {
 
     public void draw(TextGraphics graphics, Map map) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         start = map.getStartX_();
+        System.out.println(map_.length);
         terminalStart=start+32;
         moving= map.isMouratoMiddle();
         graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
@@ -100,6 +101,9 @@ public class Renderer {
         }
         for(PowerUpBlock powerupblock: map.getPowerupBlocks()) {
             powerupblock.draw(graphics, powerupblock.getPosition(), moving);
+        }
+        for(Bullet bullet:map.getBullets()){
+            bullet.draw(graphics, bullet.getPosition(), moving);
         }
     }
 

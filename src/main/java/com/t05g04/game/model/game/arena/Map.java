@@ -10,6 +10,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -24,13 +25,14 @@ public class Map {
     private final List<Flower> flowers = new ArrayList<>();
     private List<Powerup> powerups = new CopyOnWriteArrayList<>();
     private final List<PowerUpBlock> powerupBlocks = new ArrayList<>();
-    Renderer renderer; 
+    Renderer renderer;
+    private final List<Bullet> bullets = new CopyOnWriteArrayList<>();
 
     public Map(int width, int height, String path) {
         width_ = width;
         height_ = height;
-        mourato = new Mourato(new Position(1, 14),false, false, 1, 4, 0);
         renderer = new Renderer(path);
+        mourato = new Mourato(new Position(1, 14),false, false, 1, 4, 0,0);
     }
 
     public int getHeight_() {
@@ -48,6 +50,10 @@ public class Map {
 
     public List<PowerUpBlock> getPowerupBlocks() {
         return powerupBlocks;
+    }
+
+    public List<Bullet> getBullets() {
+        return bullets;
     }
 
     public int flowerNo(){
@@ -79,8 +85,9 @@ public class Map {
     public void createFlower(Position position) {
         flowers.add(new Flower(position,true));
     }
-    public void createPowerup(Position position) {powerups.add(new Powerup(position,false));}
-    public void createpowerupBlock(Position position) {powerupBlocks.add(new PowerUpBlock(position,false));}
+    public void createPowerup(Position position) {powerups.add(new Powerup(position,false,powerups.size()));}
+    public void createpowerupBlock(Position position) {powerupBlocks.add(new PowerUpBlock(position,false,powerupBlocks.size()));}
+    public void createBullet(Position position) {bullets.add(new Bullet(position,0,true));}
     public void processKey(GUI.ACTION action) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         if (action== GUI.ACTION.UP) {
             if(!checkAndFall(mourato)) {
@@ -97,6 +104,12 @@ public class Map {
             checkAndFall(mourato);
             retrieveCoins(mourato.getPosition());
             goSuperMourato(mourato.getPosition());
+            for(Bullet bullet: bullets) {
+                if(bullet.getVelocity_()==0) {
+                    bullet.setVelocity_(-1);
+                    bullet.setDirection_(false);
+                }
+            }
         }
         if (action== GUI.ACTION.RIGHT) {
 
@@ -117,12 +130,29 @@ public class Map {
                 for(PowerUpBlock powerupblock :powerupBlocks){
                     powerupblock.moveTerminal();
                 }
+                for(Bullet bullet : bullets){
+                    bullet.moveTerminal();
+                    if(bullet.getVelocity_()==0) {
+                        bullet.setVelocity_(1);
+                        bullet.setDirection_(true);
+                    }
+                }
             }
             else{moveMourato(mourato.moveRight());
-            checkAndFall(mourato);}
+            checkAndFall(mourato);
+                for(Bullet bullet : bullets){
+                    if(bullet.getVelocity_()==0) {
+                        bullet.setVelocity_(1);
+                        bullet.setDirection_(true);
+                    }
+                }
+            }
 
             retrieveCoins(mourato.getPosition());
             goSuperMourato(mourato.getPosition());
+        }
+        if(action==GUI.ACTION.SHOOT) {
+            shootBullet(getMourato());
         }
     }
 
@@ -137,6 +167,7 @@ public class Map {
             if (powerup.getPosition().equals(position)&&powerup.isAppearing()) {
                 mourato.setSuperMourato_(true);
                 powerups.remove(powerup);
+                mourato.setCountBullets_(mourato.getCountBullets_()+5);
             }
         }
     }
@@ -166,6 +197,9 @@ public class Map {
     private boolean canKoopaMove(Position position) {
         return renderer.getMap_()[position.getX()+ renderer.getStart()][position.getY()] != '#';
     }
+    private boolean canBulletMove(Position position) {
+        return renderer.getMap_()[position.getX()+ renderer.getStart()][position.getY()] != '#';
+    }
 
     public void KoopaMove(Koopa koopa) {
         if (koopa == null) {
@@ -183,6 +217,19 @@ public class Map {
             }
         }
     }
+    public void BulletMove(Bullet bullet) {
+        synchronized (bullets) {
+            int nextX = bullet.getPosition().getX() + bullet.getVelocity_();
+            int nextY = bullet.getPosition().getY();
+            Position nextPosition = new Position(nextX, nextY);
+            if (canKoopaMove(nextPosition)) {
+                bullet.move();
+            } else {
+                bullets.remove(bullet);
+            }
+        }
+    }
+
 
     public Koopa getKoopa(int i) {
         if (!koopas.isEmpty()) {
@@ -196,6 +243,13 @@ public class Map {
         }
         return null;
     }
+    public Bullet getBullet(int i) {
+        if (!bullets.isEmpty()) {
+            return bullets.get(i); // Retorna o primeiro elemento da lista
+        }
+        return null; // Retorna null caso não haja Koopas
+    }
+
 
 
     public Mourato getMourato() {
@@ -283,20 +337,34 @@ public class Map {
     public void makePowerup(Mourato mourato) {
         if (mourato.isJump_()) {
             if (mourato.getJumpVelocity_() >= 0) {
-                for(int i=0;i<powerupBlocksNo();i++) {
+                for(PowerUpBlock powerUpBlock:powerupBlocks) {
                     Position positionBlock = new Position(mourato.getPosition().getX(), mourato.getPosition().getY() - 1);
-                    if (powerupBlocks.get(i).getPosition().equals(positionBlock)) {
-                        powerups.get(i).setAppearing(true);
+                    if (powerUpBlock.getPosition().equals(positionBlock)&& !powerUpBlock.isChecked()) {
+                        for(Powerup powerup:powerups) {
+                            if(powerup.getIndex()==powerUpBlock.getIndex()) {
+                                powerup.setAppearing(true);
+                                powerUpBlock.setChecked(true);
+                            }
+                        }
                     }
                 }
             }
         }
+    }
+    public void shootBullet(Mourato mourato) {
+        if(mourato.isSuperMourato_()&&mourato.getCountBullets_()>0) {
+            Position nextPosition = mourato.getPosition();
+            createBullet(nextPosition);
+            mourato.setCountBullets_(mourato.getCountBullets_() - 1);
+        }else{
+            mourato.setSuperMourato_(false);
+        }
+
     }
 
     public boolean flagReach() {
         Position currentPosition = mourato.getPosition();
         return renderer.getMap_()[currentPosition.getX()+startX_][currentPosition.getY()] == '|';
     }
-
 }
 

@@ -8,5 +8,5 @@ public interface GUI {
     void clear();
     void refresh() throws IOException;
     void close() throws IOException;
-    enum ACTION {UP, DOWN, LEFT, RIGHT, NONE, QUIT, SELECT}
+    enum ACTION {UP, DOWN, LEFT, RIGHT, NONE, QUIT, SELECT,SHOOT}
 }

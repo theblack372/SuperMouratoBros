@@ -12,13 +12,15 @@ public class Mourato extends Element{
     private int jumpVelocity_;
     private final int jumpHeight_;
     private int countJump_;
-        public Mourato(Position position, boolean jump,boolean superMourato, int jumpVelocity, int jumpHeight, int countJump) {
+    private int countBullets_;
+        public Mourato(Position position, boolean jump,boolean superMourato, int jumpVelocity, int jumpHeight, int countJump, int countBullets) {
         super(position);
         jump_ = jump;
         superMourato_ = superMourato;
         jumpVelocity_ = jumpVelocity;
         jumpHeight_ = jumpHeight;
         countJump_ = countJump;
+        countBullets_ = countBullets;
     }
 
     public int getJumpVelocity_() {
@@ -50,9 +52,20 @@ public class Mourato extends Element{
     public boolean isJump_() {
         return jump_;
     }
+
+    public boolean isSuperMourato_() {
+        return superMourato_;
+    }
+
     public void setSuperMourato_(boolean superMourato) {superMourato_ = superMourato;}
     public void setJump_(boolean jump) {
         jump_ = jump;
+    }
+    public int getCountBullets_() {
+        return countBullets_;
+    }
+    public void setCountBullets_(int countBullets_) {
+        this.countBullets_ = countBullets_;
     }
     @Override
     public void draw(TextGraphics graphics, Position position, boolean moving) {

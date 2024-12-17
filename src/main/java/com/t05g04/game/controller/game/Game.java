@@ -10,13 +10,14 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class Game {
+    private static final long BULLET_DELAY = 100;
     private static final long KOOPA_MOVE_INTERVAL = 1000;
     private static final long Flower_APPEARING_INTERVAL = 3000;
     boolean endTerminal = false;
     LanternaGui gui;
     private long lastFlowerAppearingTime = System.currentTimeMillis();
     private long lastKoopaMoveTime = System.currentTimeMillis(); // Controla o tempo de movimento do Koopa
-    private Map map;
+    private long lastbulletAppearingTime = System.currentTimeMillis();    private Map map;
     private String mapPath;
 
     public Game(String mapPath) throws IOException, URISyntaxException, FontFormatException {
@@ -44,6 +45,12 @@ public class Game {
                 for(int i=0;i<map.koopasNo();i++) {
                     map.KoopaMove(map.getKoopa(i)); // Mover Koopa
                     lastKoopaMoveTime = System.currentTimeMillis();
+                }// Atualiza o tempo do último movimento
+            }
+            if (System.currentTimeMillis() - BULLET_DELAY >= lastbulletAppearingTime) {
+                for(int i=0;i<map.getBullets().size();i++) {
+                    map.BulletMove(map.getBullet(i)); // Mover Koopa
+                    lastbulletAppearingTime = System.currentTimeMillis();
                 }// Atualiza o tempo do último movimento
             }
             GUI.ACTION action = gui.getNextAction();
