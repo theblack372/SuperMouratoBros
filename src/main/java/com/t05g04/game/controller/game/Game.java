@@ -2,6 +2,7 @@ package com.t05g04.game.controller.game;
 import com.t05g04.game.gui.LanternaGui;
 import com.t05g04.game.model.game.arena.Map;
 import com.t05g04.game.gui.GUI;
+import com.t05g04.game.model.game.elements.Coin;
 import com.t05g04.game.model.menu.DeathMenu;
 
 
@@ -61,29 +62,45 @@ public class Game {
                 gui.close();
             }
             for(int i=0;i<map.koopasNo();i++) {
-                if((map.getKoopa(i)!=null &&map.getMourato().getPosition().equals(map.getKoopa(i).getPosition()))){
-                    endTerminal = true;
-                    gui.close();
+                if((map.getKoopa(i)!=null &&map.getMourato().getPosition().equals(map.getKoopa(i).getPosition()))) {
+                    if (!map.getMourato().isSuperMourato_()) {
+                        endTerminal = true;
+                        gui.close();
 
-                    DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, new LanternaGui(32, 18), mapPath);
-                    menu.run();
-        }
+                        DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, new LanternaGui(32, 18), mapPath);
+                        menu.run();
+                    } else {
+                        map.getMourato().setCountBullets_(map.getMourato().getCountBullets_()-1);
+                        if(map.getMourato().getCountBullets_()==0) {
+                            map.getMourato().setSuperMourato_(false);
+                        }
+                    }
+                }
             }
             for(int i=0;i<map.flowerNo();i++) {
                 if((map.getFlower(i).isAppearing() && map.getMourato().getPosition().equals(map.getFlower(i).getPosition()))){
-                    endTerminal = true;
-                    gui.close();
-                    DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, new LanternaGui(32, 18), mapPath);
-                    menu.run();
+                    if(!map.getMourato().isSuperMourato_()) {
+                        endTerminal = true;
+                        gui.close();
+                        DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, new LanternaGui(32, 18), mapPath);
+                        menu.run();
+                    } else {
+                        map.getMourato().setCountBullets_(map.getMourato().getCountBullets_()-1);
+                        if(map.getMourato().getCountBullets_()==0) {
+                            map.getMourato().setSuperMourato_(false);
+                        }
+                    }
                 }
             }
 
             map.processKey(action);
             long elapsedTime = System.currentTimeMillis() - startTime;
             long sleepTime = frameTime - elapsedTime;
+            int currentBullet =map.getMourato().getCountBullets_();
             int currentCoin = coinCounter - map.getCoins().size();
             draw();// redesenha a tela
             String messageCoin = String.format("coins: %d", currentCoin);
+            String messageBullet = String.format("bullets: %d", currentBullet);
             if (map.flagReach()){
                 String endMessage = String.format("you won with %d coins!",currentCoin);
                 gui.displayMessage(gui.getScreen(), endMessage, 6,7);
@@ -91,6 +108,7 @@ public class Game {
                 gui.close();
             }
             gui.displayMessage(gui.getScreen(), messageCoin, 1,1);
+            gui.displayMessage(gui.getScreen(), messageBullet, 1,2);
             try {
                 if (sleepTime>0){Thread.sleep(sleepTime);} // Ajusta para que o loop tenha uma duração constante
             } catch (InterruptedException e) {
