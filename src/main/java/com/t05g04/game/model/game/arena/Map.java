@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+
 
 public class Map {
     int height_;
@@ -22,7 +22,7 @@ public class Map {
     private final List<Koopa> koopas = new ArrayList<>();
     private final List<Flower> flowers = new ArrayList<>();
     private final List<Powerup> powerups = new ArrayList<>();
-    Renderer renderer = new Renderer();
+    Renderer renderer = new Renderer("maps/map3.txt");
 
     public Map(int width, int height) {
         width_ = width;

@@ -8,7 +8,6 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 import com.t05g04.game.model.game.arena.Map;
 import com.t05g04.game.model.game.elements.*;
 import com.t05g04.game.model.game.Position;
-import org.w3c.dom.ls.LSOutput;
 
 import java.awt.*;
 import java.io.IOException;
@@ -21,12 +20,20 @@ public class Renderer {
     boolean moving= false;
     int terminalStart=32;
     boolean objectsReceived = false;
-    char[][] map_ = loadMap("maps/map2.txt");
+    char[][] map_;
+
+    public Renderer(String path){
+        setMap_(loadMap(path));
+    }
+
     public int getStart() {
         return start;
     }
     public char[][] getMap_() {
         return map_;
+    }
+    private void setMap_(char[][] map_) {
+        this.map_ = map_;
     }
 
     public void draw(TextGraphics graphics, Map map) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
