@@ -26,7 +26,7 @@ public class Map {
     private List<Powerup> powerups = new CopyOnWriteArrayList<>();
     private final List<PowerUpBlock> powerupBlocks = new ArrayList<>();
     private final List<Bullet> bullets = new CopyOnWriteArrayList<>();
-    Renderer renderer = new Renderer("maps/map1.txt");
+    Renderer renderer = new Renderer("maps/map4.txt");
 
     public Map(int width, int height) {
         width_ = width;
