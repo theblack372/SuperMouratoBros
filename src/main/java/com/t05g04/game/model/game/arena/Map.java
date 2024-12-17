@@ -10,7 +10,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -80,7 +79,7 @@ public class Map {
         flowers.add(new Flower(position,true));
     }
     public void createPowerup(Position position) {powerups.add(new Powerup(position,false));}
-    public void createpowerupBlock(Position position) {powerupBlocks.add(new PowerUpBlock(position,false));}
+    public void createpowerupBlock(Position position) {powerupBlocks.add(new PowerUpBlock(position));}
     public void processKey(GUI.ACTION action) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         if (action== GUI.ACTION.UP) {
             if(!checkAndFall(mourato)) {
@@ -133,16 +132,13 @@ public class Map {
     }
 
     public void goSuperMourato(Position position) {
-        Iterator<Powerup> iterator = powerups.iterator();
-        while (iterator.hasNext()) {
-            Powerup powerup = iterator.next();
-            if (powerup.getPosition().equals(position) && powerup.isAppearing()) {
+        for(Powerup powerup:powerups) {
+            if (powerup.getPosition().equals(position)&&powerup.isAppearing()) {
                 mourato.setSuperMourato_(true);
-                iterator.remove(); // Safe removal
+                powerups.remove(powerup);
             }
         }
     }
-
 
     private boolean canMouratoMove(Position position) {
         // Verificar se a posição está dentro dos limites
@@ -288,9 +284,8 @@ public class Map {
             if (mourato.getJumpVelocity_() >= 0) {
                 for(int i=0;i<powerupBlocksNo();i++) {
                     Position positionBlock = new Position(mourato.getPosition().getX(), mourato.getPosition().getY() - 1);
-                    if (powerupBlocks.get(i).getPosition().equals(positionBlock)&&!powerupBlocks.get(i).isChecked()) {
+                    if (powerupBlocks.get(i).getPosition().equals(positionBlock)) {
                         powerups.get(i).setAppearing(true);
-                        powerupBlocks.get(i).setChecked(true);
                     }
                 }
             }
