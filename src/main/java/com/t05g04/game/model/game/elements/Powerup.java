@@ -7,14 +7,18 @@ import com.t05g04.game.model.game.Position;
 
 public class Powerup extends Element {
     private boolean appearing_;
-    public Powerup(Position position,boolean appearing) {
-        super(position);appearing_=appearing;
+    private int index_;
+    public Powerup(Position position,boolean appearing,int index) {
+        super(position);appearing_=appearing;index_=index;
     }
     public boolean isAppearing() {
         return appearing_;
     }
     public void setAppearing(boolean appearing) {
         appearing_ = appearing;
+    }
+    public int getIndex() {
+        return index_;
     }
 
     @Override
