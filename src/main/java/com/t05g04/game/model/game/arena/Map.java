@@ -333,6 +333,26 @@ public class Map {
             }
         }
     }
+
+    public void headshot(){
+        for(Bullet bullet : bullets) {
+            Position bulletPosition = bullet.getPosition();
+            synchronized (koopas) {
+                for (Koopa koopa : koopas) {
+                    Position koopaPosition = koopa.getPosition();
+
+                    // Verifica se Mourato está na mesma posição ou imediatamente acima do Koopa
+                    if ((bulletPosition.getX() == koopaPosition.getX() + 1 || bulletPosition.getX() == koopaPosition.getX() - 1) && bulletPosition.getY() == koopaPosition.getY()) {
+                        koopas.remove(koopa);// Remove o Koopa atingido
+                        bullets.remove(bullet);
+                        break; // Sai após destruir o Koopa
+                    }
+                }
+            }
+        }
+    }
+
+
     public void makePowerup(Mourato mourato) {
         if (mourato.isJump_()) {
             if (mourato.getJumpVelocity_() >= 0) {
