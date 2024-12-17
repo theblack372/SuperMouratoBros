@@ -49,7 +49,8 @@ public class Game {
             }
             if (System.currentTimeMillis() - BULLET_DELAY >= lastbulletAppearingTime) {
                 for(int i=0;i<map.getBullets().size();i++) {
-                    map.BulletMove(map.getBullet(i)); // Mover Koopa
+                    map.BulletMove(map.getBullet(i));
+                    map.headshot();// Mover Koopa
                     lastbulletAppearingTime = System.currentTimeMillis();
                 }// Atualiza o tempo do último movimento
             }
