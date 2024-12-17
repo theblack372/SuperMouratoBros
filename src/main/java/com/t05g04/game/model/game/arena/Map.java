@@ -198,7 +198,8 @@ public class Map {
         return renderer.getMap_()[position.getX()+ renderer.getStart()][position.getY()] != '#';
     }
     private boolean canBulletMove(Position position) {
-        return renderer.getMap_()[position.getX()+ renderer.getStart()][position.getY()] != '#';
+        boolean outSide=canMouratoMove(position);
+        return outSide;
     }
 
     public void KoopaMove(Koopa koopa) {
@@ -222,7 +223,7 @@ public class Map {
             int nextX = bullet.getPosition().getX() + bullet.getVelocity_();
             int nextY = bullet.getPosition().getY();
             Position nextPosition = new Position(nextX, nextY);
-            if (canKoopaMove(nextPosition)) {
+            if (canBulletMove(nextPosition)) {
                 bullet.move();
             } else {
                 bullets.remove(bullet);
