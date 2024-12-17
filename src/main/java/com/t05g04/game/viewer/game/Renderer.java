@@ -99,6 +99,9 @@ public class Renderer {
         for(PowerUpBlock powerupblock: map.getPowerupBlocks()) {
             powerupblock.draw(graphics, powerupblock.getPosition(), moving);
         }
+        for(Bullet bullet:map.getBullets()){
+            bullet.draw(graphics, bullet.getPosition(), moving);
+        }
     }
 
     public boolean breakBlock(Mourato mourato) {

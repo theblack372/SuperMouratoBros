@@ -17,7 +17,7 @@ public class MouratoTest {
     void setUp() {
         position = new Position(5, 5);
         map= new Map(10,10);
-        mourato = new Mourato(position, false, false,5, 10, 2);
+        mourato = new Mourato(position, false, false,5, 10, 2,0);
     }
 
     @Test
