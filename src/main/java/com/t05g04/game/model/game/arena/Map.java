@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+
 
 public class Map {
     int height_;
@@ -23,7 +23,7 @@ public class Map {
     private final List<Flower> flowers = new ArrayList<>();
     private final List<Powerup> powerups = new ArrayList<>();
     private final List<PowerUpBlock> powerupBlocks = new ArrayList<>();
-    Renderer renderer = new Renderer();
+    Renderer renderer = new Renderer("maps/map3.txt");
 
     public Map(int width, int height) {
         width_ = width;
@@ -96,7 +96,7 @@ public class Map {
         }
         if (action== GUI.ACTION.RIGHT) {
 
-            if (isMouratoMiddle() && canMouratoMove(mourato.moveRight()) && startX_<68) {
+            if (isMouratoMiddle() && canMouratoMove(mourato.moveRight()) && getRenderer().getMap_().length-width_!=startX_) {
                 startX_++;
                 for(Koopa koopa : koopas){
                     koopa.moveTerminal();
@@ -142,6 +142,7 @@ public class Map {
 
         // Verificar se a posição não colide com objetos
         char tile = renderer.getMap_()[position.getX()+renderer.getStart()][position.getY()];
+
         return tile!='#' && tile!='H' && tile!='!';
     }
 

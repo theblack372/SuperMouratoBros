@@ -13,121 +13,28 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import static com.t05g04.game.viewer.game.MapLoader.loadMap;
+
 public class Renderer {
     int start;
     boolean moving= false;
     int terminalStart=32;
     boolean objectsReceived = false;
+    char[][] map_;
+
+    public Renderer(String path){
+        setMap_(loadMap(path));
+    }
 
     public int getStart() {
         return start;
     }
-
-    char[][] map_ = {
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "            H  ###".toCharArray(),
-            "        CH  H  ###".toCharArray(),
-            "        P!  H  ###".toCharArray(),
-            "            H  ###".toCharArray(),
-            "               ###".toCharArray(),
-            "              C###".toCharArray(),
-            "              C###".toCharArray(),
-            "              C###".toCharArray(),
-            "              C###".toCharArray(),
-            "                  ".toCharArray(),
-            "           CH     ".toCharArray(),
-            "           CH     ".toCharArray(),
-            "           CH     ".toCharArray(),
-            "           CH     ".toCharArray(),
-            "                  ".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "             #####".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "              K###".toCharArray(),    // koopa will be there
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "             #####".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "              C###".toCharArray(),
-            "              C###".toCharArray(),
-            "              C###".toCharArray(),
-            "              C###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "           H   ###".toCharArray(),
-            "       CH P!   ###".toCharArray(),
-            "           H   ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "              C###".toCharArray(),
-            "              C###".toCharArray(),
-            "              C###".toCharArray(),
-            "              C###".toCharArray(),
-            "               ###".toCharArray(),
-            "             F####".toCharArray(),   // flower will be on top of this
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "             C####".toCharArray(),
-            "            C#####".toCharArray(),
-            "           C######".toCharArray(),
-            "          C#######".toCharArray(),
-            "         C########".toCharArray(),
-            "         #########".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "              K###".toCharArray(),
-            "               ###".toCharArray(), // koopa
-            "               ###".toCharArray(),
-            "           F######".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "              K###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "              ####".toCharArray(),
-            "             #####".toCharArray(),
-            "            ######".toCharArray(),
-            "           #######".toCharArray(),
-            "          ########".toCharArray(),
-            "         #########".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "               ###".toCharArray(),
-            "|||||||||||||||###".toCharArray()
-    };
-
+  
     public char[][] getMap_() {
         return map_;
+    }
+    private void setMap_(char[][] map_) {
+        this.map_ = map_;
     }
 
     public void draw(TextGraphics graphics, Map map) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
@@ -160,8 +67,6 @@ public class Renderer {
             }
         }
         drawElements(graphics, map);
-        //System.out.println(moving);
-
     }
 
 
