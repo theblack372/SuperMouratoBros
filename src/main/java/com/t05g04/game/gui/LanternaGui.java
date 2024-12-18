@@ -9,6 +9,8 @@ import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
+import com.t05g04.game.controller.sound.SoundController;
+import com.t05g04.game.model.sound.SoundOptions;
 
 
 import java.awt.*;
@@ -89,6 +91,7 @@ public class LanternaGui implements GUI{
             }
             if (keyStroke.getKeyType() == KeyType.Character && keyStroke.getCharacter() == 'x') {
                 return ACTION.SHOOT;
+
             }
         }
         return null;

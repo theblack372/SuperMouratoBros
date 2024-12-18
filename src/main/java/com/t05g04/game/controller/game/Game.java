@@ -1,15 +1,18 @@
 package com.t05g04.game.controller.game;
+import com.t05g04.game.controller.sound.SoundController;
 import com.t05g04.game.gui.LanternaGui;
 import com.t05g04.game.model.game.arena.Map;
 import com.t05g04.game.gui.GUI;
 import com.t05g04.game.model.game.elements.Coin;
 import com.t05g04.game.model.menu.DeathMenu;
 import com.t05g04.game.model.menu.EndLevelMenu;
+import com.t05g04.game.model.sound.SoundOptions;
 
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
+
 
 public class Game {
     private static final long BULLET_DELAY = 100;
@@ -19,7 +22,8 @@ public class Game {
     LanternaGui gui;
     private long lastFlowerAppearingTime = System.currentTimeMillis();
     private long lastKoopaMoveTime = System.currentTimeMillis(); // Controla o tempo de movimento do Koopa
-    private long lastbulletAppearingTime = System.currentTimeMillis();    private Map map;
+    private long lastbulletAppearingTime = System.currentTimeMillis();
+    private Map map;
     private String mapPath;
 
     public Game(String mapPath) throws IOException, URISyntaxException, FontFormatException {
@@ -33,6 +37,7 @@ public class Game {
         int frameTime = 1000 / fps;
         map.getRenderer().renderObjects(map);
         int coinCounter= map.getCoins().size();
+        SoundController.getInstance().playSound(SoundOptions.MUSIC);
         while (!endTerminal) {
             map.makePowerup(map.getMourato());
             long startTime = System.currentTimeMillis();
@@ -52,7 +57,7 @@ public class Game {
             if (System.currentTimeMillis() - BULLET_DELAY >= lastbulletAppearingTime) {
                 for(int i=0;i<map.getBullets().size();i++) {
                     map.BulletMove(map.getBullet(i));
-                    map.headshot();// Mover Koopa
+                    map.headshot(); // Mover Koopa
                     lastbulletAppearingTime = System.currentTimeMillis();
                 }// Atualiza o tempo do último movimento
             }
@@ -66,8 +71,10 @@ public class Game {
                 if((map.getKoopa(i)!=null &&map.getMourato().getPosition().equals(map.getKoopa(i).getPosition()))) {
                     if (!map.getMourato().isSuperMourato_()) {
                         endTerminal = true;
+                        SoundController.getInstance().silence();
+                        SoundController.getInstance().playSound(SoundOptions.MARIO_DEATH);
+                        Thread.sleep(4000);
                         gui.close();
-
                         DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, new LanternaGui(32, 18), mapPath);
                         menu.run();
                     } else {
@@ -100,19 +107,20 @@ public class Game {
             int currentBullet =map.getMourato().getCountBullets_();
             int currentCoin = coinCounter - map.getCoins().size();
             draw();// redesenha a tela
-            String messageCoin = String.format("coins: %d", currentCoin);
-            String messageBullet = String.format("bullets: %d", currentBullet);
+            String messageCoinBullet = String.format("coins: %d    bullets: %d", currentCoin, currentBullet);
             if (map.flagReach()){
                 String endMessage = String.format("you won with %d coins!",currentCoin);
+                SoundController.getInstance().silence();
+                SoundController.getInstance().playSound(SoundOptions.STAGE_CLEAR);
                 gui.displayMessage(gui.getScreen(), endMessage, 6,7);
-                Thread.sleep(2000);
+                Thread.sleep(6000);
                 gui.close();
                 EndLevelMenu menu = new EndLevelMenu(new String[]{"Continue", "Retry", "Exit"}, new LanternaGui(32,18) , mapPath);
                 menu.run();
                 break;
             }
-            gui.displayMessage(gui.getScreen(), messageCoin, 1,1);
-            gui.displayMessage(gui.getScreen(), messageBullet, 1,2);
+            gui.displayMessage(gui.getScreen(), messageCoinBullet, 1,1);
+
             try {
                 if (sleepTime>0){Thread.sleep(sleepTime);} // Ajusta para que o loop tenha uma duração constante
             } catch (InterruptedException e) {

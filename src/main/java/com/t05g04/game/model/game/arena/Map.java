@@ -1,9 +1,11 @@
 package com.t05g04.game.model.game.arena;
+import com.t05g04.game.controller.sound.SoundController;
 import com.t05g04.game.gui.GUI;
 import com.t05g04.game.gui.LanternaGui;
 import com.t05g04.game.model.game.elements.*;
 import com.t05g04.game.model.game.Position;
 import com.t05g04.game.model.menu.DeathMenu;
+import com.t05g04.game.model.sound.SoundOptions;
 import com.t05g04.game.viewer.game.Renderer;
 
 import java.awt.*;
@@ -93,6 +95,7 @@ public class Map {
             if(!checkAndFall(mourato)) {
                 if (!mourato.isJump_()) {
                     mourato.setJump_(true);
+                    SoundController.getInstance().playSound(SoundOptions.JUMP);
                 }
             }
         }
@@ -158,14 +161,26 @@ public class Map {
 
 
     public void retrieveCoins(Position position) {
-        coins.removeIf(coin->coin.getPosition().equals(position));
+        if (coinTaken(position)){
+            SoundController.getInstance().playSound(SoundOptions.COIN);
+        }
+        coins.removeIf(coin -> coin.getPosition().equals(position));
 
+    }
+    private boolean coinTaken(Position position) {
+        for (Coin coin : coins) {
+            if (coin.getPosition().equals(position)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void goSuperMourato(Position position) {
         for(Powerup powerup:powerups) {
             if (powerup.getPosition().equals(position)&&powerup.isAppearing()) {
                 mourato.setSuperMourato_(true);
+                SoundController.getInstance().playSound(SoundOptions.POWER_UP);
                 powerups.remove(powerup);
                 mourato.setCountBullets_(mourato.getCountBullets_()+5);
             }
@@ -375,6 +390,7 @@ public class Map {
     public void shootBullet(Mourato mourato) {
         if(mourato.isSuperMourato_()&&mourato.getCountBullets_()>0) {
             Position nextPosition = mourato.getPosition();
+            SoundController.getInstance().playSound(SoundOptions.FIREBALL);
             createBullet(nextPosition);
             mourato.setCountBullets_(mourato.getCountBullets_() - 1);
         }else{
@@ -382,6 +398,7 @@ public class Map {
         }
 
     }
+
 
     public boolean flagReach() {
         Position currentPosition = mourato.getPosition();
