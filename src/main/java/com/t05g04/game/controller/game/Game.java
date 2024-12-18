@@ -65,13 +65,14 @@ public class Game {
 
             if (action== GUI.ACTION.QUIT || (map.getMourato().getPosition().getY()>= map.getHeight_()-1)){
                 endTerminal = true;
+                SoundController.getInstance().playSound(SoundOptions.MARIO_DEATH);
+                Thread.sleep(4000);
                 gui.close();
             }
             for(int i=0;i<map.koopasNo();i++) {
                 if((map.getKoopa(i)!=null &&map.getMourato().getPosition().equals(map.getKoopa(i).getPosition()))) {
                     if (!map.getMourato().isSuperMourato_()) {
                         endTerminal = true;
-                        SoundController.getInstance().silence();
                         SoundController.getInstance().playSound(SoundOptions.MARIO_DEATH);
                         Thread.sleep(4000);
                         gui.close();
@@ -110,7 +111,6 @@ public class Game {
             String messageCoinBullet = String.format("coins: %d    bullets: %d", currentCoin, currentBullet);
             if (map.flagReach()){
                 String endMessage = String.format("you won with %d coins!",currentCoin);
-                SoundController.getInstance().silence();
                 SoundController.getInstance().playSound(SoundOptions.STAGE_CLEAR);
                 gui.displayMessage(gui.getScreen(), endMessage, 6,7);
                 Thread.sleep(6000);

@@ -51,9 +51,11 @@ public class SoundController {
                 breakSound.play();
                 break;
             case MARIO_DEATH:
+                silence();
                 deathSound.play();
                 break;
             case STAGE_CLEAR:
+                silence();
                 winSound.play();
                 break;
             case COIN:
