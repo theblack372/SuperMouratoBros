@@ -51,6 +51,6 @@ public abstract class Menu {
         gui.close();
     }
 
-    public abstract void draw();
+    public abstract void draw() throws IOException;
 
 }

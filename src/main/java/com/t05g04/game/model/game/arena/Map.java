@@ -28,13 +28,15 @@ public class Map {
     private List<Powerup> powerups = new CopyOnWriteArrayList<>();
     private final List<PowerUpBlock> powerupBlocks = new ArrayList<>();
     Renderer renderer;
+    LanternaGui gui;
     private final List<Bullet> bullets = new CopyOnWriteArrayList<>();
 
-    public Map(int width, int height, String path) {
+    public Map(int width, int height, String path, LanternaGui gui) {
         width_ = width;
         height_ = height;
         renderer = new Renderer(path);
         mourato = new Mourato(new Position(1, 14),false, false, 1, 4, 0,0);
+        this.gui = gui;
     }
 
     public int getHeight_() {return height_;}
@@ -127,6 +129,7 @@ public class Map {
             mourato.shootBullet(this);
         }
     }
+
 
     public void retrieveCoins(Position position) {
         if (coinTaken(position)){

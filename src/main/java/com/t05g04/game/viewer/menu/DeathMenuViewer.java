@@ -2,26 +2,34 @@ package com.t05g04.game.viewer.menu;
 
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.screen.Screen;
+import com.t05g04.game.gui.LanternaGui;
+import com.t05g04.game.model.game.Position;
 import com.t05g04.game.model.menu.DeathMenu;
+
+import java.io.IOException;
+
+import static com.t05g04.game.Application.gui;
 
 public class DeathMenuViewer extends MenuViewer {
 
   DeathMenu deathMenu;
 
-  public DeathMenuViewer(Screen screen, DeathMenu deathmenu) {
-    super(screen);
+  public DeathMenuViewer(Screen screen, DeathMenu deathmenu, LanternaGui gui) throws IOException {
+    super(screen, gui);
     this.deathMenu = deathmenu;
   }
 
   @Override
-  public void drawMenu() {
-    TextGraphics textGraphics = screen.newTextGraphics();
+  public void drawMenu() throws IOException {
     int option = deathMenu.getSelectedOption();
-    String[] options = deathMenu.getOptions();
-    screen.clear();
-    textGraphics.putString(9, 2, "YOU DIED!", com.googlecode.lanterna.SGR.BOLD, com.googlecode.lanterna.SGR.UNDERLINE);
-    textGraphics.putString(5, 5, "Do you want to try again?");
-    drawOptions(textGraphics, option, options);
+    gui.clear();
+    drawOptions(option);
+    gui.refresh();
+  }
+
+  static void drawOptions(int option) throws IOException {
+    if (option==0) gui.draw_deathMenu_retry(new Position(0,0));
+    if (option==1) gui.draw_deathMenu_exit(new Position(0,0));
   }
 
 }

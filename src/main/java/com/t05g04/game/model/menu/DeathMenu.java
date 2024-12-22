@@ -15,12 +15,12 @@ public class DeathMenu extends Menu{
 
    public DeathMenu(String[] strings, LanternaGui gui, String currentMap) throws IOException, URISyntaxException, FontFormatException {
         super(strings, gui);
-        menuViewer = new DeathMenuViewer(gui.getScreen(), this);
+        menuViewer = new DeathMenuViewer(gui.getScreen(), this, gui);
         this.currentMap = currentMap;
     }
 
     @Override
-    public void draw() {
+    public void draw() throws IOException {
         menuViewer.drawMenu();
     }
 
@@ -29,9 +29,9 @@ public class DeathMenu extends Menu{
             throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         switch (selectedOption) {
             case 0:
-                gui.close();
-                Game game = new Game(currentMap);
+                Game game = new Game(currentMap, gui);
                 game.run();
+                break;
             case 1:
                 menuController.action = GUI.ACTION.QUIT;
                 break;

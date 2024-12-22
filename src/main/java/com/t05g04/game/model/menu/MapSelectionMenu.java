@@ -1,6 +1,7 @@
 package com.t05g04.game.model.menu;
 
 import com.t05g04.game.controller.game.Game;
+import com.t05g04.game.controller.menu.MapMenuController;
 import com.t05g04.game.gui.GUI;
 import com.t05g04.game.gui.LanternaGui;
 import com.t05g04.game.viewer.menu.MapSelectionMenuViewer;
@@ -14,7 +15,8 @@ public class MapSelectionMenu extends Menu{
     public MapSelectionMenu(String[] strings, LanternaGui gui)
             throws IOException, URISyntaxException, FontFormatException {
         super(strings, gui);
-        menuViewer = new MapSelectionMenuViewer(gui.getScreen(), this);
+        menuViewer = new MapSelectionMenuViewer(gui.getScreen(), this, gui);
+    menuController = new MapMenuController(this, gui);
     }
 
     @Override
@@ -22,23 +24,23 @@ public class MapSelectionMenu extends Menu{
             throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         switch (selectedOption) {
             case 0:
-                gui.close();
-                Game game = new Game("maps/map1.txt");
+
+                Game game = new Game("maps/map1.txt", gui);
                 game.run();
                 break;
             case 1:
-                gui.close();
-                Game game2 = new Game("maps/map2.txt");
+
+                Game game2 = new Game("maps/map2.txt", gui);
                 game2.run();
                 break;
             case 2:
-                gui.close();
-                Game game3 = new Game("maps/map3.txt");
+
+                Game game3 = new Game("maps/map3.txt", gui);
                 game3.run();
                 break;
             case 3:
-                gui.close();
-                Game game4 = new Game("maps/map4.txt");
+
+                Game game4 = new Game("maps/map4.txt", gui);
                 game4.run();
                 break;
             case 4:
@@ -48,7 +50,7 @@ public class MapSelectionMenu extends Menu{
     }
 
     @Override
-    public void draw() {
+    public void draw() throws IOException {
         menuViewer.drawMenu();
     }
 

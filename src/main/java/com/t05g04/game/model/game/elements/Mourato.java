@@ -10,6 +10,9 @@ import com.t05g04.game.model.game.arena.Map;
 import com.t05g04.game.model.menu.DeathMenu;
 import com.t05g04.game.model.sound.SoundOptions;
 
+
+import static com.t05g04.game.Application.gui;
+
 import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -76,11 +79,8 @@ public class Mourato extends Element{
         this.countBullets_ = countBullets_;
     }
     @Override
-    public void draw(TextGraphics graphics, Position position, boolean moving) {
-        graphics.setForegroundColor(TextColor.Factory.fromString("#FF0000"));
-        graphics.enableModifiers(SGR.BOLD);
-        graphics.putString(new TerminalPosition(position.getX(),
-                position_.getY()), "M");
+    public void draw(TextGraphics graphics, Position position, boolean moving) throws IOException {
+        gui.draw_mourato_run1(position);
     }
 
     @Override
@@ -142,7 +142,7 @@ public class Mourato extends Element{
             map.destroyKoopaIfHit(this);
             return true;
         } else if (y + 1 >= map.getHeight_()) {
-            DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, new LanternaGui(32, 18), map.getRenderer().getPath());
+            DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, new LanternaGui(32, 18), map.getRenderer().getMapPath());
             menu.run();
         }
         return false;

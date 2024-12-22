@@ -13,7 +13,7 @@ public class EndLevelMenu extends Menu {
     String currentMap;
     public EndLevelMenu(String[] string, LanternaGui gui, String currentMap) throws IOException, URISyntaxException, FontFormatException {
         super(string, gui);
-        menuViewer = new EndLevelMenuViewer(gui.getScreen(), this);
+        menuViewer = new EndLevelMenuViewer(gui.getScreen(), this, gui);
         this.currentMap = currentMap;
     }
 
@@ -24,12 +24,12 @@ public class EndLevelMenu extends Menu {
             case 0:
                 gui.close();
                 MapSelectionMenu mapSelectionMenu = new MapSelectionMenu(
-                        new String[]{"Map 1", "Map 2", "Map 3", "Map 4", "Exit"}, new LanternaGui(32, 18));
+                        new String[]{"Map 1", "Map 2", "Map 3", "Map 4", "Exit"}, gui);
                 mapSelectionMenu.run();
                 break;
             case 1:
                 gui.close();
-                Game game = new Game(currentMap);
+                Game game = new Game(currentMap, gui);
                 game.run();
                 break;
 
@@ -41,7 +41,7 @@ public class EndLevelMenu extends Menu {
     }
 
     @Override
-    public void draw() {menuViewer.drawMenu();}
+    public void draw() throws IOException {menuViewer.drawMenu();}
 
     @Override
     public void run() throws IOException, URISyntaxException, FontFormatException, InterruptedException {

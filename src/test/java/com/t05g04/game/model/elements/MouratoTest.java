@@ -1,5 +1,6 @@
 // Não foi testado o movimento do salto e da queda do mourato
 package com.t05g04.game.model.elements;
+import com.t05g04.game.gui.LanternaGui;
 import com.t05g04.game.model.game.Position;
 import com.t05g04.game.model.game.arena.Map;
 import com.t05g04.game.model.game.elements.Mourato;
@@ -16,7 +17,7 @@ public class MouratoTest {
     @BeforeEach
     void setUp() {
         position = new Position(5, 5);
-        map= new Map(10,10, "maps/map1");
+        //map= new Map(10,10, "maps/map1", new LanternaGui());
 
         mourato = new Mourato(position, false, false,5, 10, 2,0);
     }
