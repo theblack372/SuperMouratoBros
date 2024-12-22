@@ -1,15 +1,18 @@
 package com.t05g04.game.model.game.arena;
+import com.t05g04.game.controller.sound.SoundController;
 import com.t05g04.game.gui.GUI;
 import com.t05g04.game.gui.LanternaGui;
 import com.t05g04.game.model.game.elements.*;
 import com.t05g04.game.model.game.Position;
 import com.t05g04.game.model.menu.DeathMenu;
+import com.t05g04.game.model.sound.SoundOptions;
 import com.t05g04.game.viewer.game.Renderer;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -36,64 +39,35 @@ public class Map {
         this.gui = gui;
     }
 
-    public int getHeight_() {
-        return height_;
-    }
+    public int getHeight_() {return height_;}
     public int getStartX_() {return startX_;}
-    public int getWidth_() {
-        return width_;
-    }
-    public List<Coin> getCoins() {
-        return coins;
-    }
+    public int getWidth_() {return width_;}
 
+    public List<Coin> getCoins() {return coins;}
     public List<Powerup> getPowerups() {return powerups;}
-
-    public List<PowerUpBlock> getPowerupBlocks() {
-        return powerupBlocks;
-    }
-
-    public List<Bullet> getBullets() {
-        return bullets;
-    }
-
-    public int flowerNo(){
-        return flowers.size();
-    }
-
-    public int koopasNo(){
-        return koopas.size();
-    }
-    public int powerupBlocksNo(){
-        return powerupBlocks.size();
-    }
-
-    public List<Koopa> getKoopas() {
-        return koopas;
-    }
+    public List<PowerUpBlock> getPowerupBlocks() {return powerupBlocks;}
+    public List<Koopa> getKoopas() {return koopas;}
     public List<Flower> getFlowers() {return flowers;}
-    public Renderer getRenderer() {
-        return renderer;
-    }
+    public List<Bullet> getBullets() {return bullets;}
+    public Renderer getRenderer() {return renderer;}
 
-    public void createCoin(Position position) {
-        coins.add(new Coin(position));
-    }
+    public int flowerNo(){return flowers.size();}
+    public int koopasNo(){return koopas.size();}
+    public int powerupBlocksNo(){return powerupBlocks.size();}
 
-    public void createKoopa(Position position) {
-        koopas.add(new Koopa(position, -1));
-    }
-    public void createFlower(Position position) {
-        flowers.add(new Flower(position,true));
-    }
+    public void createCoin(Position position) {coins.add(new Coin(position));}
+    public void createKoopa(Position position) {koopas.add(new Koopa(position, -1));}
+    public void createFlower(Position position) {flowers.add(new Flower(position,true));}
     public void createPowerup(Position position) {powerups.add(new Powerup(position,false,powerups.size()));}
     public void createpowerupBlock(Position position) {powerupBlocks.add(new PowerUpBlock(position,false,powerupBlocks.size()));}
     public void createBullet(Position position) {bullets.add(new Bullet(position,0,true));}
+
     public void processKey(GUI.ACTION action) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         if (action== GUI.ACTION.UP) {
             if(!checkAndFall(mourato)) {
                 if (!mourato.isJump_()) {
                     mourato.setJump_(true);
+                    SoundController.getInstance().playSound(SoundOptions.JUMP);
                 }
             }
         }
@@ -113,8 +87,7 @@ public class Map {
             }
         }
         if (action== GUI.ACTION.RIGHT) {
-
-            if (isMouratoMiddle() && canMouratoMove(mourato.moveRight()) && getRenderer().getMap_().length-width_!=startX_) {
+            if (isMouratoMiddle() && canObjectMove(mourato.moveRight()) && getRenderer().getMap_().length-width_!=startX_) {
                 startX_++;
                 for(Koopa koopa : koopas){
                     koopa.moveTerminal();
@@ -153,41 +126,48 @@ public class Map {
             goSuperMourato(mourato.getPosition());
         }
         if(action==GUI.ACTION.SHOOT) {
-            shootBullet(getMourato());
+            mourato.shootBullet(this);
         }
     }
 
 
     public void retrieveCoins(Position position) {
-        coins.removeIf(coin->coin.getPosition().equals(position));
+        if (coinTaken(position)){
+            SoundController.getInstance().playSound(SoundOptions.COIN);
+        }
+        coins.removeIf(coin -> coin.getPosition().equals(position));
 
+    }
+    private boolean coinTaken(Position position) {
+        for (Coin coin : coins) {
+            if (coin.getPosition().equals(position)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void goSuperMourato(Position position) {
         for(Powerup powerup:powerups) {
             if (powerup.getPosition().equals(position)&&powerup.isAppearing()) {
                 mourato.setSuperMourato_(true);
+                SoundController.getInstance().playSound(SoundOptions.POWER_UP);
                 powerups.remove(powerup);
                 mourato.setCountBullets_(mourato.getCountBullets_()+5);
             }
         }
     }
 
-    private boolean canMouratoMove(Position position) {
-        // Verificar se a posição está dentro dos limites
+    public boolean canObjectMove(Position position) {
         if (position.getX() < 0 || position.getY() < 0 || position.getX() >= width_ || position.getY() >= height_) {
             return false; // Fora dos limites
         }
-
-        // Verificar se a posição não colide com objetos
         char tile = renderer.getMap_()[position.getX()+renderer.getStart()][position.getY()];
-
         return tile!='#' && tile!='H' && tile!='!';
     }
 
-
     private void moveMourato(Position position) {
-        if (canMouratoMove(position)) {
+        if (canObjectMove(position)) {
             mourato.getPosition().setPosition(position);
         }
     }
@@ -195,43 +175,17 @@ public class Map {
         return mourato.getPosition().getX() == 16;
     }
 
-    private boolean canKoopaMove(Position position) {
-        return renderer.getMap_()[position.getX()+ renderer.getStart()][position.getY()] != '#';
-    }
-    private boolean canBulletMove(Position position) {
-        boolean outSide=canMouratoMove(position);
-        return outSide;
-    }
-
     public void KoopaMove(Koopa koopa) {
-        if (koopa == null) {
-            return;
-        }
-        synchronized (koopas) {
-            int nextX = koopa.getPosition().getX() + koopa.getVelocity_();
-            int nextY = koopa.getPosition().getY();
-            Position nextPosition = new Position(nextX, nextY);
-            if (canKoopaMove(nextPosition)) {
-                koopa.move();
-            } else {
-                koopa.setVelocity_(-koopa.getVelocity_());
-                koopa.move();
-            }
-        }
-    }
-    public void BulletMove(Bullet bullet) {
-        synchronized (bullets) {
-            int nextX = bullet.getPosition().getX() + bullet.getVelocity_();
-            int nextY = bullet.getPosition().getY();
-            Position nextPosition = new Position(nextX, nextY);
-            if (canBulletMove(nextPosition)) {
-                bullet.move();
-            } else {
-                bullets.remove(bullet);
-            }
+        if (koopa != null) {
+            koopa.move(this);
         }
     }
 
+    public void BulletMove(Bullet bullet) {
+        if (bullet != null) {
+            bullet.move(this);
+        }
+    }
 
     public Koopa getKoopa(int i) {
         if (!koopas.isEmpty()) {
@@ -252,90 +206,12 @@ public class Map {
         return null; // Retorna null caso não haja Koopas
     }
 
+    public Mourato getMourato() {return mourato;}
 
-
-    public Mourato getMourato() {
-        return mourato;
-    }
-
-
-    public void updateJump(Mourato mourato) {
-        if (!mourato.isJump_()) return;
-
-        int velocity = mourato.getJumpVelocity_();
-        int jumpHeight = mourato.getJumpHeight_();
-        int jumpProgress = mourato.getCountJump_();
-        if (jumpProgress < jumpHeight) { // verifica se o mourato ainda está em momento ascendente do salto
-            boolean blockBroken = renderer.breakBlock(mourato);
-            if (blockBroken) {        // se o bloco for partido, força o mourato ir para sentido contrário
-                jumpProgress = jumpHeight;
-                mourato.setCountJump_(jumpProgress);
-            }
-
-        }
-
-        // Atualiza a posição para subir ou descer
-        int newY = mourato.getPosition().getY() + ((jumpProgress < jumpHeight) ? -velocity : velocity);
-        Position newPosition = new Position(mourato.getPosition().getX(), newY);
-
-        if(newY>=height_){
-            System.exit(0);
-        }
-
-        if (canMouratoMove(newPosition)) {
-            mourato.getPosition().setPosition(newPosition);
-            retrieveCoins(newPosition);
-            goSuperMourato(newPosition);// Coleta moedas
-            mourato.setCountJump_(jumpProgress + 1);
-            if (jumpProgress >= jumpHeight) {
-                destroyKoopaIfHit(mourato); // mata o koopa em caso de velocidade <0
-            }
-        } else {
-            mourato.setJump_(false); // Termina o salto em caso de colisão
-        }
-
-        // Verifica se atingiu o chão
-        if (!canMouratoMove(new Position(mourato.getPosition().getX(), mourato.getPosition().getY() + 1))) {
-            mourato.setJump_(false); // Termina o salto ao atingir o chão
-            mourato.setCountJump_(0); // Reseta o progresso
-        }
-    }
+    public void updateJump(Mourato mourato) {mourato.updateJump(this);}
     public boolean checkAndFall(Mourato mourato) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
-        if (mourato.isJump_()) {
-            return false; // Se está no meio do salto, não aplica a lógica de queda
-        }
-
-        Position currentPosition = mourato.getPosition();
-        int x = currentPosition.getX();
-        int y = currentPosition.getY();
-        if (y + 1 < height_ && canMouratoMove(new Position(x, y + 1))) {
-            mourato.getPosition().setPosition(new Position(x, y + 1));
-            retrieveCoins(mourato.getPosition());
-            goSuperMourato(mourato.getPosition());
-            destroyKoopaIfHit(mourato);
-            return true;
-        }
-        else if (y + 1 >= height_) {
-            DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, gui , renderer.getMapPath());
-            menu.run();
-        }
-        return false;
-    }
-
-    private void destroyKoopaIfHit (Mourato mourato){
-        Position mouratoPosition = mourato.getPosition();
-        synchronized (koopas) {
-            for (Koopa koopa : koopas) {
-                Position koopaPosition = koopa.getPosition();
-
-                // Verifica se Mourato está na mesma posição ou imediatamente acima do Koopa
-                if (mouratoPosition.getX() == koopaPosition.getX() && mouratoPosition.getY() == koopaPosition.getY() - 1) {
-                    koopas.remove(koopa); // Remove o Koopa atingido
-                    break; // Sai após destruir o Koopa
-                }
-            }
-        }
-    }
+        return mourato.checkAndFall(this);}
+    public void destroyKoopaIfHit(Mourato mourato) {mourato.destroyKoopaIfHit(this);}
 
     public void headshot(){
         for(Bullet bullet : bullets) {
@@ -355,8 +231,7 @@ public class Map {
         }
     }
 
-
-    public void makePowerup(Mourato mourato) {
+    public void makePowerup() {
         if (mourato.isJump_()) {
             if (mourato.getJumpVelocity_() >= 0) {
                 for(PowerUpBlock powerUpBlock:powerupBlocks) {
@@ -373,20 +248,9 @@ public class Map {
             }
         }
     }
-    public void shootBullet(Mourato mourato) {
-        if(mourato.isSuperMourato_()&&mourato.getCountBullets_()>0) {
-            Position nextPosition = mourato.getPosition();
-            createBullet(nextPosition);
-            mourato.setCountBullets_(mourato.getCountBullets_() - 1);
-        }else{
-            mourato.setSuperMourato_(false);
-        }
-
-    }
 
     public boolean flagReach() {
         Position currentPosition = mourato.getPosition();
         return renderer.getMap_()[currentPosition.getX()+startX_][currentPosition.getY()] == '|';
     }
 }
-

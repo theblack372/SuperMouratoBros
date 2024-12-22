@@ -1,15 +1,18 @@
 package com.t05g04.game.controller.game;
+import com.t05g04.game.controller.sound.SoundController;
 import com.t05g04.game.gui.LanternaGui;
 import com.t05g04.game.model.game.arena.Map;
 import com.t05g04.game.gui.GUI;
 import com.t05g04.game.model.game.elements.Coin;
 import com.t05g04.game.model.menu.DeathMenu;
 import com.t05g04.game.model.menu.EndLevelMenu;
+import com.t05g04.game.model.sound.SoundOptions;
 
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
+
 
 public class Game {
     private static final long BULLET_DELAY = 100;
@@ -19,7 +22,8 @@ public class Game {
     LanternaGui gui;
     private long lastFlowerAppearingTime = System.currentTimeMillis();
     private long lastKoopaMoveTime = System.currentTimeMillis(); // Controla o tempo de movimento do Koopa
-    private long lastbulletAppearingTime = System.currentTimeMillis();    private Map map;
+    private long lastbulletAppearingTime = System.currentTimeMillis();
+    private Map map;
     private String mapPath;
 
     public Game(String mapPath, LanternaGui gui) throws IOException, URISyntaxException, FontFormatException {
@@ -33,8 +37,9 @@ public class Game {
         int frameTime = 1000 / fps;
         map.getRenderer().renderObjects(map);
         int coinCounter= map.getCoins().size();
+        SoundController.getInstance().playSound(SoundOptions.MUSIC);
         while (!endTerminal) {
-            map.makePowerup(map.getMourato());
+            map.makePowerup();
             long startTime = System.currentTimeMillis();
             if(System.currentTimeMillis() - lastFlowerAppearingTime >= Flower_APPEARING_INTERVAL) {
                 for(int i=0;i<map.flowerNo();i++) {
@@ -52,7 +57,7 @@ public class Game {
             if (System.currentTimeMillis() - BULLET_DELAY >= lastbulletAppearingTime) {
                 for(int i=0;i<map.getBullets().size();i++) {
                     map.BulletMove(map.getBullet(i));
-                    map.headshot();// Mover Koopa
+                    map.headshot(); // Mover Koopa
                     lastbulletAppearingTime = System.currentTimeMillis();
                 }// Atualiza o tempo do último movimento
             }
@@ -65,16 +70,22 @@ public class Game {
 
             if ((map.getMourato().getPosition().getY()>= map.getHeight_()-1)){
                 endTerminal = true;
+                SoundController.getInstance().playSound(SoundOptions.MARIO_DEATH);
+                Thread.sleep(4000);
                 DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, gui, mapPath);
                 menu.run();
+                break;
             }
 
             for(int i=0;i<map.koopasNo();i++) {
                 if((map.getKoopa(i)!=null &&map.getMourato().getPosition().equals(map.getKoopa(i).getPosition()))) {
                     if (!map.getMourato().isSuperMourato_()) {
                         endTerminal = true;
-                        DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, gui, mapPath);
-                        menu.run();
+                        SoundController.getInstance().playSound(SoundOptions.MARIO_DEATH);
+                        Thread.sleep(4000);
+                        DeathMenu deathMenu = new DeathMenu(new String[]{"Retry", "Exit"}, gui, mapPath);
+                        deathMenu.run();
+                        break;
                     } else {
                         map.getMourato().setCountBullets_(map.getMourato().getCountBullets_()-1);
                         if(map.getMourato().getCountBullets_()==0) {
@@ -87,9 +98,11 @@ public class Game {
                 if((map.getFlower(i).isAppearing() && map.getMourato().getPosition().equals(map.getFlower(i).getPosition()))){
                     if(!map.getMourato().isSuperMourato_()) {
                         endTerminal = true;
-                        gui.close();
-                        DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, gui, mapPath);
-                        menu.run();
+                        SoundController.getInstance().playSound(SoundOptions.MARIO_DEATH);
+                        Thread.sleep(4000);
+                        DeathMenu deathMenu = new DeathMenu(new String[]{"Retry", "Exit"}, gui, mapPath);
+                        deathMenu.run();
+
                     } else {
                         map.getMourato().setCountBullets_(map.getMourato().getCountBullets_()-1);
                         if(map.getMourato().getCountBullets_()==0) {
@@ -108,9 +121,8 @@ public class Game {
 //            String messageCoin = String.format("coins: %d", currentCoin);
 //            String messageBullet = String.format("bullets: %d", currentBullet);
             if (map.flagReach()){
-//                String endMessage = String.format("you won with %d coins!",currentCoin);
-//                gui.displayMessage(gui.getScreen(), endMessage, 6,7);
-//                Thread.sleep(2000);
+                SoundController.getInstance().playSound(SoundOptions.STAGE_CLEAR);
+                gui.close();
                 EndLevelMenu endMenu = new EndLevelMenu(new String[]{"Continue", "Retry", "Exit"}, gui, mapPath);
                 endMenu.run();
                 break;

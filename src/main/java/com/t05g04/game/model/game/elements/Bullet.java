@@ -5,6 +5,7 @@ import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.t05g04.game.model.game.Position;
+import com.t05g04.game.model.game.arena.Map;
 
 public class Bullet extends Element {
     private int velocity_;
@@ -42,5 +43,23 @@ public class Bullet extends Element {
     public void setDirection_(boolean direction) {
         direction_ = direction;
     }
+
+    public void move(Map map) {
+        synchronized (this) {
+            int nextX = getPosition().getX() + getVelocity_();
+            int nextY = getPosition().getY();
+            Position nextPosition = new Position(nextX, nextY); // Nova posição para teste de colisão
+
+            if (map.canObjectMove(nextPosition)) {
+                // Atualiza a posição do projétil
+                getPosition().setPosition(nextPosition);
+            } else {
+                // Remove o projétil do mapa ao colidir
+                map.getBullets().remove(this);
+            }
+        }
+    }
+
+
 }
 

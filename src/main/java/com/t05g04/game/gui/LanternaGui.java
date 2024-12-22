@@ -11,6 +11,8 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
 import com.t05g04.game.model.game.Position;
+import com.t05g04.game.controller.sound.SoundController;
+import com.t05g04.game.model.sound.SoundOptions;
 
 
 import javax.imageio.ImageIO;
@@ -523,7 +525,6 @@ public class LanternaGui implements GUI{
         return terminal;
     }
 
-
     @Override
     public ACTION getNextAction() throws IOException {
         KeyStroke keyStroke = screen.pollInput();
@@ -716,8 +717,8 @@ public class LanternaGui implements GUI{
     public void draw_startMenu_start(Position position) throws IOException {
         drawPNG(position, this.startMenu_start);}
 
-    public void draw_flag(Position position) throws IOException {
-        drawPNG(position, this.flag);
+    public void draw_flag() throws IOException {
+        drawPNG(new Position(31,0), this.flag);
     }
     public void draw_coin(Position position) throws IOException {
         drawPNG(position, this.coin);

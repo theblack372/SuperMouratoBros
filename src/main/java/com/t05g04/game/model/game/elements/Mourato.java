@@ -3,12 +3,19 @@ import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
+import com.t05g04.game.controller.sound.SoundController;
+import com.t05g04.game.gui.LanternaGui;
 import com.t05g04.game.model.game.Position;
+import com.t05g04.game.model.game.arena.Map;
+import com.t05g04.game.model.menu.DeathMenu;
+import com.t05g04.game.model.sound.SoundOptions;
 
-import java.io.IOException;
 
 import static com.t05g04.game.Application.gui;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class Mourato extends Element{
     private boolean jump_;
@@ -78,5 +85,88 @@ public class Mourato extends Element{
 
     @Override
     void moveTerminal() {
+    }
+
+    public void updateJump(Map map) {
+        if (!isJump_()) return;
+
+        int jumpProgress = getCountJump_();
+
+        if (jumpProgress < getJumpHeight_()) {
+            boolean blockBroken = map.getRenderer().breakBlock(this);
+            if (blockBroken) {
+                setCountJump_(0);
+                setJump_(false);
+                return;
+            }
+        }
+
+        int newY = getPosition().getY() + ((jumpProgress < getJumpHeight_()) ? -getJumpVelocity_() : getJumpVelocity_());
+        Position newPosition = new Position(getPosition().getX(), newY);
+
+        if (newY >= map.getHeight_()) {
+            System.exit(0);
+        }
+
+        if (map.canObjectMove(newPosition)) {
+            getPosition().setPosition(newPosition);
+            map.retrieveCoins(newPosition);
+            map.goSuperMourato(newPosition);
+            setCountJump_(jumpProgress + 1);
+
+            if (jumpProgress >= getJumpHeight_()) {
+                map.destroyKoopaIfHit(this);
+            }
+        } else {
+            setJump_(false);
+            setCountJump_(0);
+        }
+
+        if (!map.canObjectMove(new Position(getPosition().getX(), getPosition().getY() + 1))) {
+            setJump_(false);
+            setCountJump_(0);
+        }
+    }
+
+    public boolean checkAndFall(Map map) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
+        if (isJump_()) return false;
+
+        Position currentPosition = getPosition();
+        int x = currentPosition.getX();
+        int y = currentPosition.getY();
+
+        if (y + 1 < map.getHeight_() && map.canObjectMove(new Position(x, y + 1))) {
+            getPosition().setPosition(new Position(x, y + 1));
+            map.retrieveCoins(getPosition());
+            map.goSuperMourato(getPosition());
+            map.destroyKoopaIfHit(this);
+            return true;
+        } else if (y + 1 >= map.getHeight_()) {
+            DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, new LanternaGui(32, 18), map.getRenderer().getMapPath());
+            menu.run();
+        }
+        return false;
+    }
+    public void destroyKoopaIfHit(Map map) {
+        Position mouratoPosition = getPosition();
+        synchronized (map.getKoopas()) {
+            for (Koopa koopa : map.getKoopas()) {
+                Position koopaPosition = koopa.getPosition();
+                if (mouratoPosition.getX() == koopaPosition.getX() && mouratoPosition.getY() == koopaPosition.getY() - 1) {
+                    map.getKoopas().remove(koopa);
+                    break;
+                }
+            }
+        }
+    }
+    public void shootBullet(Map map) {
+        if (isSuperMourato_() && getCountBullets_() > 0) {
+            Position bulletPosition = new Position(getPosition().getX(), getPosition().getY());
+            map.createBullet(bulletPosition); // Usa o Map para criar a bala
+            setCountBullets_(getCountBullets_() - 1);
+            SoundController.getInstance().playSound(SoundOptions.FIREBALL);
+        } else {
+            setSuperMourato_(false);
+        }
     }
 }
