@@ -122,7 +122,6 @@ public class Game {
 //            String messageBullet = String.format("bullets: %d", currentBullet);
             if (map.flagReach()){
                 SoundController.getInstance().playSound(SoundOptions.STAGE_CLEAR);
-                gui.close();
                 EndLevelMenu endMenu = new EndLevelMenu(new String[]{"Continue", "Retry", "Exit"}, gui, mapPath);
                 endMenu.run();
                 break;
