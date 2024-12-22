@@ -10,13 +10,19 @@ import java.net.URISyntaxException;
 
 public class Application {
     static Menu menu;
+    public static LanternaGui gui = null;
+
+    public Application() throws IOException, URISyntaxException, FontFormatException {
+        gui= new LanternaGui(32*16,18*16);
+    }
 
     public static void main(String[] args) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
-        Application.startMenu();
+        new Application();
+        startMenu();
     }
 
     public static void startMenu() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
-        menu = new StartMenu(new String[]{"Start", "Exit"}, new LanternaGui(32, 18));
+        menu = new StartMenu(new String[]{"Start", "Exit"}, gui);
         menu.run();
     }
 }

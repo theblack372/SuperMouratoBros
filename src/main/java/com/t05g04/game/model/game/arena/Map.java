@@ -10,7 +10,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -26,13 +25,15 @@ public class Map {
     private List<Powerup> powerups = new CopyOnWriteArrayList<>();
     private final List<PowerUpBlock> powerupBlocks = new ArrayList<>();
     Renderer renderer;
+    LanternaGui gui;
     private final List<Bullet> bullets = new CopyOnWriteArrayList<>();
 
-    public Map(int width, int height, String path) {
+    public Map(int width, int height, String path, LanternaGui gui) {
         width_ = width;
         height_ = height;
         renderer = new Renderer(path);
         mourato = new Mourato(new Position(1, 14),false, false, 1, 4, 0,0);
+        this.gui = gui;
     }
 
     public int getHeight_() {
@@ -315,7 +316,7 @@ public class Map {
             return true;
         }
         else if (y + 1 >= height_) {
-            DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, new LanternaGui(32, 18) , renderer.getPath());
+            DeathMenu menu = new DeathMenu(new String[]{"Retry", "Exit"}, gui , renderer.getMapPath());
             menu.run();
         }
         return false;

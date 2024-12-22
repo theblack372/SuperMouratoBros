@@ -8,11 +8,16 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 import com.t05g04.game.model.game.arena.Map;
 import com.t05g04.game.model.game.elements.*;
 import com.t05g04.game.model.game.Position;
+import com.t05g04.game.viewer.Viewer;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
+import static com.t05g04.game.Application.gui;
 import static com.t05g04.game.viewer.game.MapLoader.loadMap;
 
 public class Renderer {
@@ -21,11 +26,11 @@ public class Renderer {
     int terminalStart=32;
     boolean objectsReceived = false;
     char[][] map_;
-    String path;
+    String mapPath;
 
     public Renderer(String path){
         setMap_(loadMap(path));
-        this.path = path;
+        this.mapPath = path;
     }
 
     public int getStart() {
@@ -39,34 +44,39 @@ public class Renderer {
         this.map_ = map_;
     }
 
-    public void draw(TextGraphics graphics, Map map) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
+    public void draw(TextGraphics graphics, Map map, int coins, int bullets) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         start = map.getStartX_();
-        terminalStart=start+32;
-        moving= map.isMouratoMiddle();
+        terminalStart=start+(32);
+        moving = map.isMouratoMiddle();
         graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
-        graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(map.getWidth_(), map.getHeight_()), ' ');
+        graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(map.getWidth_()*16, map.getHeight_()*16), ' ');
+        gui.draw_curentCoins(coins);
+        gui.draw_currentBullets(bullets);
         for (int x = start; x < terminalStart; x++) {
             for (int y = 0; y < map_[x].length; y++) {
                 char tile = map_[x][y];
+                Position position = new Position(x-start,y);
                 switch (tile) {
                     case '#': // Block
-                        graphics.setForegroundColor(TextColor.Factory.fromString("#FFA500"));
-                        graphics.setBackgroundColor(TextColor.Factory.fromString("#9c4a00"));
-                        graphics.enableModifiers(SGR.BOLD);
-                        graphics.putString(new TerminalPosition(x - start, y), "#");
-                        graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
+//                        graphics.setForegroundColor(TextColor.Factory.fromString("#FFA500"));
+//                        graphics.setBackgroundColor(TextColor.Factory.fromString("#9c4a00"));
+//                        graphics.enableModifiers(SGR.BOLD);
+//                        graphics.putString(new TerminalPosition(x - start, y), "#");
+//                        graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
+                        //drawPNG(graphics, position, "sprites/blocks/#.png");
+                        gui.draw_Wall(position);
                         break;
                     case 'H': // breakable block
-                        graphics.setForegroundColor(TextColor.Factory.fromString("#FFA500"));
-                        graphics.setBackgroundColor(TextColor.Factory.fromString("#9c4a00"));
-                        graphics.enableModifiers(SGR.BOLD);
-                        graphics.putString(new TerminalPosition(x - start, y), "H");
-                        graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
+//                        graphics.setForegroundColor(TextColor.Factory.fromString("#FFA500"));
+//                        graphics.setBackgroundColor(TextColor.Factory.fromString("#9c4a00"));
+//                        graphics.enableModifiers(SGR.BOLD);
+//                        graphics.putString(new TerminalPosition(x - start, y), "H");
+//                        graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
+                        //drawPNG(graphics, position, "sprites/blocks/H.png");
+                        gui.draw_breakableWall(position);
                         break;
-                    case '|': // Flag
-                        graphics.setForegroundColor(TextColor.Factory.fromString("#FFA500"));
-                        graphics.enableModifiers(SGR.BOLD);
-                        graphics.putString(new TerminalPosition(x - start, y), "|");
+//                    case '|': // Flag
+//                        gui.draw_flag(position);
                     default: // Empty space
                         break;
                 }
@@ -81,28 +91,27 @@ public class Renderer {
         map.checkAndFall(map.getMourato());
         synchronized (map.getKoopas()) {
             for (Koopa koopa : map.getKoopas()) {
-                koopa.draw(graphics, koopa.getPosition(), moving);
+                gui.draw_koopa1(koopa.getPosition());
             }
         }
         for (Coin coin : map.getCoins()) {
-            coin.draw(graphics, coin.getPosition(), moving);
+            gui.draw_coin(coin.getPosition());
         }
 
         for (Flower flower : map.getFlowers()) {
             if (flower.isAppearing()) {
-                flower.draw(graphics, flower.getPosition(), moving);
+                gui.draw_flower(flower.getPosition());
             }
         }
         for(Powerup powerup : map.getPowerups()) {
             if(powerup.isAppearing()) {
-                powerup.draw(graphics, powerup.getPosition(), moving);
+                gui.draw_powerUpFlower(powerup.getPosition());
             }
         }
         for(PowerUpBlock powerupblock: map.getPowerupBlocks()) {
-            powerupblock.draw(graphics, powerupblock.getPosition(), moving);
-        }
+            gui.draw_questionBlock(powerupblock.getPosition());        }
         for(Bullet bullet:map.getBullets()){
-            bullet.draw(graphics, bullet.getPosition(), moving);
+            gui.draw_fireBall1(bullet.getPosition());
         }
     }
 
@@ -111,7 +120,7 @@ public class Renderer {
             if (mourato.getJumpVelocity_() >= 0) {// caso mourato esteja em salto em momento ascendente
                 Position positionBlock = new Position(mourato.getPosition().getX() + start, mourato.getPosition().getY() - 1);
                 if (map_[positionBlock.getX()][positionBlock.getY()] == 'H') {
-                    map_[positionBlock.getX()][positionBlock.getY()] = '.';//parte o bloco
+                    map_[positionBlock.getX()][positionBlock.getY()] = ' ';//parte o bloco
                     mourato.setCountJump_(mourato.getJumpHeight_()); //mete o contador de salto no maximo para provocar momento descendente
                     return true;
                 }
@@ -148,7 +157,9 @@ public class Renderer {
         objectsReceived = true;
     }
 
-    public String getPath() {
-        return path;
+    public String getMapPath() {
+        return mapPath;
     }
+
+
 }
