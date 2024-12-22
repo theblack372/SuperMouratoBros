@@ -39,7 +39,7 @@ public class Game {
         int coinCounter= map.getCoins().size();
         SoundController.getInstance().playSound(SoundOptions.MUSIC);
         while (!endTerminal) {
-            map.makePowerup(map.getMourato());
+            map.makePowerup();
             long startTime = System.currentTimeMillis();
             if(System.currentTimeMillis() - lastFlowerAppearingTime >= Flower_APPEARING_INTERVAL) {
                 for(int i=0;i<map.flowerNo();i++) {

@@ -5,6 +5,7 @@ import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.t05g04.game.model.game.Position;
+import com.t05g04.game.model.game.arena.Map;
 
 import java.io.PipedOutputStream;
 
@@ -39,5 +40,20 @@ public class Koopa extends Element {
     public void setVelocity_(int velocity) {
         velocity_ = velocity;
     }
+    public void move(Map map) {
+        synchronized (this) {
+            int nextX = getPosition().getX() + getVelocity_();
+            int nextY = getPosition().getY();
+            Position nextPosition = new Position(nextX, nextY);
+
+            if (map.canObjectMove(nextPosition)) {
+                getPosition().setPosition(nextPosition);
+            } else {
+                setVelocity_(-getVelocity_());
+                getPosition().setPosition(new Position(getPosition().getX() + getVelocity_(), nextY));
+            }
+        }
+    }
+
 }
 
