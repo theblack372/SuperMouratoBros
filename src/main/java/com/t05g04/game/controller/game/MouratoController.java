@@ -120,6 +120,20 @@ public class MouratoController extends GameController {
         return false;
     }
 
+    private boolean flagReached() throws InterruptedException {
+        return getModel().flagReach();
+    }
+
+    private void endGameWin(Game game) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
+        game.draw(game.coinsTaken,game.remainingBullets);
+        game.setState(null);
+        SoundController.getInstance().run(SoundOptions.STAGE_CLEAR);
+        Thread.sleep(7000);
+        EndLevelMenu endMenu = new EndLevelMenu(new String[]{"Continue", "Retry", "Exit"}, gui, getModel().getPath_());
+        endMenu.run();
+        gui.close();
+    }
+
     @Override
     public void run(Game game, GUI.ACTION action, long time) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         if (action == GUI.ACTION.UP) {
@@ -152,14 +166,8 @@ public class MouratoController extends GameController {
             DeathMenu deathMenu = new DeathMenu(new String[]{"Retry", "Exit"}, gui, getModel().getPath_());
             deathMenu.run();
         }
-        if (getModel().flagReach()){
-            game.draw(game.coinsTaken,game.remainingBullets);
-            game.setState(null);
-            SoundController.getInstance().run(SoundOptions.STAGE_CLEAR);
-            Thread.sleep(7000);
-            EndLevelMenu endMenu = new EndLevelMenu(new String[]{"Continue", "Retry", "Exit"}, gui, getModel().getPath_());
-            endMenu.run();
-            gui.close();
+        if (flagReached()){
+            endGameWin(game);
 
         }
     }
