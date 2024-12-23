@@ -1,10 +1,11 @@
 package com.t05g04.game.controller.sound;
 
+import com.t05g04.game.controller.Controller;
 import com.t05g04.game.model.sound.SoundOptions;
 import com.t05g04.game.model.sound.SoundPlayer;
 
 
-public class SoundController {
+public class SoundController{
     private static SoundController soundController;
     private final SoundPlayer coin;
     private final SoundPlayer music;
@@ -33,7 +34,7 @@ public class SoundController {
     return soundController;
     }
 
-    public void playSound(SoundOptions soundName) {
+    public void run(SoundOptions soundName) {
         switch (soundName){
             case MUSIC:
                 music.playContinuously();

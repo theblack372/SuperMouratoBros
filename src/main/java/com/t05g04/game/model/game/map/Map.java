@@ -1,10 +1,9 @@
-package com.t05g04.game.model.game.arena;
+package com.t05g04.game.model.game.map;
 import com.t05g04.game.controller.sound.SoundController;
 import com.t05g04.game.gui.GUI;
 import com.t05g04.game.gui.LanternaGui;
 import com.t05g04.game.model.game.elements.*;
 import com.t05g04.game.model.game.Position;
-import com.t05g04.game.model.menu.DeathMenu;
 import com.t05g04.game.model.sound.SoundOptions;
 import com.t05g04.game.viewer.game.Renderer;
 
@@ -12,7 +11,6 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -21,6 +19,7 @@ public class Map {
     int height_;
     int width_;
     int startX_=0;
+    String path_;
     private final Mourato mourato;
     private final List<Coin> coins = new ArrayList<>();
     private final List<Koopa> koopas = new ArrayList<>();
@@ -34,6 +33,7 @@ public class Map {
     public Map(int width, int height, String path, LanternaGui gui) {
         width_ = width;
         height_ = height;
+        path_ = path;
         renderer = new Renderer(path);
         mourato = new Mourato(new Position(1, 14),false, false, 1, 4, 0,0);
         this.gui = gui;
@@ -41,7 +41,10 @@ public class Map {
 
     public int getHeight_() {return height_;}
     public int getStartX_() {return startX_;}
+    public void incrementStartX_() {startX_++;}
     public int getWidth_() {return width_;}
+
+    public String getPath_() {return path_;}
 
     public List<Coin> getCoins() {return coins;}
     public List<Powerup> getPowerups() {return powerups;}
@@ -61,79 +64,9 @@ public class Map {
     public void createPowerup(Position position) {powerups.add(new Powerup(position,false,powerups.size()));}
     public void createpowerupBlock(Position position) {powerupBlocks.add(new PowerUpBlock(position,false,powerupBlocks.size()));}
     public void createBullet(Position position) {bullets.add(new Bullet(position,0,true));}
-
-    public void processKey(GUI.ACTION action) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
-        if (action== GUI.ACTION.UP) {
-            if(!checkAndFall(mourato)) {
-                if (!mourato.isJump_()) {
-                    mourato.setJump_(true);
-                    SoundController.getInstance().playSound(SoundOptions.JUMP);
-                }
-            }
-        }
-        if (action== GUI.ACTION.DOWN) {
-            moveMourato(mourato.moveDown());
-        }
-        if (action== GUI.ACTION.LEFT) {
-            moveMourato(mourato.moveLeft());
-            checkAndFall(mourato);
-            retrieveCoins(mourato.getPosition());
-            goSuperMourato(mourato.getPosition());
-            for(Bullet bullet: bullets) {
-                if(bullet.getVelocity_()==0) {
-                    bullet.setVelocity_(-1);
-                    bullet.setDirection_(false);
-                }
-            }
-        }
-        if (action== GUI.ACTION.RIGHT) {
-            if (isMouratoMiddle() && canObjectMove(mourato.moveRight()) && getRenderer().getMap_().length-width_!=startX_) {
-                startX_++;
-                for(Koopa koopa : koopas){
-                    koopa.moveTerminal();
-                }
-                for(Coin coin : coins) {
-                    coin.moveTerminal();
-                }
-                for(Flower flower : flowers) {
-                    flower.moveTerminal();
-                }
-                for(Powerup powerup : powerups){
-                    powerup.moveTerminal();
-                }
-                for(PowerUpBlock powerupblock :powerupBlocks){
-                    powerupblock.moveTerminal();
-                }
-                for(Bullet bullet : bullets){
-                    bullet.moveTerminal();
-                    if(bullet.getVelocity_()==0) {
-                        bullet.setVelocity_(1);
-                        bullet.setDirection_(true);
-                    }
-                }
-            }
-            else{moveMourato(mourato.moveRight());
-            checkAndFall(mourato);
-                for(Bullet bullet : bullets){
-                    if(bullet.getVelocity_()==0) {
-                        bullet.setVelocity_(1);
-                        bullet.setDirection_(true);
-                    }
-                }
-            }
-
-            retrieveCoins(mourato.getPosition());
-            goSuperMourato(mourato.getPosition());
-        }
-        if(action==GUI.ACTION.SHOOT) {
-            mourato.shootBullet(this);
-        }
-    }
-
-
     public void retrieveCoins(Position position) {
         if (coinTaken(position)){
-            SoundController.getInstance().playSound(SoundOptions.COIN);
+            SoundController.getInstance().run(SoundOptions.COIN);
         }
         coins.removeIf(coin -> coin.getPosition().equals(position));
 
@@ -151,7 +84,7 @@ public class Map {
         for(Powerup powerup:powerups) {
             if (powerup.getPosition().equals(position)&&powerup.isAppearing()) {
                 mourato.setSuperMourato_(true);
-                SoundController.getInstance().playSound(SoundOptions.POWER_UP);
+                SoundController.getInstance().run(SoundOptions.POWER_UP);
                 powerups.remove(powerup);
                 mourato.setCountBullets_(mourato.getCountBullets_()+5);
             }
@@ -166,13 +99,15 @@ public class Map {
         return tile!='#' && tile!='H' && tile!='!';
     }
 
-    private void moveMourato(Position position) {
+    public void moveMourato(Position position) {
         if (canObjectMove(position)) {
             mourato.getPosition().setPosition(position);
         }
     }
     public boolean isMouratoMiddle(){
-        return mourato.getPosition().getX() == 16;
+        if (getRenderer().getMap_().length-width_!=startX_)
+            return mourato.getPosition().getX() == 16;
+        return false;
     }
 
     public void KoopaMove(Koopa koopa) {
@@ -249,8 +184,8 @@ public class Map {
         }
     }
 
-    public boolean flagReach() {
+    public boolean flagReach() throws InterruptedException {
         Position currentPosition = mourato.getPosition();
-        return renderer.getMap_()[currentPosition.getX()+startX_][currentPosition.getY()] == '|';
+        return renderer.getMap_()[currentPosition.getX() + startX_][currentPosition.getY()] == '|';
     }
 }

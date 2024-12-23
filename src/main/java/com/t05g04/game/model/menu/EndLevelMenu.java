@@ -1,6 +1,6 @@
 package com.t05g04.game.model.menu;
 
-import com.t05g04.game.controller.game.Game;
+import com.t05g04.game.Game;
 import com.t05g04.game.gui.GUI;
 import com.t05g04.game.gui.LanternaGui;
 import com.t05g04.game.viewer.menu.EndLevelMenuViewer;
@@ -33,6 +33,7 @@ public class EndLevelMenu extends Menu {
 
             case 2:
                 menuController.action = GUI.ACTION.QUIT;
+                gui.close();
                 break;
 
         }

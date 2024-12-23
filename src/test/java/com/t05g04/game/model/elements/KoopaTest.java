@@ -1,7 +1,7 @@
 package com.t05g04.game.model.elements;
 
 import com.t05g04.game.model.game.Position;
-import com.t05g04.game.model.game.arena.Map;
+import com.t05g04.game.model.game.map.Map;
 import com.t05g04.game.model.game.elements.Koopa;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,12 +1,9 @@
 package com.t05g04.game.model.game.elements;
-import com.googlecode.lanterna.SGR;
-import com.googlecode.lanterna.TerminalPosition;
-import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.t05g04.game.controller.sound.SoundController;
 import com.t05g04.game.gui.LanternaGui;
 import com.t05g04.game.model.game.Position;
-import com.t05g04.game.model.game.arena.Map;
+import com.t05g04.game.model.game.map.Map;
 import com.t05g04.game.model.menu.DeathMenu;
 import com.t05g04.game.model.sound.SoundOptions;
 
@@ -49,6 +46,9 @@ public class Mourato extends Element{
     }
     public void setJumpVelocity_(int jumpVelocity) {
         jumpVelocity_ = jumpVelocity;
+    }
+    public void setPosition_(Position position) {
+            position_ = position;
     }
 
     public Position moveDown(){
@@ -164,7 +164,7 @@ public class Mourato extends Element{
             Position bulletPosition = new Position(getPosition().getX(), getPosition().getY());
             map.createBullet(bulletPosition); // Usa o Map para criar a bala
             setCountBullets_(getCountBullets_() - 1);
-            SoundController.getInstance().playSound(SoundOptions.FIREBALL);
+            SoundController.getInstance().run(SoundOptions.FIREBALL);
         } else {
             setSuperMourato_(false);
         }
