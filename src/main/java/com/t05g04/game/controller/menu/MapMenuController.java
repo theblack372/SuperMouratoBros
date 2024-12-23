@@ -38,6 +38,10 @@ public class MapMenuController extends MenuController {
                 case SELECT:
                     selectOption();
                     break;
+                case UP, DOWN, NONE, QUIT, SHOOT:
+                    break;
+                default:
+                    break;
             }
         }
         menu.close();

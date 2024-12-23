@@ -14,9 +14,9 @@ public class DeathMenuViewer extends MenuViewer {
 
   DeathMenu deathMenu;
 
-  public DeathMenuViewer(Screen screen, DeathMenu deathmenu, LanternaGui gui) throws IOException {
+  public DeathMenuViewer(Screen screen, DeathMenu deathMenu, LanternaGui gui) throws IOException {
     super(screen, gui);
-    this.deathMenu = deathmenu;
+    this.deathMenu = deathMenu;
   }
 
   @Override

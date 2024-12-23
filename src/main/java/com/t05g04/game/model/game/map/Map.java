@@ -114,6 +114,23 @@ public class Map {
         return false;
     }
 
+    public void mouratoLooking(){
+        if (mourato.state.isRunningToLeft() || (mourato.state.isJumpingFromLeft() && !mourato.isJump_())) {
+            mourato.state.setIdleLookingLeft(true);
+        }
+        else if (mourato.state.isRunningToRight() || (mourato.state.isJumpingFromRight() && !mourato.isJump_())) {
+            mourato.state.setIdleLookingRight(true);
+        }
+    }
+    public void mouratoMovingRight(){
+        mourato.state.setRunningToRight(true);
+    }
+    public void mouratoMovingLeft(){mourato.state.setRunningToLeft(true);}
+    public void mouratoJumpingLeft(){mourato.state.setJumpingFromLeft(true);}
+    public void mouratoJumpingRight(){mourato.state.setJumpingFromRight(true);}
+
+    public boolean isMouratoRunningLeft(){return mourato.state.isRunningToLeft();}
+
     public void KoopaMove(Koopa koopa) {
         if (koopa != null) {
             koopa.move(this);

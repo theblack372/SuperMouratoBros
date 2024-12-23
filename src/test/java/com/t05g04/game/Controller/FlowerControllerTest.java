@@ -20,7 +20,6 @@ class FlowerControllerTest {
     private Map mockMap;
     private Flower mockFlower;
 
-
     @BeforeEach
     void setUp() {
         // Criar mocks
@@ -34,7 +33,6 @@ class FlowerControllerTest {
         // Criar a instância do FlowerController com o mapa mockado
         flowerController = new FlowerController(mockMap);
     }
-
 
     @Test
     void testRunDoesNotAlternateFlowerVisibilityBeforeInterval() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
@@ -52,5 +50,3 @@ class FlowerControllerTest {
         verify(mockFlower, never()).setAppearing(anyBoolean());  // Garantir que setAppearing não foi chamado
     }
 }
-
-

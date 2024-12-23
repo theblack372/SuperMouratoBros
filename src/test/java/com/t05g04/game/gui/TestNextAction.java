@@ -53,10 +53,9 @@ class TestNextAction {
     @Test
     void testGetNextActionNullInput() throws IOException {
 
-        // nao houveram inputs
         when(mockScreen.pollInput()).thenReturn(null);
         gui = new LanternaGui(mockScreen);
-        assertNull(gui.getNextAction());
+        assertEquals(GUI.ACTION.NONE, gui.getNextAction());
     }
 
 
