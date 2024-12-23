@@ -31,11 +31,19 @@ public interface GUI {
 
     void draw_mourato_idle(Position position) throws IOException;
 
+    void draw_mourato_Lidle(Position position) throws IOException;
+
     void draw_mourato_jump(Position position) throws IOException;
+
+    void draw_mourato_Ljump(Position position) throws IOException;
 
     void draw_mourato_run1(Position position) throws IOException;
 
     void draw_mourato_run2(Position position) throws IOException;
+
+    void draw_mourato_Lrun1(Position position) throws IOException;
+
+    void draw_mourato_Lrun2(Position position) throws IOException;
 
     void draw_deathMenu_exit(Position position) throws IOException;
 

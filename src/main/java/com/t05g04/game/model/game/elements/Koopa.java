@@ -6,9 +6,11 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.t05g04.game.model.game.Position;
 import com.t05g04.game.model.game.map.Map;
+import com.t05g04.game.states.game.KoopaState;
 
 public class Koopa extends Element implements Movable {
     private int velocity_;
+    public KoopaState state = new KoopaState();
     public Koopa(Position position, int velocity) {
         super(position);
         velocity_=velocity;
@@ -53,6 +55,7 @@ public class Koopa extends Element implements Movable {
                 getPosition().setPosition(new Position(getPosition().getX() + getVelocity_(), nextY));
             }
         }
+        state.stepAnimation();
     }
 
 }

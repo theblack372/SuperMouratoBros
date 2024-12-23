@@ -38,9 +38,13 @@ public class LanternaGui implements GUI{
     private final BufferedImage koopa1;
     private final BufferedImage koopa2;
     private final BufferedImage mourato_idle;
+    private final BufferedImage mourato_Lidle;
     private final BufferedImage mourato_jump;
+    private final BufferedImage mourato_Ljump;
     private final BufferedImage mourato_run1;
     private final BufferedImage mourato_run2;
+    private final BufferedImage mourato_Lrun1;
+    private final BufferedImage mourato_Lrun2;
     private final BufferedImage deathMenu_exit;
     private final BufferedImage deathMenu_retry;
     private final BufferedImage endLevelMenu_continue;
@@ -121,13 +125,30 @@ public class LanternaGui implements GUI{
                 LanternaGui.class
                     .getClassLoader()
                     .getResource("sprites/entities/mourato_idle.png")));
+
+    this.mourato_Lidle =
+            ImageIO.read(
+                    Objects.requireNonNull(
+                            LanternaGui.class
+                                    .getClassLoader()
+                                    .getResource("sprites/entities/mourato_Lidle.png")));
+
     this.mourato_jump =
         ImageIO.read(
             Objects.requireNonNull(
                 LanternaGui.class
                     .getClassLoader()
                     .getResource("sprites/entities/mourato_jump.png")));
-    this.mourato_run1 =
+
+    this.mourato_Ljump =
+            ImageIO.read(
+                    Objects.requireNonNull(
+                            LanternaGui.class
+                                    .getClassLoader()
+                                    .getResource("sprites/entities/mourato_Ljump.png")));
+
+
+        this.mourato_run1 =
         ImageIO.read(
             Objects.requireNonNull(
                 LanternaGui.class
@@ -139,6 +160,20 @@ public class LanternaGui implements GUI{
                 LanternaGui.class
                     .getClassLoader()
                     .getResource("sprites/entities/mourato_run2.png")));
+
+    this.mourato_Lrun1 =
+            ImageIO.read(
+                    Objects.requireNonNull(
+                            LanternaGui.class
+                                    .getClassLoader()
+                                    .getResource("sprites/entities/mourato_Lrun1.png")));
+    this.mourato_Lrun2 =
+            ImageIO.read(
+                    Objects.requireNonNull(
+                            LanternaGui.class
+                                    .getClassLoader()
+                                    .getResource("sprites/entities/mourato_Lrun2.png")));
+
 
         this.deathMenu_exit =
                 ImageIO.read(
@@ -320,12 +355,29 @@ public class LanternaGui implements GUI{
                                 LanternaGui.class
                                         .getClassLoader()
                                         .getResource("sprites/entities/mourato_idle.png")));
+
+        this.mourato_Lidle =
+                ImageIO.read(
+                        Objects.requireNonNull(
+                                LanternaGui.class
+                                        .getClassLoader()
+                                        .getResource("sprites/entities/mourato_Lidle.png")));
+
         this.mourato_jump =
                 ImageIO.read(
                         Objects.requireNonNull(
                                 LanternaGui.class
                                         .getClassLoader()
                                         .getResource("sprites/entities/mourato_jump.png")));
+
+        this.mourato_Ljump =
+                ImageIO.read(
+                        Objects.requireNonNull(
+                                LanternaGui.class
+                                        .getClassLoader()
+                                        .getResource("sprites/entities/mourato_Ljump.png")));
+
+
         this.mourato_run1 =
                 ImageIO.read(
                         Objects.requireNonNull(
@@ -338,6 +390,20 @@ public class LanternaGui implements GUI{
                                 LanternaGui.class
                                         .getClassLoader()
                                         .getResource("sprites/entities/mourato_run2.png")));
+
+        this.mourato_Lrun1 =
+                ImageIO.read(
+                        Objects.requireNonNull(
+                                LanternaGui.class
+                                        .getClassLoader()
+                                        .getResource("sprites/entities/mourato_Lrun1.png")));
+        this.mourato_Lrun2 =
+                ImageIO.read(
+                        Objects.requireNonNull(
+                                LanternaGui.class
+                                        .getClassLoader()
+                                        .getResource("sprites/entities/mourato_Lrun2.png")));
+
 
         this.deathMenu_exit =
                 ImageIO.read(
@@ -516,7 +582,7 @@ public class LanternaGui implements GUI{
                 return ACTION.SHOOT;
             }
         }
-        return null;
+        return ACTION.NONE;
     }
     @Override
     public void clear() {
@@ -628,6 +694,26 @@ public class LanternaGui implements GUI{
     @Override
     public void draw_mourato_run2(Position position) throws IOException {
     drawPNG(position, this.mourato_run2);
+    }
+
+    @Override
+    public void draw_mourato_Lidle(Position position) throws IOException {
+        drawPNG(position, this.mourato_Lidle);
+    }
+
+    @Override
+    public void draw_mourato_Ljump(Position position) throws IOException {
+        drawPNG(position, this.mourato_Ljump);
+    }
+
+    @Override
+    public void draw_mourato_Lrun1(Position position) throws IOException {
+        drawPNG(position, this.mourato_Lrun1);
+    }
+
+    @Override
+    public void draw_mourato_Lrun2(Position position) throws IOException {
+        drawPNG(position, this.mourato_Lrun2);
     }
 
     @Override
@@ -777,7 +863,6 @@ public class LanternaGui implements GUI{
         // Draw the digits for the bullets
         draw_digits(bullets, x, y);
     }
-
 }
 
 
