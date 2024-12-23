@@ -9,11 +9,9 @@ import com.t05g04.game.model.game.map.Map;
 
 public class Bullet extends Element implements Movable {
     private int velocity_;
-    private boolean direction_;
-    public Bullet(Position position, int velocity,boolean direction) {
+    public Bullet(Position position, int velocity) {
         super(position);
         velocity_=velocity;
-        direction_=direction;
     }
 
     @Override
@@ -40,10 +38,8 @@ public class Bullet extends Element implements Movable {
     public void setVelocity_(int velocity) {
         velocity_ = velocity;
     }
-    public void setDirection_(boolean direction) {
-        direction_ = direction;
-    }
 
+    @Override
     public void move(Map map) {
         synchronized (this) {
             int nextX = getPosition().getX() + getVelocity_();

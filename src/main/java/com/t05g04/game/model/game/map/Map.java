@@ -63,7 +63,7 @@ public class Map {
     public void createFlower(Position position) {flowers.add(new Flower(position,true));}
     public void createPowerup(Position position) {powerups.add(new Powerup(position,false,powerups.size()));}
     public void createpowerupBlock(Position position) {powerupBlocks.add(new PowerUpBlock(position,false,powerupBlocks.size()));}
-    public void createBullet(Position position) {bullets.add(new Bullet(position,0,true));}
+    public void createBullet(Position position) {bullets.add(new Bullet(position,0));}
     public void retrieveCoins(Position position) {
         if (coinTaken(position)){
             SoundController.getInstance().run(SoundOptions.COIN);
