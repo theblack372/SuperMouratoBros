@@ -38,6 +38,8 @@ public class Koopa extends Element implements Movable {
     public void setVelocity_(int velocity) {
         velocity_ = velocity;
     }
+
+    @Override
     public void move(Map map) {
         synchronized (this) {
             int nextX = getPosition().getX() + getVelocity_();

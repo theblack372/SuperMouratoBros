@@ -42,7 +42,6 @@ public class MouratoController extends GameController {
         for(Bullet bullet: getModel().getBullets()) {
             if(bullet.getVelocity_()==0) {
                 bullet.setVelocity_(-1);
-                bullet.setDirection_(false);
             }
         }
     }
@@ -68,7 +67,6 @@ public class MouratoController extends GameController {
                 bullet.moveTerminal();
                 if(bullet.getVelocity_()==0) {
                     bullet.setVelocity_(1);
-                    bullet.setDirection_(true);
                 }
             }
         }
@@ -77,7 +75,6 @@ public class MouratoController extends GameController {
             for(Bullet bullet : getModel().getBullets()){
                 if(bullet.getVelocity_()==0) {
                     bullet.setVelocity_(1);
-                    bullet.setDirection_(true);
                 }
             }
         }

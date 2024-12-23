@@ -74,7 +74,7 @@ public class Renderer {
                         break;
                     case '|': // Flag
                         gui.draw_flag();
-                    default: // Empty space
+                    default:
                         break;
                 }
             }
