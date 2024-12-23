@@ -33,9 +33,6 @@ public class LanternaGui implements GUI{
     private final BufferedImage questionBlockCaught;
     private final BufferedImage coin;
     private final BufferedImage fireBall1;
-    private final BufferedImage fireBall2;
-    private final BufferedImage fireBall3;
-    private final BufferedImage fireBall4;
     private final BufferedImage flower;
     private final BufferedImage powerUpFlower;
     private final BufferedImage koopa1;
@@ -110,22 +107,6 @@ public class LanternaGui implements GUI{
         ImageIO.read(
             Objects.requireNonNull(
                 LanternaGui.class.getClassLoader().getResource("sprites/entities/fireBall1.png")));
-    this.fireBall2 =
-        ImageIO.read(
-            Objects.requireNonNull(
-                LanternaGui.class.getClassLoader().getResource("sprites/entities/fireBall2.png")));
-    this.fireBall3 =
-        ImageIO.read(
-            Objects.requireNonNull(
-                LanternaGui.class.getClassLoader().getResource("sprites/entities/fireBall3.png")));
-    this.fireBall4 =
-        ImageIO.read(
-            Objects.requireNonNull(
-                LanternaGui.class.getClassLoader().getResource("sprites/entities/fireBall4.png")));
-//    this.fireBall4 =
-//        ImageIO.read(
-//            Objects.requireNonNull(
-//                LanternaGui.class.getClassLoader().getResource("sprites/blocks/#.png")));
     this.flower =
         ImageIO.read(
             Objects.requireNonNull(
@@ -356,22 +337,6 @@ public class LanternaGui implements GUI{
                 ImageIO.read(
                         Objects.requireNonNull(
                                 LanternaGui.class.getClassLoader().getResource("sprites/entities/fireBall1.png")));
-        this.fireBall2 =
-                ImageIO.read(
-                        Objects.requireNonNull(
-                                LanternaGui.class.getClassLoader().getResource("sprites/entities/fireBall2.png")));
-        this.fireBall3 =
-                ImageIO.read(
-                        Objects.requireNonNull(
-                                LanternaGui.class.getClassLoader().getResource("sprites/entities/fireBall3.png")));
-        this.fireBall4 =
-                ImageIO.read(
-                        Objects.requireNonNull(
-                                LanternaGui.class.getClassLoader().getResource("sprites/entities/fireBall4.png")));
-//    this.fireBall4 =
-//        ImageIO.read(
-//            Objects.requireNonNull(
-//                LanternaGui.class.getClassLoader().getResource("sprites/blocks/#.png")));
         this.flower =
                 ImageIO.read(
                         Objects.requireNonNull(
@@ -595,7 +560,7 @@ public class LanternaGui implements GUI{
     public ACTION getNextAction() throws IOException {
         KeyStroke keyStroke = screen.pollInput();
         if (keyStroke != null) {
-            if ((keyStroke.getKeyType() == KeyType.EOF) || keyStroke.getKeyType() == KeyType.Character && keyStroke.getCharacter() == 'q') {
+            if ((keyStroke.getKeyType() == KeyType.EOF) || (keyStroke.getKeyType() == KeyType.Character && keyStroke.getCharacter() == 'q')) {
                 return ACTION.QUIT;
             }
             if (keyStroke.getKeyType() == KeyType.ArrowUp) {

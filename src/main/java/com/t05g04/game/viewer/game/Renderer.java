@@ -37,13 +37,13 @@ public class Renderer {
     public char[][] getMap_() {
         return map_;
     }
-    private void setMap_(char[][] map_) {
+    public void setMap_(char[][] map_) {
         this.map_ = map_;
     }
 
     public void draw(TextGraphics graphics, Map map, int coins, int bullets) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         start = map.getStartX_();
-        terminalStart=start+(32);
+        terminalStart=start+32;
         moving = map.isMouratoMiddle();
         graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(map.getWidth_()*16, map.getHeight_()*16), ' ');
@@ -54,26 +54,15 @@ public class Renderer {
                 char tile = map_[x][y];
                 Position position = new Position(x-start,y);
                 switch (tile) {
-                    case '#': // Block
-//                        graphics.setForegroundColor(TextColor.Factory.fromString("#FFA500"));
-//                        graphics.setBackgroundColor(TextColor.Factory.fromString("#9c4a00"));
-//                        graphics.enableModifiers(SGR.BOLD);
-//                        graphics.putString(new TerminalPosition(x - start, y), "#");
-//                        graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
-                        //drawPNG(graphics, position, "sprites/blocks/#.png");
+                    case '#':
                         gui.draw_Wall(position);
                         break;
-                    case 'H': // breakable block
-//                        graphics.setForegroundColor(TextColor.Factory.fromString("#FFA500"));
-//                        graphics.setBackgroundColor(TextColor.Factory.fromString("#9c4a00"));
-//                        graphics.enableModifiers(SGR.BOLD);
-//                        graphics.putString(new TerminalPosition(x - start, y), "H");
-//                        graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
-                        //drawPNG(graphics, position, "sprites/blocks/H.png");
+                    case 'H':
                         gui.draw_breakableWall(position);
                         break;
-                    case '|': // Flag
+                    case '|':
                         gui.draw_flag();
+                    // fall through
                     default:
                         break;
                 }

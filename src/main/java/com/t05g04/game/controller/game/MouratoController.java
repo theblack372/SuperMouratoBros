@@ -102,10 +102,10 @@ public class MouratoController extends GameController {
 
     }
 
-    private boolean mouratoOutOfBounds() {
-        return mourato.getPosition().getY()>= getModel().getHeight_()-1;
+    public boolean mouratoOutOfBounds() {
+        return getModel().outBounds();
     }
-    private boolean koopasHitDeath(){
+    public boolean koopasHitDeath(){
         for(int i=0;i<getModel().koopasNo();i++) {
             if((getModel().getKoopa(i)!=null &&getModel().getMourato().getPosition().equals(getModel().getKoopa(i).getPosition()))) {
                 if (!getModel().getMourato().isSuperMourato_()) {
@@ -121,7 +121,7 @@ public class MouratoController extends GameController {
         return false;
     }
 
-    private boolean flowerHitDeath(){
+    public boolean flowerHitDeath(){
         for(int i=0;i<getModel().flowerNo();i++) {
             if((getModel().getFlower(i).isAppearing() && getModel().getMourato().getPosition().equals(getModel().getFlower(i).getPosition()))){
                 if(!getModel().getMourato().isSuperMourato_()) {
@@ -136,6 +136,20 @@ public class MouratoController extends GameController {
             }
         }
         return false;
+    }
+
+    private boolean flagReached() throws InterruptedException {
+        return getModel().flagReach();
+    }
+
+    private void endGameWin(Game game) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
+        game.draw(game.coinsTaken,game.remainingBullets);
+        game.setState(null);
+        SoundController.getInstance().run(SoundOptions.STAGE_CLEAR);
+        Thread.sleep(7000);
+        EndLevelMenu endMenu = new EndLevelMenu(new String[]{"Continue", "Retry", "Exit"}, gui, getModel().getPath_());
+        endMenu.run();
+        gui.close();
     }
 
     @Override
@@ -175,14 +189,8 @@ public class MouratoController extends GameController {
             DeathMenu deathMenu = new DeathMenu(new String[]{"Retry", "Exit"}, gui, getModel().getPath_());
             deathMenu.run();
         }
-        if (getModel().flagReach()){
-            game.draw(game.coinsTaken,game.remainingBullets);
-            game.setState(null);
-            SoundController.getInstance().run(SoundOptions.STAGE_CLEAR);
-            Thread.sleep(7000);
-            EndLevelMenu endMenu = new EndLevelMenu(new String[]{"Continue", "Retry", "Exit"}, gui, getModel().getPath_());
-            endMenu.run();
-            gui.close();
+        if (flagReached()){
+            endGameWin(game);
 
         }
     }

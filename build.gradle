@@ -1,6 +1,9 @@
 plugins {
     id 'java'
     id 'application'
+    id 'info.solidsoft.pitest' version '1.15.0'
+    id "net.ltgt.errorprone" version "4.1.0"
+    id 'groovy'
 }
 
 group = 'com.pedroRIbas.gameLdts'
@@ -9,6 +12,15 @@ version = '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
 }
+pitest {
+    junit5PluginVersion = '1.2.1'
+    targetClasses = ['com.t05g04.game.*']
+    targetTests = ['*Test']
+    mutators = ['DEFAULTS']
+    threads = 6
+    verbose = true
+}
+
 
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
@@ -16,6 +28,7 @@ dependencies {
     implementation group: 'com.googlecode.lanterna', name:
             'lanterna', version: '3.1.1'
     testImplementation 'org.mockito:mockito-core:3.7.7'
+    errorprone "com.google.errorprone:error_prone_core:2.30.0"
 }
 
 application{

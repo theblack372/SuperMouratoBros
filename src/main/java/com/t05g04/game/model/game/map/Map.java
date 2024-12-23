@@ -81,14 +81,16 @@ public class Map {
     }
 
     public void goSuperMourato(Position position) {
+        Powerup victim = null;
         for(Powerup powerup:powerups) {
             if (powerup.getPosition().equals(position)&&powerup.isAppearing()) {
                 mourato.setSuperMourato_(true);
                 SoundController.getInstance().run(SoundOptions.POWER_UP);
-                powerups.remove(powerup);
+                victim = powerup;
                 mourato.setCountBullets_(mourato.getCountBullets_()+5);
             }
         }
+        powerups.remove(victim);
     }
 
     public boolean canObjectMove(Position position) {
@@ -98,7 +100,9 @@ public class Map {
         char tile = renderer.getMap_()[position.getX()+renderer.getStart()][position.getY()];
         return tile!='#' && tile!='H' && tile!='!';
     }
-
+    public boolean outBounds(){
+        return mourato.getPosition().getY()>= height_-1;
+    }
     public void moveMourato(Position position) {
         if (canObjectMove(position)) {
             mourato.getPosition().setPosition(position);
