@@ -35,12 +35,6 @@ application{
     mainClass.set("com/t05g04/game/Application")
 }
 
-pitest {
-    jvmArgs = ["--add-opens", "java.base/java.lang=ALL-UNNAMED", "--add-opens", "java.base/java.util=ALL-UNNAMED"]
-    targetClasses = ['com.t05g04.*']
-    junit5PluginVersion = '1.0.0'
-}
-
 test {
     useJUnitPlatform()
 }

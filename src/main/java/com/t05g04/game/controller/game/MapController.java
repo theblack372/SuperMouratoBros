@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class MapController extends GameController {
-    private final MouratoController mouratoController;
-    private final MonstersController monstersController;
-    private final BulletController bulletController;
+    private MouratoController mouratoController;
+    private MonstersController monstersController;
+    private BulletController bulletController;
 
     public MapController(Map map) {
         super(map);
@@ -20,6 +20,17 @@ public class MapController extends GameController {
         bulletController = new BulletController(map);
 
     }
+
+    public void setBulletController(BulletController newBulletController) {
+        this.bulletController = newBulletController;
+    }
+    public void setMonstersController(MonstersController newMonstersController) {
+        this.monstersController = newMonstersController;
+    }
+    public void setMouratoController(MouratoController newMouratoController) {
+        this.mouratoController = newMouratoController;
+    }
+
     @Override
     public void run(Game game, GUI.ACTION action, long time) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         getModel().makePowerup();
