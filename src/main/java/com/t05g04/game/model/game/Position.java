@@ -17,7 +17,7 @@ public class Position {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null) return false;
-        if (getClass() != o.getClass()) return false;
+        if (!(o instanceof Position)) return false;
         Position p = (Position) o;
         return x_ == p.getX() && y_ == p.getY();
     }
