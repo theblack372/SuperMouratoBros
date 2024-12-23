@@ -25,9 +25,25 @@ public class MouratoController extends GameController {
     public void mouratoJump() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         if(!getModel().checkAndFall(mourato)) {
             if (!mourato.isJump_()) {
+                    if (mourato.state.isRunningToLeft()) {
+                        mourato.state.setJumpingFromLeft(true);
+                    }
+                    else {
+                        mourato.state.setJumpingFromRight(true);
+                    }
+
                     mourato.setJump_(true);
                     SoundController.getInstance().run(SoundOptions.JUMP);
             }
+        }
+    }
+
+    public void setMouratoStill(){
+        if (mourato.state.isRunningToLeft() || (mourato.state.isJumpingFromLeft() && !mourato.isJump_())) {
+            mourato.state.setIdleLookingLeft(true);
+        }
+        else if (mourato.state.isRunningToRight() || (mourato.state.isJumpingFromRight() && !mourato.isJump_())) {
+            mourato.state.setIdleLookingRight(true);
         }
     }
 
@@ -35,6 +51,7 @@ public class MouratoController extends GameController {
         getModel().moveMourato(mourato.moveDown());
     }
     public void moveMouratoLeft() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
+        mourato.state.setRunningToLeft(true);
         getModel().moveMourato(mourato.moveLeft());
         getModel().checkAndFall(mourato);
         getModel().retrieveCoins(mourato.getPosition());
@@ -46,6 +63,7 @@ public class MouratoController extends GameController {
         }
     }
     public void moveMouratoRight() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
+        mourato.state.setRunningToRight(true);
         if (getModel().isMouratoMiddle() && getModel().canObjectMove(mourato.moveRight())) {
             getModel().incrementStartX_();
             for(Koopa koopa : getModel().getKoopas()){
@@ -122,6 +140,11 @@ public class MouratoController extends GameController {
 
     @Override
     public void run(Game game, GUI.ACTION action, long time) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
+
+        if (action == GUI.ACTION.NONE) {
+            setMouratoStill();
+        }
+
         if (action == GUI.ACTION.UP) {
             mouratoJump();
         }

@@ -6,6 +6,7 @@ import com.t05g04.game.model.game.Position;
 import com.t05g04.game.model.game.map.Map;
 import com.t05g04.game.model.menu.DeathMenu;
 import com.t05g04.game.model.sound.SoundOptions;
+import com.t05g04.game.states.game.MouratoState;
 
 
 import static com.t05g04.game.Application.gui;
@@ -21,7 +22,9 @@ public class Mourato extends Element{
     private final int jumpHeight_;
     private int countJump_;
     private int countBullets_;
-        public Mourato(Position position, boolean jump,boolean superMourato, int jumpVelocity, int jumpHeight, int countJump, int countBullets) {
+    public MouratoState state = new MouratoState();
+
+    public Mourato(Position position, boolean jump,boolean superMourato, int jumpVelocity, int jumpHeight, int countJump, int countBullets) {
         super(position);
         jump_ = jump;
         superMourato_ = superMourato;
@@ -55,9 +58,11 @@ public class Mourato extends Element{
         return new Position(position_.getX(), position_.getY()+1);
     }
     public Position moveLeft(){
+        state.isRunningToLeft();
         return new Position(position_.getX()-1, position_.getY());
     }
     public Position moveRight(){
+        state.isRunningToRight();
         return new Position(position_.getX()+1, position_.getY());
     }
     public boolean isJump_() {
@@ -80,7 +85,49 @@ public class Mourato extends Element{
     }
     @Override
     public void draw(TextGraphics graphics, Position position, boolean moving) throws IOException {
-        gui.draw_mourato_run1(position);
+        switch (state.getState()) {
+            case IDLE_LOOKING_LEFT:
+                System.out.println("IDLE_LOOKING_LEFT");
+                gui.draw_mourato_Lidle(position);
+                break;
+            case IDLE_LOOKING_RIGHT:
+                System.out.println("IDLE_LOOKING_RIGHT");
+                gui.draw_mourato_idle(position);
+                break;
+            case RUNNING_TO_LEFT:
+
+                if (state.getAnimationStep() == 1) {
+                    System.out.println("RUNNING_TO_LEFT1");
+                    gui.draw_mourato_Lrun2(position);
+                    state.stepAnimation();
+                }
+                else {
+                    System.out.println("RUNNING_TO_LEFT2");
+                    gui.draw_mourato_Lrun1(position);
+                    state.stepAnimation();
+                }
+                break;
+            case RUNNING_TO_RIGHT:
+                if (state.getAnimationStep() == 1){
+                    System.out.println("RUNNING_TO_RIGHT1");
+                    gui.draw_mourato_run2(position);
+                    state.stepAnimation();
+                }
+                else {
+                    System.out.println("RUNNING_TO_RIGHT2");
+                    gui.draw_mourato_run1(position);
+                    state.stepAnimation();
+                }
+                break;
+            case JUMPING_FROM_LEFT:
+                System.out.println("JUMPING_FROM_LEFT");
+                gui.draw_mourato_Ljump(position);
+                break;
+            case JUMPING_FROM_RIGHT:
+                System.out.println("JUMPING_FROM_RIGHT");
+                gui.draw_mourato_jump(position);
+                break;
+        }
     }
 
     @Override
@@ -89,6 +136,14 @@ public class Mourato extends Element{
 
     public void updateJump(Map map) {
         if (!isJump_()) return;
+
+        if(state.isIdleLookingLeft()){
+            state.isJumpingFromLeft();
+        }
+
+        if(state.isIdleLookingRight()){
+            state.isJumpingFromRight();
+        }
 
         int jumpProgress = getCountJump_();
 
