@@ -140,14 +140,20 @@ public class MouratoController extends GameController {
         if(action==GUI.ACTION.SHOOT) {
             mourato.shootBullet(getModel());
         }
-        if (mouratoOutOfBounds() || koopasHitDeath() || flowerHitDeath()) {
-            if(!mouratoOutOfBounds()){game.draw(game.coinsTaken, game.remainingBullets);}
+        if (mouratoOutOfBounds()) {
+            game.setState(null);SoundController.getInstance().run(SoundOptions.MARIO_DEATH);
+            mourato.setPosition_(new Position(1,14));
+            Thread.sleep(4000);
+            DeathMenu deathMenu = new DeathMenu(new String[]{"Retry", "Exit"}, gui, getModel().getPath_());
+            deathMenu.run();
+        }
+
+        if (koopasHitDeath() || flowerHitDeath()){
+            game.draw(game.coinsTaken,game.remainingBullets);
             game.setState(null);SoundController.getInstance().run(SoundOptions.MARIO_DEATH);
             Thread.sleep(4000);
             DeathMenu deathMenu = new DeathMenu(new String[]{"Retry", "Exit"}, gui, getModel().getPath_());
             deathMenu.run();
-            gui.close();
-
         }
         if (getModel().flagReach()){
             game.draw(game.coinsTaken,game.remainingBullets);
