@@ -43,7 +43,7 @@ public class Renderer {
 
     public void draw(TextGraphics graphics, Map map, int coins, int bullets) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         start = map.getStartX_();
-        terminalStart=start+(32);
+        terminalStart=start+32;
         moving = map.isMouratoMiddle();
         graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(map.getWidth_()*16, map.getHeight_()*16), ' ');
@@ -74,6 +74,7 @@ public class Renderer {
                         break;
                     case '|': // Flag
                         gui.draw_flag();
+                    // fall through
                     default:
                         break;
                 }

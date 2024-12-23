@@ -1,5 +1,7 @@
 package com.t05g04.game.model.game;
 
+import java.util.Objects;
+
 public class Position {
     private int x_;
     private int y_;
@@ -20,6 +22,10 @@ public class Position {
         if (!(o instanceof Position)) return false;
         Position p = (Position) o;
         return x_ == p.getX() && y_ == p.getY();
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(x_, y_);
     }
     public void setPosition(Position position) {
         x_=position.getX();
