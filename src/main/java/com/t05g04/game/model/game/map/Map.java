@@ -100,7 +100,9 @@ public class Map {
         char tile = renderer.getMap_()[position.getX()+renderer.getStart()][position.getY()];
         return tile!='#' && tile!='H' && tile!='!';
     }
-
+    public boolean outBounds(){
+        return mourato.getPosition().getY()>= height_-1;
+    }
     public void moveMourato(Position position) {
         if (canObjectMove(position)) {
             mourato.getPosition().setPosition(position);

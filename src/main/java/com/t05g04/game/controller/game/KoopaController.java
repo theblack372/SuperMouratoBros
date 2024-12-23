@@ -22,8 +22,8 @@ public class KoopaController extends GameController {
         if(time - lastMove >= KOOPA_MOVE_INTERVAL) {
             for(Koopa koopa: getModel().getKoopas()) {
                 getModel().KoopaMove(koopa);
-                lastMove = time;
             }
+            lastMove = time;
         }
     }
 }

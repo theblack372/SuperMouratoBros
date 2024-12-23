@@ -85,7 +85,7 @@ public class MouratoController extends GameController {
     }
 
     private boolean mouratoOutOfBounds() {
-        return mourato.getPosition().getY()>= getModel().getHeight_()-1;
+        return getModel().outBounds();
     }
     private boolean koopasHitDeath(){
         for(int i=0;i<getModel().koopasNo();i++) {
