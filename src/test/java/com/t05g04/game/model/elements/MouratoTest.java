@@ -1,73 +1,84 @@
-// Não foi testado o movimento do salto e da queda do mourato
 package com.t05g04.game.model.elements;
-import com.t05g04.game.gui.LanternaGui;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import com.googlecode.lanterna.screen.Screen;
 import com.t05g04.game.model.game.Position;
 import com.t05g04.game.model.game.arena.Map;
+import com.t05g04.game.model.game.elements.Koopa;
 import com.t05g04.game.model.game.elements.Mourato;
+import com.t05g04.game.viewer.game.Renderer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MouratoTest {
-    Position position;
-    Map map;
-    Mourato mourato;
+
+import com.t05g04.game.gui.LanternaGui;
+import org.mockito.Mockito;
+
+
+class MouratoTest {
+    private Mourato mourato;
+    private Map mapMock;
+    private Renderer rendererMock;
 
     @BeforeEach
-    void setUp() {
-        position = new Position(5, 5);
-        //map= new Map(10,10, "maps/map1", new LanternaGui());
+    void setUp() throws IOException {
 
-        mourato = new Mourato(position, false, false,5, 10, 2,0);
+        mourato = new Mourato(new Position(5, 5), false, true, 1, 4, 0, 5);
+        mapMock = mock(Map.class);
+        rendererMock = mock(Renderer.class);
+
+        when(mapMock.getRenderer()).thenReturn(rendererMock);
+        when(rendererMock.getMapPath()).thenReturn("mocked/path/to/map");
     }
 
     @Test
-    public void mouratoConstructorTest() {
-
-        assertEquals(position, mourato.getPosition());
-        assertFalse(mourato.isJump_());
-        assertEquals(5, mourato.getJumpVelocity_());
-        assertEquals(10, mourato.getJumpHeight_());
-        assertEquals(2, mourato.getCountJump_());
+    void testUpdateJump_NoJump() {
+        mourato.setJump_(false);
+        mourato.updateJump(mapMock);
+        assertEquals(0, mourato.getCountJump_());
     }
 
 
     @Test
-    public void mouratoGetters() {
+    void testDestroyKoopaIfHit() {
+        List<Koopa> koopas = new ArrayList<>();
+        Koopa koopa1 = new Koopa(new Position(5, 6), -1);
+        Koopa koopa2 = new Koopa(new Position(7, 6), -1);
+        koopas.add(koopa1);
+        koopas.add(koopa2);
+        when(mapMock.getKoopas()).thenReturn(koopas);
 
-        assertFalse(mourato.isJump_());
-        assertEquals(5, mourato.getJumpVelocity_());
-        assertEquals(10, mourato.getJumpHeight_());
-        assertEquals(2, mourato.getCountJump_());
+        mourato.destroyKoopaIfHit(mapMock);
+
+        assertEquals(1, koopas.size());
+        assertFalse(koopas.contains(koopa1));
     }
 
     @Test
-    public void testSetters() {
-        mourato.setCountJump_(3);
-        assertEquals(3, mourato.getCountJump_());
+    void testShootBullet_SuperMourato() {
+        mourato.setSuperMourato_(true);
+        mourato.setCountBullets_(3);
 
-        mourato.setJumpVelocity_(12);
-        assertEquals(12, mourato.getJumpVelocity_());
+        mourato.shootBullet(mapMock);
 
-        mourato.setJump_(true);
-        assertTrue(mourato.isJump_());
+        verify(mapMock, times(1)).createBullet(any(Position.class));
+        assertEquals(2, mourato.getCountBullets_());
     }
 
     @Test
-    //testing left movement
-    public void testMoveLeft() {
-        Position newPosition = mourato.moveLeft();
-        assertEquals(4, newPosition.getX());
-        assertEquals(5, newPosition.getY());
-    }
+    void testShootBullet_NoBullets() {
+        mourato.setSuperMourato_(true);
+        mourato.setCountBullets_(0);
 
+        mourato.shootBullet(mapMock);
 
-    //Testing right movement
-    @Test
-    public void testMoveRight() {
-        Position newPosition = mourato.moveRight();
-        assertEquals(6, newPosition.getX());
-        assertEquals(5, newPosition.getY());
+        verify(mapMock, never()).createBullet(any(Position.class));
+        assertFalse(mourato.isSuperMourato_());
     }
 }
