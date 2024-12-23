@@ -146,6 +146,7 @@ public class MouratoController extends GameController {
             Thread.sleep(4000);
             DeathMenu deathMenu = new DeathMenu(new String[]{"Retry", "Exit"}, gui, getModel().getPath_());
             deathMenu.run();
+            gui.close();
 
         }
         if (getModel().flagReach()){
@@ -155,6 +156,7 @@ public class MouratoController extends GameController {
             Thread.sleep(7000);
             EndLevelMenu endMenu = new EndLevelMenu(new String[]{"Continue", "Retry", "Exit"}, gui, getModel().getPath_());
             endMenu.run();
+            gui.close();
 
         }
     }
