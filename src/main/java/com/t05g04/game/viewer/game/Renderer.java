@@ -88,7 +88,11 @@ public class Renderer {
         map.checkAndFall(map.getMourato());
         synchronized (map.getKoopas()) {
             for (Koopa koopa : map.getKoopas()) {
-                gui.draw_koopa1(koopa.getPosition());
+                if (koopa.state.getAnimationStep() == 0) {
+                    gui.draw_koopa1(koopa.getPosition());
+                } else {
+                    gui.draw_koopa2(koopa.getPosition());
+                }
             }
         }
         for (Coin coin : map.getCoins()) {

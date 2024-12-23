@@ -87,44 +87,36 @@ public class Mourato extends Element{
     public void draw(TextGraphics graphics, Position position, boolean moving) throws IOException {
         switch (state.getState()) {
             case IDLE_LOOKING_LEFT:
-                System.out.println("IDLE_LOOKING_LEFT");
                 gui.draw_mourato_Lidle(position);
                 break;
             case IDLE_LOOKING_RIGHT:
-                System.out.println("IDLE_LOOKING_RIGHT");
                 gui.draw_mourato_idle(position);
                 break;
             case RUNNING_TO_LEFT:
 
                 if (state.getAnimationStep() == 1) {
-                    System.out.println("RUNNING_TO_LEFT1");
                     gui.draw_mourato_Lrun2(position);
                     state.stepAnimation();
                 }
                 else {
-                    System.out.println("RUNNING_TO_LEFT2");
                     gui.draw_mourato_Lrun1(position);
                     state.stepAnimation();
                 }
                 break;
             case RUNNING_TO_RIGHT:
                 if (state.getAnimationStep() == 1){
-                    System.out.println("RUNNING_TO_RIGHT1");
                     gui.draw_mourato_run2(position);
                     state.stepAnimation();
                 }
                 else {
-                    System.out.println("RUNNING_TO_RIGHT2");
                     gui.draw_mourato_run1(position);
                     state.stepAnimation();
                 }
                 break;
             case JUMPING_FROM_LEFT:
-                System.out.println("JUMPING_FROM_LEFT");
                 gui.draw_mourato_Ljump(position);
                 break;
             case JUMPING_FROM_RIGHT:
-                System.out.println("JUMPING_FROM_RIGHT");
                 gui.draw_mourato_jump(position);
                 break;
         }
