@@ -2,6 +2,7 @@ package com.t05g04.game.controller.game;
 
 import com.t05g04.game.Game;
 import com.t05g04.game.gui.GUI;
+import com.t05g04.game.model.game.elements.Bullet;
 import com.t05g04.game.model.game.map.Map;
 
 import java.awt.*;
@@ -19,11 +20,12 @@ public class BulletController extends GameController{
     @Override
     public void run(Game game, GUI.ACTION action, long time) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         if (time - BULLET_DELAY >= lastbulletAppearingTime) {
-            for(int i=0;i<getModel().getBullets().size();i++) {
-                getModel().BulletMove(getModel().getBullet(i));
+            for (Bullet bullet : getModel().getBullets()) {
+                getModel().BulletMove(bullet);
                 getModel().headshot();
-                lastbulletAppearingTime = System.currentTimeMillis();
             }
+            lastbulletAppearingTime = time; // Corrigido para usar o parâmetro `time`
         }
     }
+
 }

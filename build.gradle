@@ -13,10 +13,10 @@ repositories {
 }
 pitest {
     junit5PluginVersion = '1.2.1'
-    targetClasses = ['com.t05g04.game.model.*']
+    targetClasses = ['com.t05g04.game.*']
     targetTests = ['*Test']
     mutators = ['DEFAULTS']
-    threads = 4
+    threads = 6
     verbose = true
 }
 
