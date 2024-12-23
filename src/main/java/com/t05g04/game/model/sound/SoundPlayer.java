@@ -46,18 +46,5 @@ public class SoundPlayer {
         sound.start();
         sound.loop(Clip.LOOP_CONTINUOUSLY);
     }
-
-    public boolean isPlaying(){
-        return sound.isRunning();
-    }
-
-    public Clip getSound(){
-        return sound;
-    }
-
-    public void setSound(Clip sound){
-        this.sound = sound;
-    }
-
 }
 

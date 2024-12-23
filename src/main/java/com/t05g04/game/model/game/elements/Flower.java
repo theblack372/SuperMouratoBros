@@ -6,7 +6,7 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.t05g04.game.model.game.Position;
 
-public class Flower extends Element {
+public class Flower extends Element{
     private boolean appearing_;
 
     public Flower(Position position, boolean appearing) {

@@ -1,23 +1,18 @@
 package com.t05g04.game.viewer.game;
 
-import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.t05g04.game.controller.sound.SoundController;
-import com.t05g04.game.model.game.arena.Map;
+import com.t05g04.game.model.game.map.Map;
 import com.t05g04.game.model.game.elements.*;
 import com.t05g04.game.model.game.Position;
-import com.t05g04.game.viewer.Viewer;
 import com.t05g04.game.model.sound.SoundOptions;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Objects;
 
 import static com.t05g04.game.Application.gui;
 import static com.t05g04.game.viewer.game.MapLoader.loadMap;
@@ -123,7 +118,7 @@ public class Renderer {
                 Position positionBlock = new Position(mourato.getPosition().getX() + start, mourato.getPosition().getY() - 1);
                 if (map_[positionBlock.getX()][positionBlock.getY()] == 'H') {
                     map_[positionBlock.getX()][positionBlock.getY()] = ' ';//parte o bloco
-                    SoundController.getInstance().playSound(SoundOptions.BREAK_BLOCK);
+                    SoundController.getInstance().run(SoundOptions.BREAK_BLOCK);
                     mourato.setCountJump_(mourato.getJumpHeight_()); //mete o contador de salto no maximo para provocar momento descendente
                     return true;
                 }

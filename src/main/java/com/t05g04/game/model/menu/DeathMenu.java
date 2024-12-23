@@ -1,10 +1,9 @@
 package com.t05g04.game.model.menu;
 
-import com.t05g04.game.controller.game.Game;
+import com.t05g04.game.Game;
 import com.t05g04.game.gui.GUI;
 import com.t05g04.game.gui.LanternaGui;
 import com.t05g04.game.viewer.menu.DeathMenuViewer;
-import com.t05g04.game.viewer.menu.StartMenuViewer;
 
 import java.awt.*;
 import java.io.IOException;

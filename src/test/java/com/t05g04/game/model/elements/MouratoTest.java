@@ -3,9 +3,8 @@ package com.t05g04.game.model.elements;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.googlecode.lanterna.screen.Screen;
 import com.t05g04.game.model.game.Position;
-import com.t05g04.game.model.game.arena.Map;
+import com.t05g04.game.model.game.map.Map;
 import com.t05g04.game.model.game.elements.Koopa;
 import com.t05g04.game.model.game.elements.Mourato;
 import com.t05g04.game.viewer.game.Renderer;
@@ -15,10 +14,6 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-
-import com.t05g04.game.gui.LanternaGui;
-import org.mockito.Mockito;
 
 
 class MouratoTest {

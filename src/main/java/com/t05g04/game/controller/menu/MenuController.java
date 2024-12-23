@@ -1,5 +1,6 @@
 package com.t05g04.game.controller.menu;
 
+import com.t05g04.game.Game;
 import com.t05g04.game.controller.Controller;
 import com.t05g04.game.gui.GUI;
 import com.t05g04.game.gui.LanternaGui;
@@ -9,14 +10,15 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-public class MenuController extends Controller {
+public class MenuController extends Controller<Menu> {
 
   private final Menu menu;
   public GUI.ACTION action;
   LanternaGui gui;
 
   public MenuController(Menu menu, LanternaGui gui1) throws IOException {
-    this.menu = menu;
+      super(menu);
+      this.menu = menu;
     gui = gui1;
     action = gui.getNextAction();
     if (action == null) {
@@ -60,5 +62,10 @@ public class MenuController extends Controller {
   public void selectOption()
       throws IOException, URISyntaxException, FontFormatException, InterruptedException {
     menu.selectOption();
+  }
+
+  @Override
+  public void run(Game game, GUI.ACTION action, long time) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
+    run(getModel().menuViewer);
   }
 }
