@@ -84,10 +84,10 @@ public class MouratoController extends GameController {
 
     }
 
-    private boolean mouratoOutOfBounds() {
+    public boolean mouratoOutOfBounds() {
         return getModel().outBounds();
     }
-    private boolean koopasHitDeath(){
+    public boolean koopasHitDeath(){
         for(int i=0;i<getModel().koopasNo();i++) {
             if((getModel().getKoopa(i)!=null &&getModel().getMourato().getPosition().equals(getModel().getKoopa(i).getPosition()))) {
                 if (!getModel().getMourato().isSuperMourato_()) {
@@ -103,7 +103,7 @@ public class MouratoController extends GameController {
         return false;
     }
 
-    private boolean flowerHitDeath(){
+    public boolean flowerHitDeath(){
         for(int i=0;i<getModel().flowerNo();i++) {
             if((getModel().getFlower(i).isAppearing() && getModel().getMourato().getPosition().equals(getModel().getFlower(i).getPosition()))){
                 if(!getModel().getMourato().isSuperMourato_()) {
