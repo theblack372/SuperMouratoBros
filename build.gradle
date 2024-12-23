@@ -1,6 +1,8 @@
 plugins {
     id 'java'
     id 'application'
+    id 'info.solidsoft.pitest' version '1.15.0'
+    id 'groovy'
 }
 
 group = 'com.pedroRIbas.gameLdts'
@@ -9,6 +11,15 @@ version = '1.0-SNAPSHOT'
 repositories {
     mavenCentral()
 }
+pitest {
+    junit5PluginVersion = '1.2.1'
+    targetClasses = ['com.t05g04.game.model.*']
+    targetTests = ['*Test']
+    mutators = ['DEFAULTS']
+    threads = 4
+    verbose = true
+}
+
 
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
