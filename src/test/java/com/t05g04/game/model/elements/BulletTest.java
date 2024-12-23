@@ -15,7 +15,7 @@ public class BulletTest {
 
     @BeforeEach
     void setUp() {
-        bullet = new Bullet(new Position(5, 5), 1, true);
+        bullet = new Bullet(new Position(5, 5), 1);
         mapMock = mock(Map.class);
     }
 
