@@ -18,18 +18,20 @@ import static com.t05g04.game.Application.gui;
 
 public class MouratoController extends GameController {
     public Mourato mourato = getModel().getMourato();
+
     public MouratoController(Map map) {
         super(map);
     }
 
+
     public void mouratoJump() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         if(!getModel().checkAndFall(mourato)) {
             if (!mourato.isJump_()) {
-                    if (mourato.state.isRunningToLeft()) {
-                        mourato.state.setJumpingFromLeft(true);
+                    if (getModel().isMouratoRunningLeft()) {
+                        getModel().mouratoJumpingLeft();
                     }
                     else {
-                        mourato.state.setJumpingFromRight(true);
+                        getModel().mouratoJumpingRight();
                     }
 
                     mourato.setJump_(true);
@@ -39,19 +41,14 @@ public class MouratoController extends GameController {
     }
 
     public void setMouratoStill(){
-        if (mourato.state.isRunningToLeft() || (mourato.state.isJumpingFromLeft() && !mourato.isJump_())) {
-            mourato.state.setIdleLookingLeft(true);
-        }
-        else if (mourato.state.isRunningToRight() || (mourato.state.isJumpingFromRight() && !mourato.isJump_())) {
-            mourato.state.setIdleLookingRight(true);
-        }
+        getModel().mouratoLooking();
     }
 
     public void moveMouratoDown(){
         getModel().moveMourato(mourato.moveDown());
     }
     public void moveMouratoLeft() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
-        mourato.state.setRunningToLeft(true);
+        getModel().mouratoMovingLeft();
         getModel().moveMourato(mourato.moveLeft());
         getModel().checkAndFall(mourato);
         getModel().retrieveCoins(mourato.getPosition());
@@ -63,7 +60,7 @@ public class MouratoController extends GameController {
         }
     }
     public void moveMouratoRight() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
-        mourato.state.setRunningToRight(true);
+        getModel().mouratoMovingRight();
         if (getModel().isMouratoMiddle() && getModel().canObjectMove(mourato.moveRight())) {
             getModel().incrementStartX_();
             for(Koopa koopa : getModel().getKoopas()){

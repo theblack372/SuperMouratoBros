@@ -32,7 +32,7 @@ public class MenuController extends Controller<Menu> {
       action = gui.getNextAction();
 
       if (action == null) {
-        action = GUI.ACTION.NONE; // Handle null case
+        action = GUI.ACTION.NONE;
       }
       switch (action) {
         case UP:
@@ -45,6 +45,9 @@ public class MenuController extends Controller<Menu> {
           break;
         case SELECT:
           selectOption();
+          break;
+        case QUIT, LEFT, RIGHT, NONE, SHOOT:
+        default:
           break;
       }
     }
