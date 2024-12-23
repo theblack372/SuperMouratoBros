@@ -81,14 +81,16 @@ public class Map {
     }
 
     public void goSuperMourato(Position position) {
+        Powerup victim = null;
         for(Powerup powerup:powerups) {
             if (powerup.getPosition().equals(position)&&powerup.isAppearing()) {
                 mourato.setSuperMourato_(true);
                 SoundController.getInstance().run(SoundOptions.POWER_UP);
-                powerups.remove(powerup);
+                victim = powerup;
                 mourato.setCountBullets_(mourato.getCountBullets_()+5);
             }
         }
+        powerups.remove(victim);
     }
 
     public boolean canObjectMove(Position position) {
