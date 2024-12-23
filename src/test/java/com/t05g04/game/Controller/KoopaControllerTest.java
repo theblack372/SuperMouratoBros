@@ -17,7 +17,7 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-class KoopaControllerTest {
+public class KoopaControllerTest {
 
     private KoopaController koopaController;
     private Map mockMap;

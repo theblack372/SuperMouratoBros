@@ -23,6 +23,14 @@ public class Position {
         Position p = (Position) o;
         return x_ == p.getX() && y_ == p.getY();
     }
+    public void setY(int i) {
+        y_ = i;
+    }
+
+    public void setX_(int x_) {
+        this.x_ = x_;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(x_, y_);
@@ -31,4 +39,6 @@ public class Position {
         x_=position.getX();
         y_=position.getY();
     }
+
+
 }
