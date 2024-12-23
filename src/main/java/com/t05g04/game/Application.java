@@ -10,7 +10,7 @@ import java.net.URISyntaxException;
 
 public class Application {
     static Menu menu;
-    public static LanternaGui gui = null;
+    public static LanternaGui gui;
 
     public Application() throws IOException, URISyntaxException, FontFormatException {
         gui= new LanternaGui(32*16,18*16);
