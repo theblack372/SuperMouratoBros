@@ -113,7 +113,7 @@ We have fixed all the errors reported by error-prone . No other major code smell
 
 ### Screenshot of coverage report
 <p align="center" justify="center">
-  <img src="images/codeCoverage"/>
+  <img src="images/codeCoverage.png"/>
 </p>
 <p align="center">
   <b><i>Fig 7. Code coverage screenshot</i></b>
@@ -121,7 +121,7 @@ We have fixed all the errors reported by error-prone . No other major code smell
 
 ### Screenshot of pitest report
 <p align="center" justify="center">
-  <img src="images/pitestCoverage"/>
+  <img src="images/pitestCoverage.png"/>
 </p>
 <p align="center">
   <b><i>Fig 8. pitest coverage screenshot</i></b>
