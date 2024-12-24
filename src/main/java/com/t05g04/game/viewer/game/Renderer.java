@@ -107,10 +107,10 @@ public class Renderer {
 
     public boolean breakBlock(Mourato mourato) {
         if (mourato.isJump_()) {
-            if (mourato.getJumpVelocity_() >= 0) {// caso mourato esteja em salto em momento ascendente
+            if (mourato.getJumpVelocity_() >= 0) { // caso mourato esteja em salto em momento ascendente
                 Position positionBlock = new Position(mourato.getPosition().getX() + start, mourato.getPosition().getY() - 1);
                 if (map_[positionBlock.getX()][positionBlock.getY()] == 'H') {
-                    map_[positionBlock.getX()][positionBlock.getY()] = ' ';//parte o bloco
+                    map_[positionBlock.getX()][positionBlock.getY()] = ' '; //parte o bloco
                     SoundController.getInstance().run(SoundOptions.BREAK_BLOCK);
                     mourato.setCountJump_(mourato.getJumpHeight_()); //mete o contador de salto no maximo para provocar momento descendente
                     return true;

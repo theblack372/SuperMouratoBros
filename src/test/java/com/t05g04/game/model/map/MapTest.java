@@ -141,9 +141,8 @@ class MapTest {
 
     @Test
     void testIsMouratoMiddle_True() {
-        // Mourato está na posição central (X=16)
         map.getMourato().setPosition_(new Position(16, 10));
-        map.incrementStartX_(); // StartX diferente de largura do mapa - largura da tela
+        map.incrementStartX_();
 
         boolean result = map.isMouratoMiddle();
 

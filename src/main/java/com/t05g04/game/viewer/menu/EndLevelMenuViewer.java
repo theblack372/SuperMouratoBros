@@ -1,11 +1,9 @@
 package com.t05g04.game.viewer.menu;
 
-import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.screen.Screen;
 import com.t05g04.game.gui.LanternaGui;
 import com.t05g04.game.model.game.Position;
 import com.t05g04.game.model.menu.EndLevelMenu;
-import com.t05g04.game.model.menu.MapSelectionMenu;
 
 import java.io.IOException;
 

@@ -1,7 +1,5 @@
 package com.t05g04.game.model.menu;
-import com.t05g04.game.Game;
 import com.t05g04.game.controller.menu.MenuController;
-import com.t05g04.game.gui.GUI;
 import com.t05g04.game.gui.LanternaGui;
 import com.t05g04.game.viewer.menu.EndLevelMenuViewer;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,38 +34,29 @@ public class EndLevelMenuTest {
 
     @Test
     public void testDrawMenu() throws IOException {
-        // Call draw
         endLevelMenu.draw();
 
-        // Verify the menuViewer's drawMenu method is called
         verify(mockMenuViewer, times(1)).drawMenu();
     }
 
     @Test
     public void testSelectOption_Quit() throws Exception {
-        // Set selected option to "Quit"
         endLevelMenu.setSelectedOption(2);
 
-        // Call selectOption
         endLevelMenu.selectOption();
 
-        // Verify GUI is closed
         verify(mockGui, times(1)).close();
     }
 
     @Test
     public void testRun() throws Exception {
-        // Mock the menuController's run method
         MenuController mockMenuController = mock(MenuController.class);
         endLevelMenu.menuController = mockMenuController;
 
-        // Call run
         endLevelMenu.run();
 
-        // Verify that draw is called
         verify(mockMenuViewer, times(1)).drawMenu();
 
-        // Verify menuController's run is called
         verify(mockMenuController, times(1)).run(mockMenuViewer);
     }
 }
