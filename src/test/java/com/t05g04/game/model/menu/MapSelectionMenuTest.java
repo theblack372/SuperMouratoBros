@@ -20,7 +20,8 @@ public class MapSelectionMenuTest {
     private LanternaGui mockGui;
     private MapSelectionMenuViewer mockMenuViewer;
     private MapMenuController mockMenuController;
-    private Game mockGame;
+    @SuppressWarnings("MockNotUsedInProduction")
+    private Game mockGame = mock(Game.class);
     private MapSelectionMenu mapSelectionMenu;
 
     @BeforeEach
@@ -29,7 +30,6 @@ public class MapSelectionMenuTest {
         mockGui = mock(LanternaGui.class);
         mockMenuViewer = mock(MapSelectionMenuViewer.class);
         mockMenuController = mock(MapMenuController.class);
-        mockGame = mock(Game.class);
 
         // Mock the Game class's run method
         doNothing().when(mockGame).run();  // Prevent the actual run method from executing
