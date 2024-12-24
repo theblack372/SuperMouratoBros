@@ -56,7 +56,6 @@ public class Map {
 
     public int flowerNo(){return flowers.size();}
     public int koopasNo(){return koopas.size();}
-    public int powerupBlocksNo(){return powerupBlocks.size();}
 
     public void createCoin(Position position) {coins.add(new Coin(position));}
     public void createKoopa(Position position) {koopas.add(new Koopa(position, -1));}
@@ -95,7 +94,7 @@ public class Map {
 
     public boolean canObjectMove(Position position) {
         if (position.getX() < 0 || position.getY() < 0 || position.getX() >= width_ || position.getY() >= height_) {
-            return false; // Fora dos limites
+            return false;
         }
         char tile = renderer.getMap_()[position.getX()+renderer.getStart()][position.getY()];
         return tile!='#' && tile!='H' && tile!='!';
@@ -145,9 +144,9 @@ public class Map {
 
     public Koopa getKoopa(int i) {
         if (!koopas.isEmpty()) {
-            return koopas.get(i); // Retorna o primeiro elemento da lista
+            return koopas.get(i);
         }
-        return null; // Retorna null caso não haja Koopas
+        return null;
     }
     public Flower getFlower(int i) {
         if (!flowers.isEmpty()) {
@@ -155,13 +154,6 @@ public class Map {
         }
         return null;
     }
-    public Bullet getBullet(int i) {
-        if (!bullets.isEmpty()) {
-            return bullets.get(i); // Retorna o primeiro elemento da lista
-        }
-        return null; // Retorna null caso não haja Koopas
-    }
-
     public Mourato getMourato() {return mourato;}
 
     public void updateJump(Mourato mourato) {mourato.updateJump(this);}
@@ -178,9 +170,9 @@ public class Map {
 
                     // Verifica se Mourato está na mesma posição ou imediatamente acima do Koopa
                     if ((bulletPosition.getX() == koopaPosition.getX() + 1 || bulletPosition.getX() == koopaPosition.getX() - 1) && bulletPosition.getY() == koopaPosition.getY()) {
-                        koopas.remove(koopa);// Remove o Koopa atingido
+                        koopas.remove(koopa);
                         bullets.remove(bullet);
-                        break; // Sai após destruir o Koopa
+                        break;
                     }
                 }
             }

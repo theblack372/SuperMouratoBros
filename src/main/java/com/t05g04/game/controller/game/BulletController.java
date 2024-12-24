@@ -24,7 +24,7 @@ public class BulletController extends GameController{
                 getModel().BulletMove(bullet);
                 getModel().headshot();
             }
-            lastbulletAppearingTime = time; // Corrigido para usar o parâmetro `time`
+            lastbulletAppearingTime = time;
         }
     }
 

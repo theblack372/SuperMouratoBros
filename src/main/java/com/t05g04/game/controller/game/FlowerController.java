@@ -24,7 +24,7 @@ public class FlowerController extends GameController {
             for (Flower flower:getModel().getFlowers()) {
                 flower.setAppearing(!flower.isAppearing());
             }
-            lastFlowerAppearingTime = time; // Atualiza somente após o loop
+            lastFlowerAppearingTime = time;
         }
     }
 

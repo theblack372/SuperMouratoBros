@@ -65,10 +65,8 @@ public class MouratoControllerTest {
 
     @Test
     void testRun_PauseActionDoesNothing() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
-        // When
         mouratoController.run(mock(Game.class), GUI.ACTION.NONE, 0);
 
-        // Then
         verify(mockMap, never()).moveMourato(any(Position.class));
         verify(mockMap, never()).retrieveCoins(any(Position.class));
         verify(mockMap, never()).goSuperMourato(any(Position.class));
@@ -76,26 +74,20 @@ public class MouratoControllerTest {
 
     @Test
     void testRun_LeftActionAtBoundaryDoesNotMove() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
-        // Given
         when(mockMap.canObjectMove(any(Position.class))).thenReturn(false);
 
-        // When
         mouratoController.run(mock(Game.class), GUI.ACTION.LEFT, 0);
 
-        // Then
         verify(mockMap, never()).moveMourato(any(Position.class));
     }
 
     @Test
     void testRun_RightActionAtBoundaryDoesNotIncrementStartX() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
-        // Given
         when(mockMap.isMouratoMiddle()).thenReturn(true);
         when(mockMap.canObjectMove(any(Position.class))).thenReturn(false);
 
-        // When
         mouratoController.run(mock(Game.class), GUI.ACTION.RIGHT, 0);
 
-        // Then
         verify(mockMap, never()).incrementStartX_();
     }
 }

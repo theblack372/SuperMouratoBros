@@ -46,7 +46,6 @@ public class KoopaTest {
         koopa.move(mapMock);
         Position position = koopa.getPosition();
 
-        // A posição X deveria ter sido aumentada em 1
         assertEquals(6, position.getX());
         assertEquals(5, position.getY());
 

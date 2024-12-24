@@ -13,19 +13,14 @@ public class PositionTest {
         Position position2 = new Position(2, 3);
         Position position3 = new Position(4, 5);
 
-        // testa objetos identicos
         assertTrue(position1.equals(position1));
 
-        // testa objetos com os mesmos valores
         assertTrue(position1.equals(position2));
 
-        // testa objetos com valores diferentes
         assertFalse(position1.equals(position3));
 
-        // testa contra o nulo
         assertFalse(position1.equals(null));
 
-        // testa contra objetos de classes diferentes.
         assertFalse(position1.equals("Not a Position"));
     }
 }

@@ -21,10 +21,6 @@ public abstract class Menu {
         menuController = new MenuController(this, gui);
     }
 
-    public String[] getOptions() {
-        return options;
-    }
-
     public int getSelectedOption() {
         return selectedOption;
     }
