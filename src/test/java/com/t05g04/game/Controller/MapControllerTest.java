@@ -26,19 +26,15 @@ public class MapControllerTest {
 
     @BeforeEach
     void setUp() {
-        // Mocking dependencies
         mockMap = mock(Map.class);
         mockGame = mock(Game.class);
 
-        // Spying on controllers
         mockMonstersController = spy(new MonstersController(mockMap));
         mockBulletController = spy(new BulletController(mockMap));
         mockMouratoController = spy(new MouratoController(mockMap));
 
-        // Initialize the MapController
         mapController = new MapController(mockMap);
 
-        // Replace the controllers with spies
         mapController.setMonstersController(mockMonstersController);
         mapController.setBulletController(mockBulletController);
         mapController.setMouratoController(mockMouratoController);
@@ -46,15 +42,12 @@ public class MapControllerTest {
 
     @Test
     void testRun_HandlesGame() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
-        // Call the method under test
         mapController.run(mockGame, GUI.ACTION.NONE, 1000);
 
-        // Verify the controllers are called as expected
         verify(mockMouratoController, times(1)).run(mockGame, GUI.ACTION.NONE, 1000);
         verify(mockMonstersController, times(1)).run(mockGame, GUI.ACTION.NONE, 1000);
         verify(mockBulletController, times(1)).run(mockGame, GUI.ACTION.NONE, 1000);
 
-        // Verify other interactions
         verify(mockMap, times(1)).makePowerup();
         verify(mockGame, times(1)).draw(anyInt(), anyInt());
     }
@@ -62,9 +55,9 @@ public class MapControllerTest {
     void testRun_QuitAction() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         mapController.run(mockGame, GUI.ACTION.QUIT, 1000);
 
-        // Verify that the game's state is set to null
         verify(mockGame, times(1)).setState(null);
     }
+
     @Test
     void testRun_MakesPowerup() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         mapController.run(mockGame, GUI.ACTION.NONE, 1000);

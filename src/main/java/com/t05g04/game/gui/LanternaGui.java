@@ -260,7 +260,7 @@ public class LanternaGui implements GUI{
                         Objects.requireNonNull(
                                 LanternaGui.class
                                         .getClassLoader()
-                                        .getResource("sprites/menu/instructionMenu/instructionsMenu.png")));
+                                        .getResource("sprites/menu/InstructionMenu/InstructionsMenu.png")));
 
         this.powerUpFlower =
                 ImageIO.read(
@@ -629,16 +629,12 @@ public class LanternaGui implements GUI{
     }
 
     public void displayMessage(Screen screen, String message, int x, int y) throws IOException {
-        // Get TextGraphics from the Screen
         TextGraphics textGraphics = screen.newTextGraphics();
 
-        // Set colors if desired
         textGraphics.setForegroundColor(TextColor.ANSI.BLACK);
         textGraphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
-        // Write the message at the specified position
         textGraphics.putString(x, y, message);
 
-        // Refresh the screen to show changes
         screen.refresh();
     }
 
@@ -856,21 +852,18 @@ public class LanternaGui implements GUI{
 
 
     public void draw_curentCoins(int coins) throws IOException {
-        // Start position for the coins display
-        int x = 2; // X-coordinate for the coin icon
-        int y = 2; // Y-coordinate for both the icon and the digits
+        int x = 2;
+        int y = 2;
 
-        // Draw the coin icon
         Position coinIconPosition = new Position(x, y);
         draw_coin(coinIconPosition);
 
-        // Draw the digits for the coins
         draw_digits(coins, x, y);
     }
 
     private void draw_digits(int number, int x, int y) throws IOException {
         String coinsStr = String.valueOf(number);
-        for (int i = 0; i < coinsStr.length(); i++) { // Start from i = 0
+        for (int i = 0; i < coinsStr.length(); i++) {
             char digit = coinsStr.charAt(i);
             Position digitPosition = new Position(x + 1+i, y); // Adjust spacing (2 for icon, 4 for digit spacing)
             switch (digit) {
@@ -890,16 +883,13 @@ public class LanternaGui implements GUI{
 
 
     public void draw_currentBullets(int bullets) throws IOException {
-        // Start position for the bullets display
-        int x = 5; // X-coordinate for the fireball icon
-        int y = 2; // Y-coordinate for both the icon and the digits
 
-        // Draw the fireball icon
+        int x = 5;
+        int y = 2;
+
         Position fireballIconPosition = new Position(x, y);
         draw_fireBall1(fireballIconPosition);
 
-
-        // Draw the digits for the bullets
         draw_digits(bullets, x, y);
     }
 }

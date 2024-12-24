@@ -19,7 +19,6 @@ public class StartMenu extends Menu {
       throws IOException, URISyntaxException, FontFormatException, InterruptedException {
     switch (selectedOption) {
       case 0:
-//        gui.close();
         MapSelectionMenu mapSelectionMenu =
             new MapSelectionMenu(new String[] {"Map 1", "Map 2", "Map 3", "Map 4", "Exit"}, gui);
         mapSelectionMenu.run();

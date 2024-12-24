@@ -22,31 +22,23 @@ class FlowerControllerTest {
 
     @BeforeEach
     void setUp() {
-        // Criar mocks
         mockMap = Mockito.mock(Map.class);
         mockFlower = Mockito.mock(Flower.class);
 
-        // Configurar o mapa para retornar uma flor mockada
-        when(mockMap.flowerNo()).thenReturn(1); // Uma flor no mapa
+        when(mockMap.flowerNo()).thenReturn(1);
         when(mockMap.getFlower(0)).thenReturn(mockFlower);
-
-        // Criar a instância do FlowerController com o mapa mockado
         flowerController = new FlowerController(mockMap);
     }
 
     @Test
     void testRunDoesNotAlternateFlowerVisibilityBeforeInterval() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
-        // Configura o mock para o flower, se necessário
         when(mockFlower.isAppearing()).thenReturn(true);
 
-        // Simula a passagem de tempo - com um tempo menor que o intervalo de 3000ms
         long currentTime = System.currentTimeMillis();
-        long timeBeforeInterval = currentTime + 2000; // tempo menor que 3000ms
+        long timeBeforeInterval = currentTime + 2000;
 
-        // Chama o método run
-        flowerController.run(null, GUI.ACTION.NONE, timeBeforeInterval); // Não deve alterar a visibilidade
+        flowerController.run(null, GUI.ACTION.NONE, timeBeforeInterval);
 
-        // Verifica que setAppearing não foi chamado, pois o intervalo ainda não passou
-        verify(mockFlower, never()).setAppearing(anyBoolean());  // Garantir que setAppearing não foi chamado
+        verify(mockFlower, never()).setAppearing(anyBoolean());
     }
 }

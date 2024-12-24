@@ -18,10 +18,10 @@ class LanternaGuiTest {
     private LanternaGui lanternaGui;
 
     @Mock
-    private TextGraphics mockTextGraphics;
+    private Screen mockScreen;
 
     @Mock
-    private Screen mockScreen;
+    private TextGraphics mockTextGraphics;
 
     @Mock
     private BufferedImage mockImage;
@@ -29,7 +29,9 @@ class LanternaGuiTest {
     @BeforeEach
     void setUp() throws IOException {
         MockitoAnnotations.openMocks(this);
+
         when(mockScreen.newTextGraphics()).thenReturn(mockTextGraphics);
+
         lanternaGui = new LanternaGui(mockScreen);
     }
 
@@ -49,30 +51,23 @@ class LanternaGuiTest {
 
     @Test
     void testClose() throws IOException {
-
         lanternaGui.close();
-
 
         verify(mockScreen).close();
     }
 
     @Test
     void testDrawPNG() throws IOException {
-
         Position position = new Position(0, 0);
 
-
         lanternaGui.drawPNG(position, mockImage);
-
 
     }
 
     @Test
     void testDrawWall() throws IOException {
-        // Mockar a posição
         Position position = new Position(5, 5);
 
-        // Chamar o método draw_Wall
         lanternaGui.draw_Wall(position);
 
         verify(mockScreen).newTextGraphics();
@@ -80,7 +75,6 @@ class LanternaGuiTest {
 
     @Test
     void testDisplayMessage() throws IOException {
-
         lanternaGui.displayMessage(mockScreen, "Hello, World!", 10, 5);
 
         verify(mockTextGraphics).setForegroundColor(any());

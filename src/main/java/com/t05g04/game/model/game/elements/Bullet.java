@@ -44,13 +44,11 @@ public class Bullet extends Element implements Movable {
         synchronized (this) {
             int nextX = getPosition().getX() + getVelocity_();
             int nextY = getPosition().getY();
-            Position nextPosition = new Position(nextX, nextY); // Nova posição para teste de colisão
+            Position nextPosition = new Position(nextX, nextY);
 
             if (map.canObjectMove(nextPosition)) {
-                // Atualiza a posição do projétil
                 getPosition().setPosition(nextPosition);
             } else {
-                // Remove o projétil do mapa ao colidir
                 map.getBullets().remove(this);
             }
         }

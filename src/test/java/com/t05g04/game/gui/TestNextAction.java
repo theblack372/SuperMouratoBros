@@ -10,10 +10,10 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class TestNextAction {
+public class TestNextAction {
     Screen mockScreen;
     LanternaGui gui;
-    //screen mocked
+
     @BeforeEach
     void setUp() {
         mockScreen = Mockito.mock(Screen.class);
@@ -21,8 +21,6 @@ class TestNextAction {
 
     @Test
     void testGetNextActionQuit() throws IOException {
-
-        // "q" pressionado
         KeyStroke mockKeyStroke = new KeyStroke('q', false, false);
         when(mockScreen.pollInput()).thenReturn(mockKeyStroke);
 
@@ -34,7 +32,6 @@ class TestNextAction {
 
     @Test
     void testGetNextActionArrowKeys() throws IOException {
-        // todas as setas vao ser pressionadas
 
         when(mockScreen.pollInput()).thenReturn(new KeyStroke(KeyType.ArrowUp, false, false));
         gui = new LanternaGui(mockScreen);

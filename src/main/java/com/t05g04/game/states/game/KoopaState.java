@@ -10,9 +10,6 @@ public class KoopaState extends MovableState{
         return animationStep;
     }
 
-    public void setAnimationStep(int animationStep) {
-        this.animationStep = animationStep;
-    }
 
     public void stepAnimation() {
         if (animationStep == 0) {

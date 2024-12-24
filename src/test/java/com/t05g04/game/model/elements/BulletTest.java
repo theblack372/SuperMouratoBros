@@ -45,7 +45,6 @@ public class BulletTest {
     void testMoveWithMapCheck_Collision() {
         when(mapMock.canObjectMove(any(Position.class))).thenReturn(false);
 
-        // Move a bala
         bullet.move(mapMock);
         Position position = bullet.getPosition();
 

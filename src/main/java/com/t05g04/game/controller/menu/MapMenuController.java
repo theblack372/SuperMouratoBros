@@ -24,7 +24,7 @@ public class MapMenuController extends MenuController {
             action = gui.getNextAction();
 
             if (action == null) {
-                action = GUI.ACTION.NONE; // Handle null case
+                action = GUI.ACTION.NONE;
             }
             switch (action) {
                 case LEFT:

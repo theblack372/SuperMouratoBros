@@ -42,21 +42,18 @@ public class KoopaControllerTest {
     void testRun_WithinInterval_NoMove() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         long initialTime = 999;
 
-        // Run the controller with a time less than KOOPA_MOVE_INTERVAL
         koopaController.run(mockGame, GUI.ACTION.NONE, initialTime);
 
-        // Verify that KoopaMove was never called
         verify(mockMap, never()).KoopaMove(any());
     }
 
     @Test
     void testRun_ExceedsInterval_MoveKoopas() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         koopaController.lastMove = 1000;
-        long currentTime = 2001; // Exceeds KOOPA_MOVE_INTERVAL (1000ms)
+        long currentTime = 2001; // Excede KOOPA_MOVE_INTERVAL (1000ms)
 
         koopaController.run(mockGame, GUI.ACTION.NONE, currentTime);
 
-        // Verify that KoopaMove was called for each Koopa
         verify(mockMap, times(1)).KoopaMove(mockKoopa1);
         verify(mockMap, times(1)).KoopaMove(mockKoopa2);
     }
@@ -65,11 +62,8 @@ public class KoopaControllerTest {
     void testRun_ExceedsInterval_UpdatesLastMove() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
         koopaController.lastMove = 1000;
         long currentTime = 2001;
-
-        // Run the controller
         koopaController.run(mockGame, GUI.ACTION.NONE, currentTime);
 
-        // Verify that lastMove is updated
         assertEquals(currentTime, koopaController.lastMove);
     }
 }
