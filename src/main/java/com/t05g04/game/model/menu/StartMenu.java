@@ -25,6 +25,10 @@ public class StartMenu extends Menu {
         mapSelectionMenu.run();
         break;
       case 1:
+        InstructionsMenu instructionsMenu = new InstructionsMenu(new String[] {"Back"}, gui);
+        instructionsMenu.run();
+        break;
+      case 2:
         menuController.action = GUI.ACTION.QUIT;
         break;
     }

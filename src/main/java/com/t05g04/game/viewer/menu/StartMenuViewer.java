@@ -28,6 +28,7 @@ public class StartMenuViewer extends MenuViewer {
 
   static void drawOptions(int option) throws IOException {
     if (option==0) gui.draw_startMenu_start(new Position(0,0));
-    if (option==1) gui.draw_startMenu_exit(new Position(0,0));
+    if (option==1) gui.draw_startMenu_instructions(new Position(0,0));
+    if (option==2) gui.draw_startMenu_exit(new Position(0,0));
   }
 }

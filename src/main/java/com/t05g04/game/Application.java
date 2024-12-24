@@ -22,7 +22,7 @@ public class Application {
     }
 
     public static void startMenu() throws IOException, URISyntaxException, FontFormatException, InterruptedException {
-        menu = new StartMenu(new String[]{"Start", "Exit"}, gui);
+        menu = new StartMenu(new String[]{"Start", "Instructions", "Exit"}, gui);
         menu.run();
     }
 }
