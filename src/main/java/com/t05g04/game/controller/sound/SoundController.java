@@ -1,11 +1,17 @@
 package com.t05g04.game.controller.sound;
 
+import com.t05g04.game.Game;
 import com.t05g04.game.controller.Controller;
+import com.t05g04.game.gui.GUI;
 import com.t05g04.game.model.sound.SoundOptions;
 import com.t05g04.game.model.sound.SoundPlayer;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
-public class SoundController{
+
+public class SoundController extends Controller<SoundOptions> {
     private static SoundController soundController;
     private final SoundPlayer coin;
     private final SoundPlayer music;
@@ -17,6 +23,7 @@ public class SoundController{
     private final SoundPlayer fireballSound;
 
     public SoundController() {
+        super(null);
         this.music = new SoundPlayer("src/main/resources/sounds/SuperMarioBros.wav");
         this.deathSound = new SoundPlayer("src/main/resources/sounds/smb_mariodie.wav");
         this.breakSound = new SoundPlayer("src/main/resources/sounds/smb_breakblock.wav");
@@ -75,5 +82,10 @@ public class SoundController{
         winSound.stop();
         jumpSound.stop();
         coin.stop();
+    }
+
+    @Override
+    public void run(Game game, GUI.ACTION action, long time) throws IOException, URISyntaxException, FontFormatException, InterruptedException {
+
     }
 }
