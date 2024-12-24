@@ -127,6 +127,9 @@ We have fixed all the errors reported by error-prone . No other major code smell
   <b><i>Fig 8. pitest coverage screenshot</i></b>
 </p>
 
+## Development struggles
+We encountered challenges in certain aspects of this project, which we addressed by leveraging ChatGPT and referencing projects from previous years for solutions to bugs and inspiration for implementation. One of the more complex classes, Map, contains a significant number of methods. While we considered reducing its size, each method was essential to the program's functionality.
+
 ## Self-evaluation
 
 The work was divided in a mutual way and we all contributed with our best. It helped us to enrich our java and principle/pattern knwoledge, as well as our team work.
