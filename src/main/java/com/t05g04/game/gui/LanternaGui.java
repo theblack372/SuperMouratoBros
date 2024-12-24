@@ -11,8 +11,6 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
 import com.t05g04.game.model.game.Position;
-import com.t05g04.game.controller.sound.SoundController;
-import com.t05g04.game.model.sound.SoundOptions;
 
 
 import javax.imageio.ImageIO;
@@ -57,6 +55,8 @@ public class LanternaGui implements GUI{
     private final BufferedImage mapSelect_exit;
     private final BufferedImage startMenu_exit;
     private final BufferedImage startMenu_start;
+    private final BufferedImage startMenu_instructions;
+    private final BufferedImage instructionsMenu;
     private final BufferedImage one;
     private final BufferedImage two;
     private final BufferedImage three;
@@ -247,6 +247,20 @@ public class LanternaGui implements GUI{
                                 LanternaGui.class
                                         .getClassLoader()
                                         .getResource("sprites/menu/startMenu/startMenu_start.png")));
+
+        this.startMenu_instructions =
+                ImageIO.read(
+                        Objects.requireNonNull(
+                                LanternaGui.class
+                                        .getClassLoader()
+                                        .getResource("sprites/menu/startMenu/startMenu_instructions.png")));
+
+        this.instructionsMenu =
+                ImageIO.read(
+                        Objects.requireNonNull(
+                                LanternaGui.class
+                                        .getClassLoader()
+                                        .getResource("sprites/menu/instructionMenu/instructionsMenu.png")));
 
         this.powerUpFlower =
                 ImageIO.read(
@@ -477,6 +491,21 @@ public class LanternaGui implements GUI{
                                 LanternaGui.class
                                         .getClassLoader()
                                         .getResource("sprites/menu/startMenu/startMenu_start.png")));
+
+        this.startMenu_instructions =
+                ImageIO.read(
+                        Objects.requireNonNull(
+                                LanternaGui.class
+                                        .getClassLoader()
+                                        .getResource("sprites/menu/startMenu/startMenu_instructions.png")));
+
+        this.instructionsMenu =
+                ImageIO.read(
+                        Objects.requireNonNull(
+                                LanternaGui.class
+                                        .getClassLoader()
+                                        .getResource("sprites/menu/InstructionMenu/InstructionsMenu.png")));
+
         this.powerUpFlower =
                 ImageIO.read(
                         Objects.requireNonNull(
@@ -767,6 +796,16 @@ public class LanternaGui implements GUI{
     @Override
     public void draw_startMenu_start(Position position) throws IOException {
         drawPNG(position, this.startMenu_start);}
+
+    @Override
+    public void draw_startMenu_instructions(Position position) throws IOException {
+        drawPNG(position, this.startMenu_instructions);
+    }
+
+    @Override
+    public void draw_instructionsMenu(Position position) throws IOException {
+        drawPNG(position, this.instructionsMenu);
+    }
 
     public void draw_flag() throws IOException {
         drawPNG(new Position(31,0), this.flag);

@@ -71,5 +71,9 @@ public interface GUI {
 
     void draw_startMenu_start(Position position) throws IOException;
 
+    void draw_startMenu_instructions(Position position) throws IOException;
+
+    void draw_instructionsMenu(Position position) throws IOException;
+
     enum ACTION {UP, DOWN, LEFT, RIGHT, NONE, QUIT, SELECT,SHOOT}
 }
