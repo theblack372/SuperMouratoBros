@@ -8,8 +8,6 @@ Super Mourato & Bros is a fun, homage-style game inspired by the iconic Super Ma
 
 This project was developed by Pedro A. S. Ribas Pinto (up202306973@edu.fe.up.pt), Paulo D. D. Mourato (up202306972@edu.fe.up.pt) Simao V. Ribeiro (up202306111@edu.fe.up.pt) for LDTS 2024-25.
 
-For a more detailed version of this description click [here](./docs/README.md).
-
 ## GIFS
 
 The following gifs ilustrate the general look of our game, as well as the divergent functionalities:
