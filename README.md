@@ -39,7 +39,7 @@ The following gifs ilustrate the general look of our game, as well as the diverg
   <img src="docs/images/instructions.png"/>
 </p>
 <p align="center">
-  <b><i>Fig 2. Instructions Menu </i></b>  
+  <b><i>Fig 2. Instructions menu </i></b>  
 </p>  
 
 <br>
